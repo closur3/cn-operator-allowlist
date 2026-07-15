@@ -88,9 +88,6 @@ var provinces = []province{
 }
 var aliases = map[string]string{"北京": "北京市", "天津": "天津市", "上海": "上海市", "重庆": "重庆市", "内蒙古": "内蒙古自治区", "广西": "广西壮族自治区", "宁夏": "宁夏回族自治区", "新疆": "新疆维吾尔自治区", "西藏": "西藏自治区"}
 var urls = map[string]string{
-	"chinanet":              "https://raw.githubusercontent.com/gaoyifan/china-operator-ip/ip-lists/chinanet.txt",
-	"cmcc":                  "https://raw.githubusercontent.com/gaoyifan/china-operator-ip/ip-lists/cmcc.txt",
-	"unicom":                "https://raw.githubusercontent.com/gaoyifan/china-operator-ip/ip-lists/unicom.txt",
 	"china":                 "https://raw.githubusercontent.com/gaoyifan/china-operator-ip/ip-lists/china.txt",
 	"ip2region_ipv4_source": "https://raw.githubusercontent.com/lionsoul2014/ip2region/master/data/ipv4_source.txt",
 	"rezmoss_alibaba":       "https://raw.githubusercontent.com/rezmoss/cloud-provider-ip-addresses/main/alibaba/alibaba_ips_merged_v4.txt",
@@ -200,6 +197,35 @@ func cidrs(path string) ([]span, error) {
 	return merge(out), nil
 }
 
+func operatorRanges(path string) (map[string][]span, error) {
+	b, e := os.ReadFile(path)
+	if e != nil {
+		return nil, e
+	}
+	ispOperator := map[string]string{"电信": "chinanet", "移动": "cmcc", "联通": "unicom"}
+	out := map[string][]span{}
+	for _, line := range strings.Split(strings.TrimSpace(string(b)), "\n") {
+		x := strings.Split(line, "|")
+		if len(x) != 7 || x[2] != "中国" {
+			continue
+		}
+		o, ok := ispOperator[x[5]]
+		if !ok {
+			continue
+		}
+		a, ea := netip.ParseAddr(x[0])
+		z, ez := netip.ParseAddr(x[1])
+		if ea != nil || ez != nil || !a.Is4() || !z.Is4() {
+			return nil, fmt.Errorf("invalid ip2region range: %s", line)
+		}
+		out[o] = append(out[o], span{n(a), n(z)})
+	}
+	for _, o := range operators {
+		out[o] = merge(out[o])
+	}
+	return out, nil
+}
+
 func sha(path string) (string, error) {
 	b, e := os.ReadFile(path)
 	if e != nil {
@@ -293,13 +319,9 @@ func main() {
 
 	oldManifest, hasOldManifest := readManifest(filepath.Join(*out, "manifest.json"))
 
-	ranges := map[string][]span{}
-	for _, o := range operators {
-		r, e := cidrs(filepath.Join(*src, o+".txt"))
-		if e != nil {
-			panic(e)
-		}
-		ranges[o] = r
+	ranges, e := operatorRanges(filepath.Join(*src, "ip2region_ipv4_source.txt"))
+	if e != nil {
+		panic(e)
 	}
 	chinaRanges, e := cidrs(filepath.Join(*src, "china.txt"))
 	if e != nil {
@@ -369,9 +391,9 @@ func main() {
 
 	m := manifest{
 		GeneratedAt: time.Now().UTC().Format(time.RFC3339Nano),
-		Scope:       "ACL list; IPv4; mainland China; retains China Telecom, China Mobile, and China Unicom only when also present in china-operator-ip's origin-only China list, then excludes CIDRs listed by either cloud-provider source: rezmoss (Alibaba, Tencent, Huawei, Baidu) or IP-Data (Alibaba, Tencent, Huawei, UCloud, Kingsoft, Baidu, JD Cloud); does not attempt to identify or exclude IDC addresses within operators' address space",
+		Scope:       "ACL list; IPv4; mainland China; retains CIDRs labelled China Telecom, China Mobile, or China Unicom by ip2region only when also present in china-operator-ip's origin-only China list, then excludes CIDRs listed by either cloud-provider source: rezmoss (Alibaba, Tencent, Huawei, Baidu) or IP-Data (Alibaba, Tencent, Huawei, UCloud, Kingsoft, Baidu, JD Cloud); does not attempt to identify or exclude IDC addresses within operators' address space",
 	}
-	for _, o := range append(append(operators, "china", "ip2region_ipv4_source"), cloudSources...) {
+	for _, o := range append([]string{"china", "ip2region_ipv4_source"}, cloudSources...) {
 		sourcePath := filepath.Join(*src, o+".txt")
 		sum, e := sha(sourcePath)
 		if e != nil {

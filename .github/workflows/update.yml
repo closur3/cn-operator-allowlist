@@ -23,9 +23,6 @@ jobs:
           source_dir="$(mktemp -d)"
           trap 'rm -rf "$source_dir"' EXIT
           base='https://raw.githubusercontent.com/gaoyifan/china-operator-ip/ip-lists'
-          curl -fsSL "$base/chinanet.txt" -o "$source_dir/chinanet.txt"
-          curl -fsSL "$base/cmcc.txt" -o "$source_dir/cmcc.txt"
-          curl -fsSL "$base/unicom.txt" -o "$source_dir/unicom.txt"
           curl -fsSL "$base/china.txt" -o "$source_dir/china.txt"
           curl -fsSL 'https://raw.githubusercontent.com/lionsoul2014/ip2region/master/data/ipv4_source.txt' -o "$source_dir/ip2region_ipv4_source.txt"
           rezmoss_base='https://raw.githubusercontent.com/rezmoss/cloud-provider-ip-addresses/main'
