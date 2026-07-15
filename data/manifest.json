@@ -1,22 +1,7 @@
 {
-  "generated_at": "2026-07-15T11:47:33.165819844Z",
-  "scope": "ACL list; IPv4; mainland China; retains China Telecom, China Mobile, and China Unicom only when also present in china-operator-ip's origin-only China list, then excludes CIDRs listed by either cloud-provider source: rezmoss (Alibaba, Tencent, Huawei, Baidu) or IP-Data (Alibaba, Tencent, Huawei, UCloud, Kingsoft, Baidu, JD Cloud); does not attempt to identify or exclude IDC addresses within operators' address space",
+  "generated_at": "2026-07-15T12:48:13.69918322Z",
+  "scope": "ACL list; IPv4; mainland China; retains CIDRs labelled China Telecom, China Mobile, or China Unicom by ip2region only when also present in china-operator-ip's origin-only China list, then excludes CIDRs listed by either cloud-provider source: rezmoss (Alibaba, Tencent, Huawei, Baidu) or IP-Data (Alibaba, Tencent, Huawei, UCloud, Kingsoft, Baidu, JD Cloud); does not attempt to identify or exclude IDC addresses within operators' address space",
   "sources": [
-    {
-      "name": "chinanet",
-      "url": "https://raw.githubusercontent.com/gaoyifan/china-operator-ip/ip-lists/chinanet.txt",
-      "sha256": "4a15ec83bac29aec2b31d0990a388a07cf2763729d838f46cfb146072f095184"
-    },
-    {
-      "name": "cmcc",
-      "url": "https://raw.githubusercontent.com/gaoyifan/china-operator-ip/ip-lists/cmcc.txt",
-      "sha256": "a8c2e150279cbacf7bb04822430141c5bce4a5ee0e2f3b12085df57fad8b8787"
-    },
-    {
-      "name": "unicom",
-      "url": "https://raw.githubusercontent.com/gaoyifan/china-operator-ip/ip-lists/unicom.txt",
-      "sha256": "00b98a1cb3e2ae088f68f3c58da1d1424b5e4ad3495e66f0a43487a7f68fab07"
-    },
     {
       "name": "china",
       "url": "https://raw.githubusercontent.com/gaoyifan/china-operator-ip/ip-lists/china.txt",
@@ -87,226 +72,226 @@
     {
       "name": "CN",
       "path": "cn.txt",
-      "cidr_count": 5241,
-      "address_count": 255769343,
-      "sha256": "b7db3c2d2f3ea5c7735e3991529041c9ed0ae35b92f06c76210af9ca0d973bcc"
+      "cidr_count": 2538,
+      "address_count": 232575808,
+      "sha256": "d5d253d1ef8468b2bde3455f7626a0b66f88391d277ecb398be2a9bed613dd97"
     },
     {
       "name": "北京市",
       "path": "provinces/beijing.txt",
-      "cidr_count": 3907,
-      "address_count": 21285420,
-      "sha256": "a40750d46393b87ce5625889a30e7a4402d940052d9716d08c5c34bf0f4a6bf5"
+      "cidr_count": 2607,
+      "address_count": 14457195,
+      "sha256": "e81e250ec91b8bae6584ee95c1c9cab8d6ec1d1f426dd6be45b09b8c6710d5ce"
     },
     {
       "name": "天津市",
       "path": "provinces/tianjin.txt",
-      "cidr_count": 374,
-      "address_count": 3872448,
-      "sha256": "e1d98a65de23aa617a41e6dc11416b9a85aa82803a9b526446d8058fc71ebcfd"
+      "cidr_count": 295,
+      "address_count": 3513872,
+      "sha256": "f3bcaaf4e7072d3dca41ff62d1c21c58c38d7813c8d8b715d39f0005062aed18"
     },
     {
       "name": "河北省",
       "path": "provinces/hebei.txt",
-      "cidr_count": 379,
-      "address_count": 9998307,
-      "sha256": "97b41a4f3b794dca95a7b216395cfb82995fa3096a29edacef504d3e21b736c0"
+      "cidr_count": 277,
+      "address_count": 9623502,
+      "sha256": "6ad17b53ed9eae9a9374c5f19201d345321ff1e044b87383b2e866d32d67c74a"
     },
     {
       "name": "山西省",
       "path": "provinces/shanxi.txt",
-      "cidr_count": 276,
-      "address_count": 5619197,
-      "sha256": "2b14a702fe1e627dc9edae4e713b153b6ee0b3a3b9380d3c6eea14f2e026562b"
+      "cidr_count": 216,
+      "address_count": 5403171,
+      "sha256": "338e6d8a4bdd935534fe4e59ddf26066f742fe99ccb7898c62c022bb2cfebcd8"
     },
     {
       "name": "内蒙古自治区",
       "path": "provinces/neimenggu.txt",
-      "cidr_count": 330,
-      "address_count": 3763302,
-      "sha256": "b15e93164bb4309dbc1f9b9702db708422428c1d1238298e4b87ebc34402e0bf"
+      "cidr_count": 251,
+      "address_count": 3586194,
+      "sha256": "0cb60abcd71d1ddc4488d26156adce64edc471b27e145d3a40cc9e24cff049fa"
     },
     {
       "name": "辽宁省",
       "path": "provinces/liaoning.txt",
-      "cidr_count": 509,
-      "address_count": 11295228,
-      "sha256": "315952cc21d80f19eecf43528b3e18fcb4236bb91a1de05ed9c0b4a858fcb969"
+      "cidr_count": 359,
+      "address_count": 10611096,
+      "sha256": "d1d55bcdf52392b8f65f3332ad634660e591b02fdf0d7d8143cdae64a128ee9d"
     },
     {
       "name": "吉林省",
       "path": "provinces/jilin.txt",
-      "cidr_count": 249,
-      "address_count": 4568791,
-      "sha256": "3b064ea7c84cbaae7dd4abf9996308e1f894edfadf01b02f1edc2560707e03d9"
+      "cidr_count": 164,
+      "address_count": 4207619,
+      "sha256": "7ccfeafac363eca6b2b7307c27efc24f0adce61055badfb3d10295d4a14b7381"
     },
     {
       "name": "黑龙江省",
       "path": "provinces/heilongjiang.txt",
-      "cidr_count": 271,
-      "address_count": 5646968,
-      "sha256": "b52fa3ebef03a7ad5a6baa5288272113f00a5f234b7ecbbdfb5edf28725b8659"
+      "cidr_count": 171,
+      "address_count": 4777722,
+      "sha256": "90d6181e3437cec5e87b4e9ae94ac4f824fd23a2cec652d65873f9ca5b9c272a"
     },
     {
       "name": "上海市",
       "path": "provinces/shanghai.txt",
-      "cidr_count": 1622,
-      "address_count": 13019215,
-      "sha256": "e4908b25772afb8fc093173150f42a1ad25ec6c6c1579702bd28d9fce39c24e8"
+      "cidr_count": 1240,
+      "address_count": 10440614,
+      "sha256": "669cadc3ec76628803fa9ffc43aefcbbffcbfb6952bf7f3a84350b2d3de77546"
     },
     {
       "name": "江苏省",
       "path": "provinces/jiangsu.txt",
-      "cidr_count": 1087,
-      "address_count": 18444547,
-      "sha256": "f78038d8973250bd72c80ea08ccf8c5bc795dfef2367b1863a23340429e49299"
+      "cidr_count": 818,
+      "address_count": 17134475,
+      "sha256": "569e94eb415de0cb89e88d84108d7e18b63c0df4fb1127487b9df67acee7d5d2"
     },
     {
       "name": "浙江省",
       "path": "provinces/zhejiang.txt",
-      "cidr_count": 759,
-      "address_count": 17517265,
-      "sha256": "448f2f2f88d1e12a76cc6a40ccc28cae26a6f231712efdde6c4ad7d2c7abf9ab"
+      "cidr_count": 601,
+      "address_count": 16783197,
+      "sha256": "0f81ba02a11d6cac3aa58a7f6526632a013c38abfd8ac6bafafdfc675396b50a"
     },
     {
       "name": "安徽省",
       "path": "provinces/anhui.txt",
-      "cidr_count": 381,
-      "address_count": 6907330,
-      "sha256": "9aeb8590da33dfbd2ae5c2fee13420086c85667625e462cbdf472d6c31729c93"
+      "cidr_count": 281,
+      "address_count": 6624686,
+      "sha256": "e74f4c3b34d76d59b0adb60a4e56ce017932423de950fdcb29e9e10f8c9fa449"
     },
     {
       "name": "福建省",
       "path": "provinces/fujian.txt",
-      "cidr_count": 550,
-      "address_count": 7367969,
-      "sha256": "837e36084639fb485283b41ec9faea23b2dd64ec70d720d3f13554178bf2007c"
+      "cidr_count": 466,
+      "address_count": 6532337,
+      "sha256": "6c50daf8cdee445495bf10a524dd102605b016a6601bd597716ba777e98a0d1f"
     },
     {
       "name": "江西省",
       "path": "provinces/jiangxi.txt",
-      "cidr_count": 359,
-      "address_count": 7078301,
-      "sha256": "f0b7a895bfab2a569ba8bf681a040da4c893ced880ca6f7e2e2f35424fa804a3"
+      "cidr_count": 304,
+      "address_count": 6922997,
+      "sha256": "d34bdc3407b764046de4365eb960a7685cb24231c28f7f67235dcc51905df920"
     },
     {
       "name": "山东省",
       "path": "provinces/shandong.txt",
-      "cidr_count": 607,
-      "address_count": 17278194,
-      "sha256": "d8c7937d126eee5ae53f725fb1ac9f8352c5cab33bf527b8d51c09c8fc38b4ab"
+      "cidr_count": 414,
+      "address_count": 16570346,
+      "sha256": "b2faacb7d702c02999086b5c733828064c0f06b4b06e9818d0644895ddd22b12"
     },
     {
       "name": "河南省",
       "path": "provinces/henan.txt",
-      "cidr_count": 548,
-      "address_count": 11214100,
-      "sha256": "f5c850a41e8fca912349fb6d7d0b2c99766947e66dcb82406190cd2123685727"
+      "cidr_count": 391,
+      "address_count": 10403866,
+      "sha256": "37f574810d907532f3f707efa2ef3f40e3c27b9d5d1873409f199e3d584ed711"
     },
     {
       "name": "湖北省",
       "path": "provinces/hubei.txt",
-      "cidr_count": 582,
-      "address_count": 7542268,
-      "sha256": "76bdacfb7394b84aff0b3b6db4c6b12a858684d579ccab3940ac0718fce83b6d"
+      "cidr_count": 480,
+      "address_count": 7271906,
+      "sha256": "e880081d61ff4f099070314b6993fa89ff0eea22838f8afce54e861fc8e1a7a3"
     },
     {
       "name": "湖南省",
       "path": "provinces/hunan.txt",
-      "cidr_count": 413,
-      "address_count": 7292053,
-      "sha256": "228435db6ea53f64b26de6352a3b2b185cf75e98f3fa73686122b769cf1250a5"
+      "cidr_count": 286,
+      "address_count": 6828252,
+      "sha256": "e9f7120bf17490535e110d35b6444225eea35e444a123aa6b1cef7733b72443a"
     },
     {
       "name": "广东省",
       "path": "provinces/guangdong.txt",
-      "cidr_count": 1854,
-      "address_count": 28469104,
-      "sha256": "562dc674ed997fc6bd61eb09525d771af95a259a2c9ef0be703699240bc7a70c"
+      "cidr_count": 1454,
+      "address_count": 26390036,
+      "sha256": "b65ce32e424c803ecf1cfb0b7e1d82987ab6efb2003d4272eefc713a1be02b27"
     },
     {
       "name": "广西壮族自治区",
       "path": "provinces/guangxi.txt",
-      "cidr_count": 315,
-      "address_count": 4384526,
-      "sha256": "ef133c3dafb948f01d57b7e0693d6a784d6adfe680c0ce902a46ab9c475e2f9e"
+      "cidr_count": 237,
+      "address_count": 4186920,
+      "sha256": "c25b69c20528b71cc387ca863ee246d33040911449c9c661a4cb6f048dedb07a"
     },
     {
       "name": "海南省",
       "path": "provinces/hainan.txt",
-      "cidr_count": 146,
-      "address_count": 1796729,
-      "sha256": "dd2546ad316b963ed726974a8554b95d24d0b648947724bfd41eaaa16a384842"
+      "cidr_count": 115,
+      "address_count": 1636416,
+      "sha256": "e2dcc4cdc78a79086bdb537a3341059c0ef29020dd1ca48eaa3cc7f6b7d6a004"
     },
     {
       "name": "重庆市",
       "path": "provinces/chongqing.txt",
-      "cidr_count": 309,
-      "address_count": 6557921,
-      "sha256": "71990c7be9492c659d8717e1a1414ce52f09dd223d99e902fd06ddf8e69df04e"
+      "cidr_count": 232,
+      "address_count": 6145737,
+      "sha256": "fa3802f6ba71f6c821169a4cca636ec5cd8e6a987ebbb8b81c1839c6c90c1c58"
     },
     {
       "name": "四川省",
       "path": "provinces/sichuan.txt",
-      "cidr_count": 609,
-      "address_count": 10027881,
-      "sha256": "e1791e3632fe3768e7a67a53c1801c9beb1dbe9cdcdf44b73c951bfbd5b12c88"
+      "cidr_count": 502,
+      "address_count": 9475499,
+      "sha256": "8866951b339aef4cb3aa62bdc3477a66be6b35b116d934a13e0ba25fb4038cf2"
     },
     {
       "name": "贵州省",
       "path": "provinces/guizhou.txt",
-      "cidr_count": 253,
-      "address_count": 2648400,
-      "sha256": "73a0d76c35a02b0fb6088f1ae2f8101bf82772be07655a51999b9cd8a0c8abf4"
+      "cidr_count": 212,
+      "address_count": 2555868,
+      "sha256": "695c83a0bde0ce4dd04a0b532e6847c63bea4a6989a7cda870cf2b6fbbc1c139"
     },
     {
       "name": "云南省",
       "path": "provinces/yunnan.txt",
-      "cidr_count": 288,
-      "address_count": 3791518,
-      "sha256": "b70a506b6ee00c29f770074d2f7662c438d4bdd2748f6ae406499f6bf011e482"
+      "cidr_count": 239,
+      "address_count": 3582724,
+      "sha256": "ed7b0eaeb0e1f7a55d3b7165ff87c762131a3f5c3338009112a9729115037063"
     },
     {
       "name": "西藏自治区",
       "path": "provinces/xizang.txt",
-      "cidr_count": 99,
-      "address_count": 497276,
-      "sha256": "a88867e1aefe0620946d7bbf41707bf53c059982e5efe1cb9741fbd5e494b334"
+      "cidr_count": 92,
+      "address_count": 474492,
+      "sha256": "a7b3ea1482d48167d871afd675de312e129b9fa77767f749fc06aac55d8e10c7"
     },
     {
       "name": "陕西省",
       "path": "provinces/shaanxi.txt",
-      "cidr_count": 584,
-      "address_count": 5045737,
-      "sha256": "539e7d16a651f672731fdde16692c8d653af988c54d07dfa49892d4892a5045d"
+      "cidr_count": 463,
+      "address_count": 3986157,
+      "sha256": "a1efeaff5e32830e27b67215152a8c33de47a33e2bc33803913c469be0f30b7c"
     },
     {
       "name": "甘肃省",
       "path": "provinces/gansu.txt",
-      "cidr_count": 187,
-      "address_count": 1853306,
-      "sha256": "9bd973f9be3637863120a8e9bc66245f0a3c216e086456dab1856509bf921dbe"
+      "cidr_count": 162,
+      "address_count": 1837424,
+      "sha256": "ce3b61cfa7aa449b15f4efd09dc71812bb4153a97181095ef437a3d3a49aa000"
     },
     {
       "name": "青海省",
       "path": "provinces/qinghai.txt",
-      "cidr_count": 83,
-      "address_count": 835326,
-      "sha256": "787d26a671b067d6d72074014e003e2ab1eb6c4a46c6d88fbb353882290ae704"
+      "cidr_count": 66,
+      "address_count": 830040,
+      "sha256": "232b2d9c5523ad27dd481813543bafa67d0c26ced2a52afb57e3faf943bf804e"
     },
     {
       "name": "宁夏回族自治区",
       "path": "provinces/ningxia.txt",
-      "cidr_count": 124,
-      "address_count": 1207978,
-      "sha256": "73f52761776f02320bea054993a28347006ca3a0fb460eecaadee8b57b1f154e"
+      "cidr_count": 89,
+      "address_count": 1155408,
+      "sha256": "d795b3f3aae2ea9610b6279d8af6ecfdd7efa8da90940b719e1742c643983058"
     },
     {
       "name": "新疆维吾尔自治区",
       "path": "provinces/xinjiang.txt",
-      "cidr_count": 249,
-      "address_count": 3947770,
-      "sha256": "0c7fa29936015d4b826f95f3457d1728a5b2e21aef0349fe795106a40e7f3001"
+      "cidr_count": 185,
+      "address_count": 3743392,
+      "sha256": "71b2fa70aa3f16e2468954baef50e0a8a0d4fcfbb110101afc7a0f7f202193c3"
     }
   ]
 }
