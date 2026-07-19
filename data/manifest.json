@@ -1,54 +1,54 @@
 {
-  "generated_at": "2026-07-18T20:25:20.4197349Z",
-  "scope": "Best-effort ACL list; IPv4; mainland China; retains prefixes originated by ASNs whose current IPtoASN descriptions identify China Telecom, China Mobile, or China Unicom, only when also present in china-operator-ip's origin-only China list; explicitly subtracts cloud-provider CIDRs, strong non-public-purpose APNIC registrations, portable and non-portable registrations linked through APNIC aut-num to a currently active independent ASN, origin-validated APNIC route objects, strongly linked independent APNIC route origins, and conservative RIPE RIS multi-observer MOAS evidence; unclear mixed-use, historical and MOAS space remains included",
+  "generated_at": "2026-07-19T08:31:14.635424299Z",
+  "scope": "Best-effort ACL list; IPv4; mainland China; retains addresses used by China Telecom, China Mobile, or China Unicom to provide public Internet access to real end users, including household, mobile, enterprise, and institutional users, only when also present in china-operator-ip's origin-only China list; explicitly subtracts cloud-provider CIDRs, strong non-terminal-access APNIC registrations, portable and non-portable registrations linked through APNIC aut-num to a currently active independent ASN, origin-validated APNIC route objects, strongly linked independent APNIC route origins, and conservative RIPE RIS multi-observer MOAS evidence; unclear mixed-use, historical and MOAS space remains included",
   "sources": [
     {
       "name": "operator_config",
       "path": "config/operators.json",
-      "bytes": 7591,
-      "sha256": "6d9b82aac70edb3fb5af7a676d0def4481eaf3a92f8d048e7464bddd99f6bdd3"
+      "bytes": 7225,
+      "sha256": "b35b14908de6bf848ae1e61c74dd9d90ad664c627f6b8e021aa0f53566045d63"
     },
     {
       "name": "china",
       "url": "https://raw.githubusercontent.com/gaoyifan/china-operator-ip/ip-lists/china.txt",
-      "bytes": 65383,
-      "sha256": "c05f19cc04c00b458de84bd1e5cb9028a1902b3dd490c1ae588afc60ed9f06d7"
+      "bytes": 65385,
+      "sha256": "33af3a232e9e9164e165ea802fd7f10fe9c02b11b1bf5cd45d1f1122174b5f64"
     },
     {
       "name": "iptoasn_ipv4",
       "url": "https://iptoasn.com/data/ip2asn-v4.tsv.gz",
-      "bytes": 6884132,
-      "sha256": "9191ed0c5d1500d7c99dd6832c44cbb24d5d296fd825ca1d93e7b35ec8b22878"
+      "bytes": 6883011,
+      "sha256": "8d62d402c2efd26ea4588842950eeb94a6e4e25324a193d0e71780e40a64dfc3"
     },
     {
       "name": "apnic_organisation",
       "url": "https://ftp.apnic.net/apnic/whois/apnic.db.organisation.gz",
-      "bytes": 546927,
-      "sha256": "5ea61d3b76fb29a227ab94d2948740a8f5fef89875ec4da31ca20fb6adf62728"
+      "bytes": 546965,
+      "sha256": "949530a37bd700b090bb0e11f7415c60bf926e7ba76f4c5f2d40c99745e7b70a"
     },
     {
       "name": "apnic_inetnum",
       "url": "https://ftp.apnic.net/apnic/whois/apnic.db.inetnum.gz",
-      "bytes": 53550577,
-      "sha256": "f1c5f13e21dbbd0158e59a6bdcf17629a6d7d5a0011dfffb6ee29f7b614046e3"
+      "bytes": 53551049,
+      "sha256": "291d468489b397d8ccb8a7742069170ac745393b78f959dd86c9d32628eada14"
     },
     {
       "name": "apnic_autnum",
       "url": "https://ftp.apnic.net/apnic/whois/apnic.db.aut-num.gz",
-      "bytes": 2090629,
-      "sha256": "b0866a048e551e7c8f48d3e8b70353beba2be6b6ad2b9464df4ab3b9ac492cb0"
+      "bytes": 2090703,
+      "sha256": "f0d570a36aa86bf021a5e41f68b6160f35ada96581735154c2b8cd1c0004db17"
     },
     {
       "name": "apnic_route",
       "url": "https://ftp.apnic.net/apnic/whois/apnic.db.route.gz",
-      "bytes": 7905240,
-      "sha256": "a516e94c90ab1ad669170104fcdb25d3f847f662212bf13cd09203277829dc72"
+      "bytes": 7905204,
+      "sha256": "d215cba1a954f33c78f1b8e1753557c2a3361095ea149217e777cc47c85d54a3"
     },
     {
       "name": "riswhois_ipv4",
       "url": "https://www.ris.ripe.net/dumps/riswhoisdump.IPv4.gz",
-      "bytes": 5355298,
-      "sha256": "4f41eed86b232ae6ce3cc7139ca71bd036b4f2a4a987b49103209bb929b96397"
+      "bytes": 5369834,
+      "sha256": "7461ec9380e7bc14e69627c32fa12bdc0070b1e6a7f442e55eb105a06605d57e"
     },
     {
       "name": "ip2region_ipv4_source",
@@ -102,13 +102,13 @@
   "stages": [
     {
       "name": "operator_origin_candidates",
-      "cidr_count": 9781,
-      "address_count": 229277440
+      "cidr_count": 9123,
+      "address_count": 230470656
     },
     {
       "name": "china_origin_intersection",
-      "cidr_count": 9778,
-      "address_count": 229276416
+      "cidr_count": 9121,
+      "address_count": 230470144
     },
     {
       "name": "effective_cloud_prefix_exclusions",
@@ -117,8 +117,8 @@
     },
     {
       "name": "effective_apnic_prefix_exclusions",
-      "cidr_count": 2007,
-      "address_count": 820547
+      "cidr_count": 2031,
+      "address_count": 832195
     },
     {
       "name": "effective_apnic_portable_holder_exclusions",
@@ -147,13 +147,13 @@
     },
     {
       "name": "final_output",
-      "cidr_count": 15734,
-      "address_count": 226236370
+      "cidr_count": 15231,
+      "address_count": 227418450
     },
     {
       "name": "province_attributed_output",
-      "cidr_count": 17086,
-      "address_count": 221376364
+      "cidr_count": 16545,
+      "address_count": 222537976
     }
   ],
   "cloud_sources": [
@@ -215,14 +215,14 @@
     }
   ],
   "apnic_inetnum": {
-    "record_count": 1256768,
+    "record_count": 1256774,
     "matched_winning_segment_count": 14370,
-    "effective_cidr_count": 2007,
-    "effective_address_count": 820547
+    "effective_cidr_count": 2031,
+    "effective_address_count": 832195
   },
   "apnic_portable_holders": {
-    "autnum_record_count": 25886,
-    "matched_winning_segment_count": 127173,
+    "autnum_record_count": 25887,
+    "matched_winning_segment_count": 127170,
     "effective_cidr_count": 934,
     "effective_address_count": 1577746
   },
@@ -232,8 +232,8 @@
     "effective_address_count": 343001
   },
   "apnic_route": {
-    "object_count": 832529,
-    "winning_segment_count": 373982,
+    "object_count": 832539,
+    "winning_segment_count": 373984,
     "origin_validated_match_count": 3,
     "effective_cidr_count": 3,
     "effective_address_count": 2048
@@ -597,13 +597,13 @@
     ]
   },
   "ris_whois": {
-    "row_count": 1240763,
-    "prefix_count": 1218898,
-    "relevant_prefix_count": 46351,
-    "winning_segment_count": 56386,
-    "candidate_moas_segment_count": 237,
+    "row_count": 1244948,
+    "prefix_count": 1223092,
+    "relevant_prefix_count": 46833,
+    "winning_segment_count": 57124,
+    "candidate_moas_segment_count": 241,
     "strong_evidence_segment_count": 5,
-    "retained_ambiguous_moas_segment_count": 232,
+    "retained_ambiguous_moas_segment_count": 236,
     "effective_cidr_count": 2,
     "effective_address_count": 2048
   },
@@ -13017,6 +13017,74 @@
       "registry_last_modified": "2008-09-04T07:07:29Z",
       "matched_by": "exclude_apnic_inetnum_rules: (?:^|[^a-z0-9])vps(?:[^a-z0-9]|$)|\\bvirtual private servers?\\b|\\bserver[ -]?(?:hosting|farm|cent(?:er|re))\\b|\\bhosted servers?\\b|\\b(?:machine|computer|server)[ -]?room\\b",
       "reason": "APNIC inetnum registration explicitly identifies a hosted-server or server-room network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "122.225.243.0/24",
+      "address_count": 256,
+      "asn": "4809",
+      "operator": "chinanet",
+      "asn_description": "CHINATELECOM-CORE-WAN-CN2 China Telecom Next Generation Carrier Network",
+      "registry_netnames": [
+        "JINHUA-TELECOM-COMPANY"
+      ],
+      "registry_descriptions": [
+        "Jinhua Telecom Company IDC Center"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-CHINANET-ZJ-JH"
+      ],
+      "registry_status": "ASSIGNED NON-PORTABLE",
+      "registry_last_modified": "2021-06-24T07:34:12Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "218.100.89.0/24",
+      "address_count": 256,
+      "asn": "4809",
+      "operator": "chinanet",
+      "asn_description": "CHINATELECOM-CORE-WAN-CN2 China Telecom Next Generation Carrier Network",
+      "registry_netnames": [
+        "CTHKI-HK"
+      ],
+      "registry_descriptions": [
+        "CTG Global IDC network",
+        "38/F., DAH SING Financial Center, 108 Gloucester Road, Wan Chai, Hong Kong"
+      ],
+      "registry_maintainers": [
+        "MAINT-CHINANET"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2021-06-15T08:06:01Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "218.100.90.0/23",
+      "address_count": 512,
+      "asn": "4809",
+      "operator": "chinanet",
+      "asn_description": "CHINATELECOM-CORE-WAN-CN2 China Telecom Next Generation Carrier Network",
+      "registry_netnames": [
+        "CTHKI-HK"
+      ],
+      "registry_descriptions": [
+        "CTG Global IDC network",
+        "38/F., DAH SING Financial Center, 108 Gloucester Road, Wan Chai, Hong Kong"
+      ],
+      "registry_maintainers": [
+        "MAINT-CHINANET"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2021-06-15T08:06:01Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
     },
     {
       "source": "apnic_inetnum",
@@ -42608,6 +42676,974 @@
       "registry_last_modified": "2008-09-04T06:54:40Z",
       "matched_by": "exclude_apnic_inetnum_rules: \\bdata[ -]?cent(?:er|re)\\b",
       "reason": "APNIC inetnum registration explicitly identifies a data-center network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.13.92.192/26",
+      "address_count": 64,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "Bank-of-Communications-data"
+      ],
+      "registry_descriptions": [
+        "Bank of Communications Co., Ltd. Data Center"
+      ],
+      "registry_maintainers": [
+        "MAINT-CNCGROUP-SH"
+      ],
+      "registry_status": "ASSIGNED NON-PORTABLE",
+      "registry_last_modified": "2008-12-05T05:14:20Z",
+      "matched_by": "exclude_apnic_inetnum_rules: \\bdata[ -]?cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies a data-center network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.13.103.96/28",
+      "address_count": 16,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "CCB"
+      ],
+      "registry_descriptions": [
+        "China Construction Bank headquarters in information technology data center in Shanghai"
+      ],
+      "registry_maintainers": [
+        "MAINT-CNCGROUP-SH"
+      ],
+      "registry_status": "ASSIGNED NON-PORTABLE",
+      "registry_last_modified": "2008-12-12T11:08:44Z",
+      "matched_by": "exclude_apnic_inetnum_rules: \\bdata[ -]?cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies a data-center network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.13.109.192/26",
+      "address_count": 64,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "Agricultural-Bank"
+      ],
+      "registry_descriptions": [
+        "Agricultural Bank of China data center"
+      ],
+      "registry_maintainers": [
+        "MAINT-CNCGROUP-SH"
+      ],
+      "registry_status": "ASSIGNED NON-PORTABLE",
+      "registry_last_modified": "2008-12-12T11:32:54Z",
+      "matched_by": "exclude_apnic_inetnum_rules: \\bdata[ -]?cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies a data-center network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.13.112.240/29",
+      "address_count": 8,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "BJ-Baidu-SH"
+      ],
+      "registry_descriptions": [
+        "Baidu Online Network Technology (Beijing) Software Technology Co., Ltd. Shanghai Branch"
+      ],
+      "registry_maintainers": [
+        "MAINT-CNCGROUP-SH"
+      ],
+      "registry_status": "ASSIGNED NON-PORTABLE",
+      "registry_last_modified": "2008-12-04T06:57:17Z",
+      "matched_by": "exclude_apnic_inetnum_rules: \\bhuawei[ -]?(?:(?:3com|symantec)[ -]?(?:tech|technology)|software[ -]?technology|(?:technologies|technology|technique)[ -]?(?:co(?:mpany)?|inc))(?:[., ]+(?:ltd|limited))?\\b|\\bbeijing[ -]?baidu[ -]?(?:network information technology|netcom science and technology)[ -]?co(?:mpany)?(?:[., ]+(?:ltd|limited))?\\b|\\bbaidu online network technology\\b|\\bbaidu[ -]?co(?:mpany)?[., ]+(?:ltd|limited)\\b|\\balibaba(?:\\.com|[ -]com)?[ -]?(?:\\(china\\)|china)[ -]?(?:(?:network|networking|net|web)[ -]?)?(?:technology[ -]?)?(?:co(?:mpany)?(?:[., ]+(?:ltd|limited))?|ltd[.]com)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies a qualified Huawei, Baidu, or Alibaba corporate network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.13.112.248/29",
+      "address_count": 8,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "BJ-Baidu-SH"
+      ],
+      "registry_descriptions": [
+        "Baidu Online Network Technology (Beijing) Software Technology Co., Ltd. Shanghai Branch"
+      ],
+      "registry_maintainers": [
+        "MAINT-CNCGROUP-SH"
+      ],
+      "registry_status": "ASSIGNED NON-PORTABLE",
+      "registry_last_modified": "2008-12-04T06:57:17Z",
+      "matched_by": "exclude_apnic_inetnum_rules: \\bhuawei[ -]?(?:(?:3com|symantec)[ -]?(?:tech|technology)|software[ -]?technology|(?:technologies|technology|technique)[ -]?(?:co(?:mpany)?|inc))(?:[., ]+(?:ltd|limited))?\\b|\\bbeijing[ -]?baidu[ -]?(?:network information technology|netcom science and technology)[ -]?co(?:mpany)?(?:[., ]+(?:ltd|limited))?\\b|\\bbaidu online network technology\\b|\\bbaidu[ -]?co(?:mpany)?[., ]+(?:ltd|limited)\\b|\\balibaba(?:\\.com|[ -]com)?[ -]?(?:\\(china\\)|china)[ -]?(?:(?:network|networking|net|web)[ -]?)?(?:technology[ -]?)?(?:co(?:mpany)?(?:[., ]+(?:ltd|limited))?|ltd[.]com)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies a qualified Huawei, Baidu, or Alibaba corporate network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.13.126.112/28",
+      "address_count": 16,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "SH-HUAWEI"
+      ],
+      "registry_descriptions": [
+        "Shanghai Huawei Technologies Co., Ltd."
+      ],
+      "registry_maintainers": [
+        "MAINT-CNCGROUP-SH"
+      ],
+      "registry_status": "ASSIGNED NON-PORTABLE",
+      "registry_last_modified": "2008-12-08T12:14:12Z",
+      "matched_by": "exclude_apnic_inetnum_rules: \\bhuawei[ -]?(?:(?:3com|symantec)[ -]?(?:tech|technology)|software[ -]?technology|(?:technologies|technology|technique)[ -]?(?:co(?:mpany)?|inc))(?:[., ]+(?:ltd|limited))?\\b|\\bbeijing[ -]?baidu[ -]?(?:network information technology|netcom science and technology)[ -]?co(?:mpany)?(?:[., ]+(?:ltd|limited))?\\b|\\bbaidu online network technology\\b|\\bbaidu[ -]?co(?:mpany)?[., ]+(?:ltd|limited)\\b|\\balibaba(?:\\.com|[ -]com)?[ -]?(?:\\(china\\)|china)[ -]?(?:(?:network|networking|net|web)[ -]?)?(?:technology[ -]?)?(?:co(?:mpany)?(?:[., ]+(?:ltd|limited))?|ltd[.]com)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies a qualified Huawei, Baidu, or Alibaba corporate network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.22.194.0/25",
+      "address_count": 128,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "hangzhou-mini-IDC"
+      ],
+      "registry_descriptions": [
+        "hangzhou city"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ASSIGNED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:04Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.22.194.128/25",
+      "address_count": 128,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "hangzhou-mini-IDC"
+      ],
+      "registry_descriptions": [
+        "hangzhou city"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ASSIGNED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:04Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.22.195.0/25",
+      "address_count": 128,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "suzhou-mini-IDC"
+      ],
+      "registry_descriptions": [
+        "suzhou city"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ASSIGNED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:04Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.22.195.128/25",
+      "address_count": 128,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "suzhou-mini-IDC"
+      ],
+      "registry_descriptions": [
+        "suzhou city"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ASSIGNED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:04Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.51.0.0/23",
+      "address_count": 512,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "CNC-BJ-IDC"
+      ],
+      "registry_descriptions": [
+        "Beijing Tongtai IDC of China Netcom"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.51.3.0/24",
+      "address_count": 256,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "CNC-BJ-IDC"
+      ],
+      "registry_descriptions": [
+        "Beijing Tongtai IDC of China Netcom"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.51.4.0/23",
+      "address_count": 512,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "CNC-BJ-IDC"
+      ],
+      "registry_descriptions": [
+        "Beijing Tongtai IDC of China Netcom"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.51.16.0/23",
+      "address_count": 512,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "CNC-BJ-IDC"
+      ],
+      "registry_descriptions": [
+        "Beijing Tongtai IDC of China Netcom"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.51.19.0/24",
+      "address_count": 256,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "MOTOROLA-BJ"
+      ],
+      "registry_descriptions": [
+        "Beijing Tongtai IDC of CNC"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-BJIDC"
+      ],
+      "registry_status": "ASSIGNED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.51.21.0/24",
+      "address_count": 256,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "CNC-SH-IDC"
+      ],
+      "registry_descriptions": [
+        "Shanghai Caohejing IDC of China Netcom"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.51.24.0/24",
+      "address_count": 256,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "CNC-SH-IDC"
+      ],
+      "registry_descriptions": [
+        "Shanghai Caohejing IDC of China Netcom"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.51.31.0/24",
+      "address_count": 256,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "CNC-SH-IDC"
+      ],
+      "registry_descriptions": [
+        "Shanghai Caohejing IDC of China Netcom"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.51.33.0/24",
+      "address_count": 256,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "CNC-SH-IDC"
+      ],
+      "registry_descriptions": [
+        "Shanghai Caohejing IDC of China Netcom"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.51.39.0/24",
+      "address_count": 256,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "CNC-SH-IDC"
+      ],
+      "registry_descriptions": [
+        "Shanghai Caohejing IDC of China Netcom"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.51.43.0/24",
+      "address_count": 256,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "CNC-SH-IDC"
+      ],
+      "registry_descriptions": [
+        "Shanghai Caohejing IDC of China Netcom"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.51.45.0/24",
+      "address_count": 256,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "CNC-SH-IDC"
+      ],
+      "registry_descriptions": [
+        "Shanghai Caohejing IDC of China Netcom"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.51.48.0/24",
+      "address_count": 256,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "CNC-SH-IDC"
+      ],
+      "registry_descriptions": [
+        "Shanghai Caohejing IDC of China Netcom"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.51.58.0/24",
+      "address_count": 256,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "CNC-SH-IDC"
+      ],
+      "registry_descriptions": [
+        "Shanghai Caohejing IDC of China Netcom"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.51.164.0/22",
+      "address_count": 1024,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "CNC-BJ-IDC2"
+      ],
+      "registry_descriptions": [
+        "Beijing YiZhuang IDC of China Netcom"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.51.168.0/22",
+      "address_count": 1024,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "CNC-BJ-IDC2"
+      ],
+      "registry_descriptions": [
+        "Beijing YiZhuang IDC of China Netcom"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.51.172.0/23",
+      "address_count": 512,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "CNC-BJ-IDC2"
+      ],
+      "registry_descriptions": [
+        "Beijing YiZhuang IDC of China Netcom"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.51.174.0/24",
+      "address_count": 256,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "CNC-BJ-IDC2"
+      ],
+      "registry_descriptions": [
+        "Beijing YiZhuang IDC of China Netcom"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.51.177.0/24",
+      "address_count": 256,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "CNC-BJ-IDC"
+      ],
+      "registry_descriptions": [
+        "Beijing YiZhuang IDC of China Netcom"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.51.178.0/25",
+      "address_count": 128,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "dongfangyuanchuang-software"
+      ],
+      "registry_descriptions": [
+        "Beijing SIDC of CNC"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-BJIDC"
+      ],
+      "registry_status": "ASSIGNED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.51.178.128/25",
+      "address_count": 128,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "CNC-BJ-IDC"
+      ],
+      "registry_descriptions": [
+        "Beijing YiZhuang IDC of China Netcom"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.51.184.0/24",
+      "address_count": 256,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "CNC-BJ-IDC"
+      ],
+      "registry_descriptions": [
+        "Beijing YiZhuang IDC of China Netcom"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.51.188.0/24",
+      "address_count": 256,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "CNC-BJ-IDC"
+      ],
+      "registry_descriptions": [
+        "Beijing YiZhuang IDC of China Netcom"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.51.192.0/28",
+      "address_count": 16,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "NANJING-MINI-IDC"
+      ],
+      "registry_descriptions": [
+        "nanjing  city"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ASSIGNED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:07Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.52.27.0/27",
+      "address_count": 32,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "cnc-jinan-idc"
+      ],
+      "registry_descriptions": [
+        "jinan city,Shandong province,CNC"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ASSIGNED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.52.66.0/24",
+      "address_count": 256,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "fujian-mini-idc"
+      ],
+      "registry_descriptions": [
+        "fujian branch of CNC"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ASSIGNED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.52.220.0/23",
+      "address_count": 512,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "CNC-SH-IDC"
+      ],
+      "registry_descriptions": [
+        "Shanghai Lekai IDC of China Netcom"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.52.224.0/24",
+      "address_count": 256,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "CNC-SH-IDC"
+      ],
+      "registry_descriptions": [
+        "Shanghai Lekai IDC of China Netcom"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ALLOCATED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:09Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.82.215.0/25",
+      "address_count": 128,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "tianjin-mini-IDC"
+      ],
+      "registry_descriptions": [
+        "tianjin city"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ASSIGNED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:12Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.82.215.128/25",
+      "address_count": 128,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "tianjin-mini-IDC"
+      ],
+      "registry_descriptions": [
+        "tianjin city"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ASSIGNED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:12Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.83.197.224/27",
+      "address_count": 32,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "DALIAN-PINGAN-IDC"
+      ],
+      "registry_descriptions": [
+        "dalian city"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ASSIGNED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:11Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.83.206.0/25",
+      "address_count": 128,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "dalian-dongbei-IDC"
+      ],
+      "registry_descriptions": [
+        "dalian city"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ASSIGNED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:12Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "210.83.206.128/25",
+      "address_count": 128,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "dalian-dongbei-IDC"
+      ],
+      "registry_descriptions": [
+        "dalian city"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ASSIGNED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:12Z",
+      "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b",
+      "reason": "APNIC inetnum registration explicitly identifies an IDC network"
+    },
+    {
+      "source": "apnic_inetnum",
+      "category": "apnic_inetnum",
+      "cidr": "218.106.19.128/25",
+      "address_count": 128,
+      "asn": "9929",
+      "operator": "unicom",
+      "asn_description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "registry_netnames": [
+        "wangsu-science-technology"
+      ],
+      "registry_descriptions": [
+        "jingyi road ,jiaxing city,jiangsu province"
+      ],
+      "registry_maintainers": [
+        "MAINT-CN-ZM28"
+      ],
+      "registry_status": "ASSIGNED NON-PORTABLE",
+      "registry_last_modified": "2008-09-04T06:57:00Z",
+      "matched_by": "exclude_apnic_inetnum_rules: (?:^|[^a-z0-9])(?:aliyun|qcloud|ucloud|ksyun|jdcloud|ctyun|qingcloud|volcengine|cloudflare|akamai|wangsu|chinanetcenter|baishancloud|sinnet|westclouddata|nwcd)(?:[^a-z0-9]|$)|\\bbeijing guanghuan xinwang(?:[ |.,-]+digital technology)?\\b|\\b(?:alibaba|huawei|tencent|baidu|kingsoft|jingdong|jd|tianyi|china telecom|china unicom|china mobile|google|oracle|ibm)[ -]?(?:ai[ -]?)?cloud\\b|\\bamazon web services\\b|\\bmicrosoft azure\\b|\\bvolcano engine\\b",
+      "reason": "APNIC inetnum registration explicitly identifies a known cloud or CDN brand"
     },
     {
       "source": "apnic_inetnum",
@@ -89342,7 +90378,7 @@
       "operator": "cmcc",
       "asn_description": "CMNET-V4SHANDONG-AS-AP Shandong Mobile Communication Company Limited",
       "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b; RIPE RIS multi-observer MOAS",
-      "reason": "Alternate origin AS58540 is strongly identified as non-public: APNIC inetnum registration explicitly identifies an IDC network",
+      "reason": "Alternate origin AS58540 is strongly identified as non-terminal-access: APNIC inetnum registration explicitly identifies an IDC network",
       "observed_origins": [
         {
           "asn": "24444",
@@ -89365,7 +90401,7 @@
       "operator": "cmcc",
       "asn_description": "CMNET-V4SHANDONG-AS-AP Shandong Mobile Communication Company Limited",
       "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b; RIPE RIS multi-observer MOAS",
-      "reason": "Alternate origin AS58540 is strongly identified as non-public: APNIC inetnum registration explicitly identifies an IDC network",
+      "reason": "Alternate origin AS58540 is strongly identified as non-terminal-access: APNIC inetnum registration explicitly identifies an IDC network",
       "observed_origins": [
         {
           "asn": "24444",
@@ -89388,7 +90424,7 @@
       "operator": "cmcc",
       "asn_description": "CMNET-V4SHANDONG-AS-AP Shandong Mobile Communication Company Limited",
       "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b; RIPE RIS multi-observer MOAS",
-      "reason": "Alternate origin AS58540 is strongly identified as non-public: APNIC inetnum registration explicitly identifies an IDC network",
+      "reason": "Alternate origin AS58540 is strongly identified as non-terminal-access: APNIC inetnum registration explicitly identifies an IDC network",
       "observed_origins": [
         {
           "asn": "24444",
@@ -89411,7 +90447,7 @@
       "operator": "cmcc",
       "asn_description": "CMNET-V4SHANDONG-AS-AP Shandong Mobile Communication Company Limited",
       "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b; RIPE RIS multi-observer MOAS",
-      "reason": "Alternate origin AS58540 is strongly identified as non-public: APNIC inetnum registration explicitly identifies an IDC network",
+      "reason": "Alternate origin AS58540 is strongly identified as non-terminal-access: APNIC inetnum registration explicitly identifies an IDC network",
       "observed_origins": [
         {
           "asn": "24444",
@@ -89434,7 +90470,7 @@
       "operator": "cmcc",
       "asn_description": "CMNET-JIANGSU-AP China Mobile communications corporation",
       "matched_by": "exclude_apnic_inetnum_rules: idc(?:[^a-z0-9]|$)|\\binternet data cent(?:er|re)\\b; RIPE RIS multi-observer MOAS",
-      "reason": "Alternate origin AS140717 is strongly identified as non-public: APNIC inetnum registration explicitly identifies an IDC network",
+      "reason": "Alternate origin AS140717 is strongly identified as non-terminal-access: APNIC inetnum registration explicitly identifies an IDC network",
       "observed_origins": [
         {
           "asn": "140292",
@@ -89457,12 +90493,16 @@
   "operator_summary": [
     {
       "operator": "chinanet",
-      "asn_count": 55,
-      "retained_address_count": 118496327,
+      "asn_count": 56,
+      "retained_address_count": 119038023,
       "asns": [
         {
           "asn": "4134",
           "description": "CHINANET-BACKBONE No.31,Jin-rong Street"
+        },
+        {
+          "asn": "4809",
+          "description": "CHINATELECOM-CORE-WAN-CN2 China Telecom Next Generation Carrier Network"
         },
         {
           "asn": "4811",
@@ -89771,8 +90811,8 @@
     },
     {
       "operator": "unicom",
-      "asn_count": 8,
-      "retained_address_count": 67859519,
+      "asn_count": 9,
+      "retained_address_count": 68499903,
       "asns": [
         {
           "asn": "4808",
@@ -89781,6 +90821,10 @@
         {
           "asn": "4837",
           "description": "CHINA169-BACKBONE CHINA UNICOM China169 Backbone"
+        },
+        {
+          "asn": "9929",
+          "description": "CUII CHINA UNICOM Industrial Internet Backbone"
         },
         {
           "asn": "17621",
@@ -89817,6 +90861,14 @@
       "matched_by": "description_patterns: chinanet",
       "origin_address_count": 99922432,
       "retained_address_count": 99828940
+    },
+    {
+      "asn": "4809",
+      "operator": "chinanet",
+      "description": "CHINATELECOM-CORE-WAN-CN2 China Telecom Next Generation Carrier Network",
+      "matched_by": "description_patterns: china ?telecom",
+      "origin_address_count": 542720,
+      "retained_address_count": 541696
     },
     {
       "asn": "4811",
@@ -90416,7 +91468,7 @@
       "description": "CHINA169-BJ China Unicom Beijing Province Network",
       "matched_by": "description_patterns: unicom",
       "origin_address_count": 7176704,
-      "retained_address_count": 6128690
+      "retained_address_count": 6129202
     },
     {
       "asn": "4837",
@@ -90425,6 +91477,14 @@
       "matched_by": "description_patterns: unicom",
       "origin_address_count": 57248000,
       "retained_address_count": 57099553
+    },
+    {
+      "asn": "9929",
+      "operator": "unicom",
+      "description": "CUII CHINA UNICOM Industrial Internet Backbone",
+      "matched_by": "description_patterns: unicom",
+      "origin_address_count": 650496,
+      "retained_address_count": 639872
     },
     {
       "asn": "17621",
@@ -90476,15 +91536,6 @@
     }
   ],
   "excluded_asns": [
-    {
-      "asn": "4809",
-      "operator": "chinanet",
-      "description": "CHINATELECOM-CORE-WAN-CN2 China Telecom Next Generation Carrier Network",
-      "matched_by": "description_patterns: china ?telecom",
-      "exclusion_source": "explicit_policy",
-      "reason": "China Telecom CN2 dedicated premium backbone; not treated as public subscriber egress",
-      "origin_address_count": 542720
-    },
     {
       "asn": "4816",
       "operator": "chinanet",
@@ -91005,7 +92056,7 @@
       "matched_by": "description_patterns: china ?telecom",
       "exclusion_source": "description_rule",
       "reason": "ASN description explicitly identifies a dedicated IDC network",
-      "origin_address_count": 63232
+      "origin_address_count": 62976
     },
     {
       "asn": "138982",
@@ -91257,7 +92308,7 @@
       "matched_by": "description_patterns: china ?telecom",
       "exclusion_source": "description_rule",
       "reason": "ASN description explicitly identifies a dedicated CDN network",
-      "origin_address_count": 4608
+      "origin_address_count": 4864
     },
     {
       "asn": "132510",
@@ -91303,15 +92354,6 @@
       "exclusion_source": "description_rule",
       "reason": "ASN description explicitly identifies a dedicated IDC network",
       "origin_address_count": 26112
-    },
-    {
-      "asn": "9929",
-      "operator": "unicom",
-      "description": "CUII CHINA UNICOM Industrial Internet Backbone",
-      "matched_by": "description_patterns: unicom",
-      "exclusion_source": "explicit_policy",
-      "reason": "China Unicom Industrial Internet dedicated premium backbone; not treated as public subscriber egress",
-      "origin_address_count": 650496
     },
     {
       "asn": "10206",
@@ -91437,7 +92479,7 @@
       "matched_by": "description_patterns: unicom",
       "exclusion_source": "description_rule",
       "reason": "ASN description explicitly identifies a dedicated IDC network",
-      "origin_address_count": 33280
+      "origin_address_count": 33536
     },
     {
       "asn": "140717",
@@ -91489,9 +92531,9 @@
     {
       "name": "chinanet",
       "path": "operators/chinanet.txt",
-      "cidr_count": 9102,
-      "address_count": 118496327,
-      "sha256": "88b8b8b4e4a81a4cffea271ffa2f3fbc50d4df3ad5615c57f9a4319324de2b2a"
+      "cidr_count": 8780,
+      "address_count": 119038023,
+      "sha256": "77fdc87e1026960ac1b4b552415b5c6722c024fd85e65af1f838990e5b4ed208"
     },
     {
       "name": "cmcc",
@@ -91503,233 +92545,233 @@
     {
       "name": "unicom",
       "path": "operators/unicom.txt",
-      "cidr_count": 5950,
-      "address_count": 67859519,
-      "sha256": "d36cf3a317552462eef51cbee0f003adb2ae2ec84f261c4c2436cb014e1df6c7"
+      "cidr_count": 5770,
+      "address_count": 68499903,
+      "sha256": "191a185b66a48b313896da996095076cfdb496414945cb83ca686a9c911d10e9"
     },
     {
       "name": "CN",
       "path": "cn.txt",
-      "cidr_count": 15734,
-      "address_count": 226236370,
-      "sha256": "c0cef532625dd1e92665c753e1f21235c97c3f9b916a7908e805a5d1fed700f2"
+      "cidr_count": 15231,
+      "address_count": 227418450,
+      "sha256": "d78a256f6927d50b14684c8676a073a82c30a98143fff71cdf2313129bbe226e"
     },
     {
       "name": "北京市",
       "path": "provinces/beijing.txt",
-      "cidr_count": 4389,
-      "address_count": 13799768,
-      "sha256": "fed612cd837eb86a7bcb1ad0d5e772c56df953f472bd24ac5fe76e962078aa49"
+      "cidr_count": 4465,
+      "address_count": 13885802,
+      "sha256": "35350cc2a6d70f264e2854779c9fdf02fdf7d9d58a2ed9b9831225382eb1ab42"
     },
     {
       "name": "天津市",
       "path": "provinces/tianjin.txt",
-      "cidr_count": 550,
-      "address_count": 3473108,
-      "sha256": "b62e9ee9502cd64615bb8a2c3647e81cfa0c871ee62c5b150ab2e8957d0741f2"
+      "cidr_count": 565,
+      "address_count": 3488516,
+      "sha256": "345ded7511c48c238fc9d1d4babe516d81006b1c093fda09047a1b20ff011735"
     },
     {
       "name": "河北省",
       "path": "provinces/hebei.txt",
-      "cidr_count": 471,
-      "address_count": 9349011,
-      "sha256": "6b59ef10f607e39e19b4a0782cc4ee68cb0e29db455043d64d942caa2677fbb2"
+      "cidr_count": 479,
+      "address_count": 9382115,
+      "sha256": "0678bd2be4f571cdf04c5cf18b296cd58523dd5578c4836ac01a606658022e49"
     },
     {
       "name": "山西省",
       "path": "provinces/shanxi.txt",
-      "cidr_count": 372,
-      "address_count": 5322795,
-      "sha256": "331b5c05375eb13d7dbebc46ef164a1e1055980e1dab78c673c24f8558151acd"
+      "cidr_count": 370,
+      "address_count": 5330995,
+      "sha256": "b54f70b4ec1616ed0c926e5c2700f65500359ef08fbe9a672855f1c6a948f921"
     },
     {
       "name": "内蒙古自治区",
       "path": "provinces/neimenggu.txt",
-      "cidr_count": 431,
-      "address_count": 3217931,
-      "sha256": "854b0636298dff342895e46a6f705244b5636007fc9e8aa5ac871c366bff36a2"
+      "cidr_count": 423,
+      "address_count": 3222539,
+      "sha256": "b788220234962872996abee641155f3b512170344585ffafce88c04496dfbc95"
     },
     {
       "name": "辽宁省",
       "path": "provinces/liaoning.txt",
-      "cidr_count": 536,
-      "address_count": 10589939,
-      "sha256": "fe79bdd0ae17be2b7b6538f1c4101ffe5e2d9945ab9435cae442c6b175a9dc5f"
+      "cidr_count": 515,
+      "address_count": 10639251,
+      "sha256": "d7175f58249e1513c5491f6997d2fed3ffdd1f9cf4a036d3025e336cc67024c0"
     },
     {
       "name": "吉林省",
       "path": "provinces/jilin.txt",
-      "cidr_count": 232,
-      "address_count": 4202951,
-      "sha256": "76705e6c2f462fd2171326cfb3527a9887a05323828de5696bec2f9a2e420ca0"
+      "cidr_count": 235,
+      "address_count": 4218567,
+      "sha256": "5823b3ae83cf2c1ec8ea1a70884328f1fe1a06b61a34a1362efa1a83f6821c94"
     },
     {
       "name": "黑龙江省",
       "path": "provinces/heilongjiang.txt",
-      "cidr_count": 351,
-      "address_count": 4739744,
-      "sha256": "6b6e44cbf927adab53c214f3c815f2fec8ae3060fc1e5ea6aed78987ba37bef7"
+      "cidr_count": 336,
+      "address_count": 4759424,
+      "sha256": "bdf73ca1ac2f82f9962e9877195b81a5d87e2a3fc8d5c696037b45450d28ffba"
     },
     {
       "name": "上海市",
       "path": "provinces/shanghai.txt",
-      "cidr_count": 1732,
-      "address_count": 10200695,
-      "sha256": "af01d1ab0a6d2d29864dfac185cf8fed62552eba869206eac42ea6f3f5ecb3fb"
+      "cidr_count": 1813,
+      "address_count": 10240346,
+      "sha256": "73d002668685de2bb19cee61528571cda02ff6214473ad7035f2048e6654235c"
     },
     {
       "name": "江苏省",
       "path": "provinces/jiangsu.txt",
-      "cidr_count": 2654,
-      "address_count": 16546636,
-      "sha256": "5b506251936f0723529f2b68c5052e80728f100a46d3e20217457eb069f5f35f"
+      "cidr_count": 2629,
+      "address_count": 16663164,
+      "sha256": "bf9a36999638fc5043fba8a48233caefe9f61f5b20320380db00d11555d18e89"
     },
     {
       "name": "浙江省",
       "path": "provinces/zhejiang.txt",
-      "cidr_count": 2316,
-      "address_count": 16012310,
-      "sha256": "1ae11493a1bdc339144e18b4deccd42fb8bd51fe9d73430e7da8ab1628994e55"
+      "cidr_count": 2336,
+      "address_count": 16102198,
+      "sha256": "d672678b6cce818fba5c5216d03d57d9879d48ede6169d14513a472486aba24e"
     },
     {
       "name": "安徽省",
       "path": "provinces/anhui.txt",
-      "cidr_count": 412,
-      "address_count": 6493138,
-      "sha256": "27a8d550dfdc2f8b377e56f9d11c0c596e630716b6ebc2c520ed0076669e19d8"
+      "cidr_count": 407,
+      "address_count": 6503906,
+      "sha256": "c49cc51773477c79c1e68e16ec96ed1e06cc1dff71205c8020f7272756005a06"
     },
     {
       "name": "福建省",
       "path": "provinces/fujian.txt",
-      "cidr_count": 875,
-      "address_count": 6562234,
-      "sha256": "71e9aab4fe344d714f56034ab7c3639127615dbdead9d93f252d0fdea0529bce"
+      "cidr_count": 877,
+      "address_count": 6656270,
+      "sha256": "cedaeeed73cdaed55e803e1f614625a2f1fe14a1e5f1053b6b58ee27c5370b48"
     },
     {
       "name": "江西省",
       "path": "provinces/jiangxi.txt",
-      "cidr_count": 475,
-      "address_count": 6772453,
-      "sha256": "d54380c7b9412277069df33c358d4a95b83eb89714d7f98360c7b27d60f69aa4"
+      "cidr_count": 464,
+      "address_count": 6810341,
+      "sha256": "b6bd74d572c4f0c88b8f3b4823f5eccb2d842b42ec63e96a8522fceb73f8d374"
     },
     {
       "name": "山东省",
       "path": "provinces/shandong.txt",
-      "cidr_count": 922,
-      "address_count": 16285729,
-      "sha256": "406a990203f47190f71ff75abf134d808d1a72d22f635eeb8932e64621f48490"
+      "cidr_count": 914,
+      "address_count": 16331585,
+      "sha256": "71c98f0efe0bc442e3d5f8da49babe3e9a0b43885cf669347d9282e3eaf402f4"
     },
     {
       "name": "河南省",
       "path": "provinces/henan.txt",
-      "cidr_count": 616,
-      "address_count": 10388083,
-      "sha256": "856fec05f0a74b16405ffd44fc5a2e20ad700536dd87466e16b1da8c24b89050"
+      "cidr_count": 602,
+      "address_count": 10398323,
+      "sha256": "9232c7c834fd5fae28387639b5bee76a7c2e3f6a16acbe0d8524733b197fadf9"
     },
     {
       "name": "湖北省",
       "path": "provinces/hubei.txt",
-      "cidr_count": 826,
-      "address_count": 6945433,
-      "sha256": "a5a729649283abf7a4388e23e978a34832a1f19edf2e9bb2357783a261b41c5e"
+      "cidr_count": 817,
+      "address_count": 6969945,
+      "sha256": "89329ad4fbc0446af93249593506cefca1161a04dbe60e4755505f31fdb61a05"
     },
     {
       "name": "湖南省",
       "path": "provinces/hunan.txt",
       "cidr_count": 416,
-      "address_count": 6659447,
-      "sha256": "054ccb29d6c8de973437883ed1a80bfeab8b28b9080690544792bd6cb59a5427"
+      "address_count": 6737661,
+      "sha256": "01922d69410828f2ea35ca398ae461b6371422c99e46792a0e090a54d0cd59e9"
     },
     {
       "name": "广东省",
       "path": "provinces/guangdong.txt",
-      "cidr_count": 3305,
-      "address_count": 25779133,
-      "sha256": "1fa7157e1b97b45178df2460b145f040813643ae6bce74864280b4fc0795c55c"
+      "cidr_count": 3308,
+      "address_count": 25908258,
+      "sha256": "8eb7768009696d52f8ea46dd6c7c4716b58519e394155c3e4c5d36fb977863ad"
     },
     {
       "name": "广西壮族自治区",
       "path": "provinces/guangxi.txt",
-      "cidr_count": 654,
-      "address_count": 4075717,
-      "sha256": "883e66c9d3cd41cdc902be4b188fdeb3fd035479170712768599629d5419d9b3"
+      "cidr_count": 647,
+      "address_count": 4093893,
+      "sha256": "0436656428d409086af61aa55607185db94d934d5abb85ee561e5a6633c6b492"
     },
     {
       "name": "海南省",
       "path": "provinces/hainan.txt",
-      "cidr_count": 192,
-      "address_count": 1610233,
-      "sha256": "ee668c864ea87395bfc74a7a39f4a42e149f3133a48d37b1f8fac95caf4e8c5e"
+      "cidr_count": 170,
+      "address_count": 1622777,
+      "sha256": "2781cd037a3271741a69525e3bd5c028b495e30a0ffae30092a6f6e781a626b9"
     },
     {
       "name": "重庆市",
       "path": "provinces/chongqing.txt",
-      "cidr_count": 545,
-      "address_count": 5924857,
-      "sha256": "c53456f7328e0f7da3d29962f109a270edb4ac3bc4c6555a5fc5cb5ea5f3d41b"
+      "cidr_count": 535,
+      "address_count": 5979385,
+      "sha256": "0660464b0a7b1fabf1c5e12f6f546d9b8677f579687dff146d7b604eeb907cb1"
     },
     {
       "name": "四川省",
       "path": "provinces/sichuan.txt",
-      "cidr_count": 1353,
-      "address_count": 9103983,
-      "sha256": "cd28bd042ed1f38731594de618135305295905631670fa8bd6aff6104331466e"
+      "cidr_count": 1334,
+      "address_count": 9153391,
+      "sha256": "60de36b6f1ce89d220e54a686a0af2161da1d1df75fadc4b05c22b8a9f4da8ea"
     },
     {
       "name": "贵州省",
       "path": "provinces/guizhou.txt",
-      "cidr_count": 292,
-      "address_count": 2179084,
-      "sha256": "b9414cc889396034e0d392ac254f817283c4326f8a34cbc4ce53e4119ba27f17"
+      "cidr_count": 290,
+      "address_count": 2185484,
+      "sha256": "62c594c46dedd187eacd46898fb45bbec59e1788b56278e755bd9a7446c80b4e"
     },
     {
       "name": "云南省",
       "path": "provinces/yunnan.txt",
       "cidr_count": 417,
-      "address_count": 3458982,
-      "sha256": "0d17f1a67e3fc892092c2b1ecb63d0892401dc38c63cf1a1fd2353787c1dc570"
+      "address_count": 3473574,
+      "sha256": "2341cfdb53615df8055d3203b3946ca696c6d31fc085c7909fc2adfb50dab346"
     },
     {
       "name": "西藏自治区",
       "path": "provinces/xizang.txt",
-      "cidr_count": 105,
-      "address_count": 472956,
-      "sha256": "202d8e2aef168dadb7207aabc4682c97d1247b44c0991258559cb25b06c26df2"
+      "cidr_count": 91,
+      "address_count": 473980,
+      "sha256": "4e1f327634c07b7beab0b28b9d2a518a0cd9a745a824b6f55d96ca77e2080b69"
     },
     {
       "name": "陕西省",
       "path": "provinces/shaanxi.txt",
-      "cidr_count": 723,
-      "address_count": 3754524,
-      "sha256": "a15463f3ab8a2b9ad02c8852f0f7fd075389612d477d284979712e8ec98b7dd1"
+      "cidr_count": 716,
+      "address_count": 3841572,
+      "sha256": "8ee2b9e6452e69256f0ac64eaccadb69ab2161d0558344b361c27a0efaf40566"
     },
     {
       "name": "甘肃省",
       "path": "provinces/gansu.txt",
-      "cidr_count": 364,
-      "address_count": 1775706,
-      "sha256": "7aa017ffe5bd3f26421069996ace57b9266aa7424b916d12eff7aad5f3e257a3"
+      "cidr_count": 366,
+      "address_count": 1780570,
+      "sha256": "cbdcdcd2e1427cd69f492c4c51908f247860be99607f1ae1c0b3e708915529cf"
     },
     {
       "name": "青海省",
       "path": "provinces/qinghai.txt",
-      "cidr_count": 228,
-      "address_count": 814562,
-      "sha256": "ea0c26f4ead70e47d43f01a84b896503017384c9783d77bd4c1346d1bec0ee47"
+      "cidr_count": 224,
+      "address_count": 816362,
+      "sha256": "9f94a730c5ea695e33a8a0d0ff700be8e9d1cca4fac27bf5bbcb6d144e91ea9b"
     },
     {
       "name": "宁夏回族自治区",
       "path": "provinces/ningxia.txt",
-      "cidr_count": 166,
-      "address_count": 1113464,
-      "sha256": "4c022967a551e5ea28f9a62c0e640c4271ab94bcc72b5c98767e03485be50749"
+      "cidr_count": 157,
+      "address_count": 1114232,
+      "sha256": "625b2bfa222c6435b1f65933cd207cb3a5e43f1730c933223155d47e34dd6ce6"
     },
     {
       "name": "新疆维吾尔自治区",
       "path": "provinces/xinjiang.txt",
-      "cidr_count": 238,
-      "address_count": 3751758,
-      "sha256": "2eadd76b759868d45c5c7aa8da1465b297337d1d84b26d4dc31d7938d15d6a46"
+      "cidr_count": 228,
+      "address_count": 3753550,
+      "sha256": "e7b3a5d73e0dbc99d7b3173198b2a05ef8d82b6001f0f87ff35c8c68928d9705"
     }
   ]
 }
