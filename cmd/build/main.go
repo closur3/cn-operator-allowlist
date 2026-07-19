@@ -714,65 +714,8 @@ func spanCIDRs(rows []span) []string {
 	return lines
 }
 
-func routeBoundaryCIDRs(rows []span, segments []riswhois.Segment) []string {
-	rows = merge(rows)
-	var lines []string
-	segmentIndex := 0
-	emit := func(lo, hi uint64) {
-		lines = append(lines, spanCIDRs([]span{{uint32(lo), uint32(hi)}})...)
-	}
-	for _, row := range rows {
-		position, rowEnd := uint64(row.lo), uint64(row.hi)
-		for segmentIndex < len(segments) && uint64(segments[segmentIndex].Hi) < position {
-			segmentIndex++
-		}
-		for segmentIndex < len(segments) && uint64(segments[segmentIndex].Lo) <= rowEnd {
-			segment := segments[segmentIndex]
-			segmentLo, segmentHi := uint64(segment.Lo), uint64(segment.Hi)
-			if position < segmentLo {
-				emit(position, min64(rowEnd, segmentLo-1))
-				position = segmentLo
-			}
-			if position <= rowEnd && position <= segmentHi {
-				hi := min64(rowEnd, segmentHi)
-				emit(position, hi)
-				position = hi + 1
-			}
-			if segmentHi < position {
-				segmentIndex++
-			}
-			if position > rowEnd {
-				break
-			}
-		}
-		if position <= rowEnd {
-			emit(position, rowEnd)
-		}
-	}
-	sort.Slice(lines, func(i, j int) bool {
-		a, b := netip.MustParsePrefix(lines[i]), netip.MustParsePrefix(lines[j])
-		ai, bi := n(a.Addr()), n(b.Addr())
-		if ai != bi {
-			return ai < bi
-		}
-		return a.Bits() < b.Bits()
-	})
-	return lines
-}
-
-func min64(a, b uint64) uint64 {
-	if a < b {
-		return a
-	}
-	return b
-}
-
 func stage(name string, rows []span) stageMeta {
 	return stageMeta{Name: name, CIDRCount: len(spanCIDRs(rows)), AddressCount: addressCount(rows)}
-}
-
-func routeBoundaryStage(name string, rows []span, segments []riswhois.Segment) stageMeta {
-	return stageMeta{Name: name, CIDRCount: len(routeBoundaryCIDRs(rows, segments)), AddressCount: addressCount(rows)}
 }
 
 func cloudProvider(source string) string {
@@ -782,10 +725,6 @@ func cloudProvider(source string) string {
 func write(path string, rows []span) (fileMeta, error) {
 	lines := spanCIDRs(rows)
 	return writeLines(path, lines, addressCount(rows))
-}
-
-func writeRouteBoundaries(path string, rows []span, segments []riswhois.Segment) (fileMeta, error) {
-	return writeLines(path, routeBoundaryCIDRs(rows, segments), addressCount(rows))
 }
 
 func writeLines(path string, lines []string, addresses uint64) (fileMeta, error) {
@@ -1207,7 +1146,7 @@ func main() {
 
 	m := manifest{
 		GeneratedAt: time.Now().UTC().Format(time.RFC3339Nano),
-		Scope:       "Best-effort ACL list; IPv4; mainland China; candidates for IPv4 addresses presented on the public Internet by ordinary Internet access users of China Telecom, China Mobile, or China Unicom, only when also present in china-operator-ip's origin-only China list; does not classify or protect addresses by household, individual, enterprise, or institutional customer type; explicitly subtracts dedicated premium backbone ASNs, cloud-provider CIDRs, strong APNIC registrations outside ordinary user access scope, portable and non-portable registrations linked through APNIC aut-num to a currently active independent ASN, registrations supported by both an independent legal-entity name and an exact APNIC aut-num link, origin-validated APNIC route objects, strongly linked independent APNIC route origins, and conservative RIPE RIS multi-observer MOAS evidence; output CIDRs preserve current RIPE RIS most-specific route boundaries; unclear mixed-use, historical and MOAS space remains included",
+		Scope:       "Best-effort ACL list; IPv4; mainland China; candidates for IPv4 addresses presented on the public Internet by ordinary Internet access users of China Telecom, China Mobile, or China Unicom, only when also present in china-operator-ip's origin-only China list; does not classify or protect addresses by household, individual, enterprise, or institutional customer type; explicitly subtracts dedicated premium backbone ASNs, cloud-provider CIDRs, strong APNIC registrations outside ordinary user access scope, portable and non-portable registrations linked through APNIC aut-num to a currently active independent ASN, registrations supported by both an independent legal-entity name and an exact APNIC aut-num link, origin-validated APNIC route objects, strongly linked independent APNIC route origins, and conservative RIPE RIS multi-observer MOAS evidence; unclear mixed-use, historical and MOAS space remains included",
 		Stages: []stageMeta{
 			stage("operator_origin_candidates", originCandidates),
 			stage("china_origin_intersection", preCloudCandidates),
@@ -1219,8 +1158,8 @@ func main() {
 			stage("effective_apnic_route_exclusions", routeRanges),
 			stage("effective_apnic_independent_route_origin_exclusions", routeOriginCandidateRanges),
 			stage("effective_ris_moas_exclusions", risRanges),
-			routeBoundaryStage("final_output", finalRanges, risSegments),
-			routeBoundaryStage("province_attributed_output", provinceAttributed, risSegments),
+			stage("final_output", finalRanges),
+			stage("province_attributed_output", provinceAttributed),
 		},
 		CloudSources: cloudSourceSummaries,
 		APNICInetnum: apnicSourceMeta{
@@ -1252,13 +1191,13 @@ func main() {
 
 	for _, o := range operators {
 		path := filepath.Join("operators", o+".txt")
-		meta, e := writeRouteBoundaries(filepath.Join(*out, path), ranges[o], risSegments)
+		meta, e := write(filepath.Join(*out, path), ranges[o])
 		if e != nil {
 			panic(e)
 		}
 		m.Lists = append(m.Lists, listMeta{Name: o, Path: filepath.ToSlash(path), fileMeta: meta})
 	}
-	cnMeta, e := writeRouteBoundaries(filepath.Join(*out, "cn.txt"), finalRanges, risSegments)
+	cnMeta, e := write(filepath.Join(*out, "cn.txt"), finalRanges)
 	if e != nil {
 		panic(e)
 	}
@@ -1277,7 +1216,7 @@ func main() {
 			rows = append(rows, by[o][p.Name]...)
 		}
 		path := filepath.Join("provinces", p.Slug+".txt")
-		meta, e := writeRouteBoundaries(filepath.Join(*out, path), rows, risSegments)
+		meta, e := write(filepath.Join(*out, path), rows)
 		if e != nil {
 			panic(e)
 		}

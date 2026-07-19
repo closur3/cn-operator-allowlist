@@ -596,65 +596,6 @@ func spanCIDRs(rows []span) []string {
 	return lines
 }
 
-func routeBoundaryCIDRs(rows []span, segments []riswhois.Segment) []string {
-	rows = merge(rows)
-	var lines []string
-	segmentIndex := 0
-	emit := func(lo, hi uint64) {
-		lines = append(lines, spanCIDRs([]span{{uint32(lo), uint32(hi)}})...)
-	}
-	for _, row := range rows {
-		position, rowEnd := uint64(row.lo), uint64(row.hi)
-		for segmentIndex < len(segments) && uint64(segments[segmentIndex].Hi) < position {
-			segmentIndex++
-		}
-		for segmentIndex < len(segments) && uint64(segments[segmentIndex].Lo) <= rowEnd {
-			segment := segments[segmentIndex]
-			segmentLo, segmentHi := uint64(segment.Lo), uint64(segment.Hi)
-			if position < segmentLo {
-				emit(position, min64(rowEnd, segmentLo-1))
-				position = segmentLo
-			}
-			if position <= rowEnd && position <= segmentHi {
-				hi := min64(rowEnd, segmentHi)
-				emit(position, hi)
-				position = hi + 1
-			}
-			if segmentHi < position {
-				segmentIndex++
-			}
-			if position > rowEnd {
-				break
-			}
-		}
-		if position <= rowEnd {
-			emit(position, rowEnd)
-		}
-	}
-	sort.Slice(lines, func(i, j int) bool {
-		a, b := netip.MustParsePrefix(lines[i]), netip.MustParsePrefix(lines[j])
-		ai, bi := n(a.Addr()), n(b.Addr())
-		if ai != bi {
-			return ai < bi
-		}
-		return a.Bits() < b.Bits()
-	})
-	return lines
-}
-
-func min64(a, b uint64) uint64 {
-	if a < b {
-		return a
-	}
-	return b
-}
-
-func assertRouteBoundaries(path string, ranges []span, segments []riswhois.Segment) {
-	if !reflect.DeepEqual(strings.Fields(string(mustRead(path))), routeBoundaryCIDRs(ranges, segments)) {
-		panic("list does not preserve RIPE RIS route boundaries: " + path)
-	}
-}
-
 func min32(a, b uint32) uint32 {
 	if a < b {
 		return a
@@ -861,14 +802,12 @@ func main() {
 	assertNoOverlap(cnRanges, excludedRanges, "cn.txt overlaps an explicit cloud, APNIC, independent route-origin, or strong RIS MOAS exclusion")
 	expectedCN := subtract(preCloudCandidates, excludedRanges)
 	assertEqual(cnRanges, expectedCN, "cn.txt address set does not equal the recomputed final output")
-	assertRouteBoundaries(filepath.Join(*data, "cn.txt"), expectedCN, risSegments)
 	var generatedOperators []span
 	for _, operator := range operators {
 		path := filepath.Join(*data, "operators", operator+".txt")
 		ranges := readCIDRs(path, true)
 		expected := subtract(intersect(allowedByOperator[operator], chinaRanges), excludedRanges)
 		assertEqual(ranges, expected, "operator address set does not recompute: "+operator)
-		assertRouteBoundaries(path, expected, risSegments)
 		assertContained(ranges, cnRanges)
 		assertContained(ranges, allowedByOperator[operator])
 		assertNoOverlap(ranges, merge(generatedOperators), "per-operator lists overlap")
@@ -878,7 +817,6 @@ func main() {
 	var provincialRanges []span
 	for _, f := range provinceFiles {
 		ranges := readCIDRs(f, true)
-		assertRouteBoundaries(f, ranges, risSegments)
 		assertContained(ranges, cnRanges)
 		assertNoOverlap(ranges, merge(provincialRanges), "provincial lists overlap")
 		provincialRanges = append(provincialRanges, ranges...)
@@ -940,11 +878,7 @@ func main() {
 	}
 	for i, expected := range expectedStages {
 		entry := m.Stages[i]
-		expectedCIDRCount := cidrCount(expected.rows)
-		if expected.name == "final_output" || expected.name == "province_attributed_output" {
-			expectedCIDRCount = len(routeBoundaryCIDRs(expected.rows, risSegments))
-		}
-		if entry.Name != expected.name || entry.CIDRCount != expectedCIDRCount || entry.AddressCount != addressCount(expected.rows) {
+		if entry.Name != expected.name || entry.CIDRCount != cidrCount(expected.rows) || entry.AddressCount != addressCount(expected.rows) {
 			panic("manifest stage metadata mismatch for " + expected.name)
 		}
 	}

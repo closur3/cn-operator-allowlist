@@ -33,7 +33,7 @@ flowchart TD
     S --> Y["独立 route origin + org/专用 maintainer 强关联排除"]
     Q --> Y
     W --> Y
-    U["RIPE RISWhois：多观测点 origin 集合"] --> V["保守 MOAS + 保留最具体路由边界"]
+    U["RIPE RISWhois：多观测点 origin 集合"] --> V["保守 MOAS：三网 origin + 强非普通用户侧备用 origin"]
     T --> Y
     Y --> V
     C --> V
@@ -73,7 +73,7 @@ flowchart TD
 | `data/manifest.json` | 本次生成时间、上游文件大小与摘要、各筛选阶段统计、云 CIDR、APNIC inetnum/aut-num/route 和 RIPE RIS MOAS 的实际命中、三网 ASN 汇总、最终纳入和排除的 ASN/前缀、匹配依据，以及每个列表文件的统计信息 |
 | `config/operators.json` | 运营商 ASN 名称规则、强制收录 ASN 和排除 ASN；每个 ASN 可附维护原因 |
 
-省级文件以拼音命名，例如 `beijing.txt`、`guangdong.txt`、`shaanxi.txt`、`xinjiang.txt`。每个文本文件一行一个 CIDR，按地址排序，且文件内部不存在重叠网段。所有列表均保留 RIPE RIS 当前最具体路由边界；相邻但分别宣告的前缀不会合并成一个无法直接在全局路由表中查证的大前缀。没有 RIS 覆盖的剩余地址仍按自身范围进行最小 CIDR 拆分。
+省级文件以拼音命名，例如 `beijing.txt`、`guangdong.txt`、`shaanxi.txt`、`xinjiang.txt`。每个文本文件一行一个 CIDR，按地址排序，且文件内部不存在重叠网段。
 
 ## 生成规则
 
@@ -86,7 +86,7 @@ flowchart TD
 - [RIPE RISWhois](https://ris.ripe.net/docs/ris-whois/) 提供多个 RIS 采集点汇总的当前前缀/origin 与可见 peer 数。这里只处理三网候选范围，并按最具体 BGP 前缀判断：当前三网 origin 和备用 origin 均须至少被 10 个 peer、且达到该前缀最高可见度的 5%；备用 origin 的当前 IPtoASN 描述还必须命中同一套强非普通用户侧规则，才会剔除。普通 MOAS、低可见度 origin、描述未知或证据含糊的情况只计入审计统计并继续保留。
 - 省级归属采用 [lionsoul2014/ip2region](https://github.com/lionsoul2014/ip2region) IPv4 源数据；它只用于地域切分，不参与运营商判定。
 - 仅处理 IPv4 和中国大陆 31 个省级行政区；非中国大陆地址及无法归入省级行政区的网段不进入省级文件。
-- 每个当前最具体 RIS 路由边界内部会生成最小 CIDR，但不会跨路由边界继续聚合。三个运营商文件互不重叠且其并集严格等于 `cn.txt`；31 个省级文件互不重叠且均为 `cn.txt` 的子集。由于 ip2region 可能没有覆盖全国表中的全部地址，省级并集不强制等于全国表，实际归属覆盖量会作为 `province_attributed_output` 阶段写入 manifest。生成后校验器会重新计算每个列表的精确路由边界，并检查这些关系、上游包含关系、排除证据和 manifest 文件摘要。
+- 相邻或重叠网段会合并为最大 CIDR 集合。三个运营商文件互不重叠且其并集严格等于 `cn.txt`；31 个省级文件互不重叠且均为 `cn.txt` 的子集。由于 ip2region 可能没有覆盖全国表中的全部地址，省级并集不强制等于全国表，实际归属覆盖量会作为 `province_attributed_output` 阶段写入 manifest。生成后校验器会检查这些关系、上游包含关系、排除证据和 manifest 文件摘要。
 
 ## 自动更新
 
