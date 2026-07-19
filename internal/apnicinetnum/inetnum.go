@@ -47,19 +47,20 @@ type Segment struct {
 	Match  Match
 }
 
-func Parse(path string) ([]Record, error) {
+func Parse(path string, relevant func(uint32, uint32) bool) ([]Record, int, error) {
 	f, err := os.Open(path)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	defer f.Close()
 	z, err := gzip.NewReader(f)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	defer z.Close()
 
 	var records []Record
+	var rangeKeys []uint64
 	fields := map[string][]string{}
 	lastKey := ""
 	lineNumber := 0
@@ -79,17 +80,21 @@ func Parse(path string) ([]Record, error) {
 		if loErr != nil || hiErr != nil || !lo.Is4() || !hi.Is4() || compare(lo, hi) > 0 {
 			return fmt.Errorf("invalid IPv4 inetnum %q", values[0])
 		}
-		records = append(records, Record{
-			Lo:            number(lo),
-			Hi:            number(hi),
-			Netnames:      clean(fields["netname"]),
-			Descriptions:  clean(fields["descr"]),
-			Organizations: clean(fields["org"]),
-			Maintainers:   clean(fields["mnt-by"]),
-			Country:       first(fields["country"]),
-			Status:        first(fields["status"]),
-			LastModified:  first(fields["last-modified"]),
-		})
+		loNumber, hiNumber := number(lo), number(hi)
+		rangeKeys = append(rangeKeys, uint64(loNumber)<<32|uint64(hiNumber))
+		if relevant == nil || relevant(loNumber, hiNumber) {
+			records = append(records, Record{
+				Lo:            loNumber,
+				Hi:            hiNumber,
+				Netnames:      clean(fields["netname"]),
+				Descriptions:  clean(fields["descr"]),
+				Organizations: clean(fields["org"]),
+				Maintainers:   clean(fields["mnt-by"]),
+				Country:       first(fields["country"]),
+				Status:        first(fields["status"]),
+				LastModified:  first(fields["last-modified"]),
+			})
+		}
 		fields = map[string][]string{}
 		lastKey = ""
 		return nil
@@ -102,7 +107,7 @@ func Parse(path string) ([]Record, error) {
 		line := strings.TrimRight(scanner.Text(), "\r")
 		if strings.TrimSpace(line) == "" {
 			if err := finish(); err != nil {
-				return nil, fmt.Errorf("%s near line %d: %w", path, lineNumber, err)
+				return nil, 0, fmt.Errorf("%s near line %d: %w", path, lineNumber, err)
 			}
 			continue
 		}
@@ -117,24 +122,34 @@ func Parse(path string) ([]Record, error) {
 		}
 		colon := strings.IndexByte(line, ':')
 		if colon <= 0 {
-			return nil, fmt.Errorf("%s:%d: malformed RPSL line", path, lineNumber)
+			return nil, 0, fmt.Errorf("%s:%d: malformed RPSL line", path, lineNumber)
 		}
 		lastKey = strings.ToLower(strings.TrimSpace(line[:colon]))
 		fields[lastKey] = append(fields[lastKey], strings.TrimSpace(line[colon+1:]))
 	}
 	if err := scanner.Err(); err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	if err := finish(); err != nil {
-		return nil, fmt.Errorf("%s at EOF: %w", path, err)
+		return nil, 0, fmt.Errorf("%s at EOF: %w", path, err)
 	}
-	if len(records) == 0 {
-		return nil, fmt.Errorf("%s contains no inetnum records", path)
+	if len(rangeKeys) == 0 {
+		return nil, 0, fmt.Errorf("%s contains no inetnum records", path)
 	}
-	return mergeExact(records), nil
+	sort.Slice(rangeKeys, func(i, j int) bool { return rangeKeys[i] < rangeKeys[j] })
+	recordCount := 1
+	for i := 1; i < len(rangeKeys); i++ {
+		if rangeKeys[i] != rangeKeys[i-1] {
+			recordCount++
+		}
+	}
+	return mergeExact(records), recordCount, nil
 }
 
 func ResolveAll(records []Record, classify func(Record) Match) []Segment {
+	if len(records) == 0 {
+		return nil
+	}
 	type event struct {
 		position uint64
 		index    int

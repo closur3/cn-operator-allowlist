@@ -274,16 +274,6 @@ func overlapsSorted(rows []span, lo, hi uint32) bool {
 	return i < len(rows) && rows[i].lo <= hi
 }
 
-func relevantAPNICRecords(records []apnicinetnum.Record, candidates []span) []apnicinetnum.Record {
-	out := make([]apnicinetnum.Record, 0, len(records)/8)
-	for _, record := range records {
-		if overlapsSorted(candidates, record.Lo, record.Hi) {
-			out = append(out, record)
-		}
-	}
-	return out
-}
-
 func subtract(in, excluded []span) []span {
 	in, excluded = merge(in), merge(excluded)
 	var out []span
@@ -691,12 +681,10 @@ func main() {
 	if e != nil {
 		panic(e)
 	}
-	apnicRecords, e := apnicinetnum.Parse(filepath.Join(*sources, "apnic_inetnum.gz"))
+	apnicRecords, apnicRecordCount, e := apnicinetnum.Parse(filepath.Join(*sources, "apnic_inetnum.gz"), func(lo, hi uint32) bool { return overlapsSorted(postCloudCandidates, lo, hi) })
 	if e != nil {
 		panic(e)
 	}
-	apnicRecordCount := len(apnicRecords)
-	apnicRecords = relevantAPNICRecords(apnicRecords, postCloudCandidates)
 	apnicinetnum.AttachOrganizationNames(apnicRecords, orgNames)
 	autnumRecords, e := apnicautnum.Parse(filepath.Join(*sources, "apnic_autnum.gz"))
 	if e != nil {
