@@ -264,7 +264,7 @@ func RenderMarkdown(report Report, evidencePath string) string {
 	renderStrongSignals(&b, report)
 	renderReviewGroups(&b, report, "independent_legal_entity", "独立法定主体登记：地址量前 100 项", 100)
 	renderReviewGroups(&b, report, "other_registration", "其他登记：地址量前 100 项", 100)
-	return b.String()
+	return strings.TrimRight(b.String(), "\n") + "\n"
 }
 
 type reviewGroup struct {
