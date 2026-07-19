@@ -387,6 +387,16 @@ func overlapsSorted(rows []span, lo, hi uint32) bool {
 	return i < len(rows) && rows[i].lo <= hi
 }
 
+func relevantAPNICRecords(records []apnicinetnum.Record, candidates []span) []apnicinetnum.Record {
+	out := make([]apnicinetnum.Record, 0, len(records)/8)
+	for _, record := range records {
+		if overlapsSorted(candidates, record.Lo, record.Hi) {
+			out = append(out, record)
+		}
+	}
+	return out
+}
+
 func addressCount(rows []span) uint64 {
 	var count uint64
 	for _, row := range merge(rows) {
@@ -871,13 +881,15 @@ func main() {
 	if e != nil {
 		panic(e)
 	}
-	apnicRecords, apnicRecordCount, e := apnicinetnum.Parse(filepath.Join(*src, "apnic_inetnum.gz"), func(lo, hi uint32) bool { return overlapsSorted(postCloudCandidates, lo, hi) })
+	apnicRecords, e := apnicinetnum.Parse(filepath.Join(*src, "apnic_inetnum.gz"))
 	if e != nil {
 		panic(e)
 	}
 	if len(apnicRecords) < 10000 {
 		panic(fmt.Sprintf("APNIC inetnum source contains only %d records", len(apnicRecords)))
 	}
+	apnicRecordCount := len(apnicRecords)
+	apnicRecords = relevantAPNICRecords(apnicRecords, postCloudCandidates)
 	apnicinetnum.AttachOrganizationNames(apnicRecords, orgNames)
 	autnumRecords, e := apnicautnum.Parse(filepath.Join(*src, "apnic_autnum.gz"))
 	if e != nil {
