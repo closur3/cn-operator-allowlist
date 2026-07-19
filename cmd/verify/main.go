@@ -1013,7 +1013,7 @@ func main() {
 						continue
 					}
 					result := classifier.ClassifyAPNICInetnum(asnDescriptions[origin.ASN])
-					if result.Excluded && entry.MatchedBy == result.MatchedBy+"; RIPE RIS multi-observer MOAS" && entry.Reason == "Alternate origin AS"+origin.ASN+" is strongly identified as non-terminal-access: "+result.Reason {
+					if result.Excluded && entry.MatchedBy == result.MatchedBy+"; RIPE RIS multi-observer MOAS" && entry.Reason == "Alternate origin AS"+origin.ASN+" is strongly identified as outside ordinary Internet user access scope: "+result.Reason {
 						matched = true
 						break
 					}
