@@ -771,6 +771,10 @@ func stage(name string, rows []span) stageMeta {
 	return stageMeta{Name: name, CIDRCount: len(spanCIDRs(rows)), AddressCount: addressCount(rows)}
 }
 
+func routeBoundaryStage(name string, rows []span, segments []riswhois.Segment) stageMeta {
+	return stageMeta{Name: name, CIDRCount: len(routeBoundaryCIDRs(rows, segments)), AddressCount: addressCount(rows)}
+}
+
 func cloudProvider(source string) string {
 	return strings.TrimPrefix(source, "ipdata_")
 }
@@ -1215,8 +1219,8 @@ func main() {
 			stage("effective_apnic_route_exclusions", routeRanges),
 			stage("effective_apnic_independent_route_origin_exclusions", routeOriginCandidateRanges),
 			stage("effective_ris_moas_exclusions", risRanges),
-			stage("final_output", finalRanges),
-			stage("province_attributed_output", provinceAttributed),
+			routeBoundaryStage("final_output", finalRanges, risSegments),
+			routeBoundaryStage("province_attributed_output", provinceAttributed, risSegments),
 		},
 		CloudSources: cloudSourceSummaries,
 		APNICInetnum: apnicSourceMeta{

@@ -940,7 +940,11 @@ func main() {
 	}
 	for i, expected := range expectedStages {
 		entry := m.Stages[i]
-		if entry.Name != expected.name || entry.CIDRCount != cidrCount(expected.rows) || entry.AddressCount != addressCount(expected.rows) {
+		expectedCIDRCount := cidrCount(expected.rows)
+		if expected.name == "final_output" || expected.name == "province_attributed_output" {
+			expectedCIDRCount = len(routeBoundaryCIDRs(expected.rows, risSegments))
+		}
+		if entry.Name != expected.name || entry.CIDRCount != expectedCIDRCount || entry.AddressCount != addressCount(expected.rows) {
 			panic("manifest stage metadata mismatch for " + expected.name)
 		}
 	}
