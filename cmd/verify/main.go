@@ -598,16 +598,38 @@ func spanCIDRs(rows []span) []string {
 
 func routeBoundaryCIDRs(rows []span, segments []riswhois.Segment) []string {
 	rows = merge(rows)
-	var covered []span
 	var lines []string
-	for _, segment := range segments {
-		for _, hit := range intersect(rows, []span{{segment.Lo, segment.Hi}}) {
-			lines = append(lines, spanCIDRs([]span{hit})...)
-			covered = append(covered, hit)
-		}
+	segmentIndex := 0
+	emit := func(lo, hi uint64) {
+		lines = append(lines, spanCIDRs([]span{{uint32(lo), uint32(hi)}})...)
 	}
-	for _, hit := range subtract(rows, covered) {
-		lines = append(lines, spanCIDRs([]span{hit})...)
+	for _, row := range rows {
+		position, rowEnd := uint64(row.lo), uint64(row.hi)
+		for segmentIndex < len(segments) && uint64(segments[segmentIndex].Hi) < position {
+			segmentIndex++
+		}
+		for segmentIndex < len(segments) && uint64(segments[segmentIndex].Lo) <= rowEnd {
+			segment := segments[segmentIndex]
+			segmentLo, segmentHi := uint64(segment.Lo), uint64(segment.Hi)
+			if position < segmentLo {
+				emit(position, min64(rowEnd, segmentLo-1))
+				position = segmentLo
+			}
+			if position <= rowEnd && position <= segmentHi {
+				hi := min64(rowEnd, segmentHi)
+				emit(position, hi)
+				position = hi + 1
+			}
+			if segmentHi < position {
+				segmentIndex++
+			}
+			if position > rowEnd {
+				break
+			}
+		}
+		if position <= rowEnd {
+			emit(position, rowEnd)
+		}
 	}
 	sort.Slice(lines, func(i, j int) bool {
 		a, b := netip.MustParsePrefix(lines[i]), netip.MustParsePrefix(lines[j])
@@ -618,6 +640,13 @@ func routeBoundaryCIDRs(rows []span, segments []riswhois.Segment) []string {
 		return a.Bits() < b.Bits()
 	})
 	return lines
+}
+
+func min64(a, b uint64) uint64 {
+	if a < b {
+		return a
+	}
+	return b
 }
 
 func assertRouteBoundaries(path string, ranges []span, segments []riswhois.Segment) {
