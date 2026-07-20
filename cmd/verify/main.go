@@ -578,7 +578,10 @@ func bgpPrefixAdmissionTrials(segments []riswhois.Segment, asnOperators map[stri
 				continue
 			}
 			if parentPositive == total {
-				out["covering_carved"] = append(out["covering_carved"], subtract(retained, operatorConflicts[operator])...)
+				for _, part := range retained {
+					localConflicts := intersectSortedSpan(operatorConflicts[operator], part.lo, part.hi)
+					out["covering_carved"] = append(out["covering_carved"], subtract([]span{part}, localConflicts)...)
+				}
 				if !conflict {
 					out["covering"] = append(out["covering"], retained...)
 				}
