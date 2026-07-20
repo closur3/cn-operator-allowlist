@@ -905,7 +905,14 @@ func main() {
 	if len(operatorFiles) != len(operators) {
 		panic("expected exactly three per-operator lists")
 	}
-	files := append(append(append([]string{}, provinceFiles...), operatorFiles...), filepath.Join(*data, "cn.txt"))
+	trialFiles, e := filepath.Glob(filepath.Join(*data, "experiments", "bgp-prefix-admission", "*.txt"))
+	if e != nil {
+		panic(e)
+	}
+	if len(trialFiles) != 6 {
+		panic("expected exactly six BGP-prefix admission trial lists")
+	}
+	files := append(append(append(append([]string{}, provinceFiles...), operatorFiles...), trialFiles...), filepath.Join(*data, "cn.txt"))
 
 	for _, f := range files {
 		readCIDRs(f, true)
@@ -1144,6 +1151,16 @@ func main() {
 	zhejiangBGPAdmissionTrials := map[string][]span{}
 	for _, policy := range []string{"any", "majority", "full"} {
 		zhejiangBGPAdmissionTrials[policy] = intersect(bgpAdmissionTrials[policy], zhejiangProvince)
+		assertEqual(
+			readCIDRs(filepath.Join(*data, "experiments", "bgp-prefix-admission", "nationwide-"+policy+".txt"), true),
+			bgpAdmissionTrials[policy],
+			"nationwide BGP-prefix admission trial does not recompute: "+policy,
+		)
+		assertEqual(
+			readCIDRs(filepath.Join(*data, "experiments", "bgp-prefix-admission", "zhejiang-"+policy+".txt"), true),
+			zhejiangBGPAdmissionTrials[policy],
+			"Zhejiang BGP-prefix admission trial does not recompute: "+policy,
+		)
 	}
 	zhejiangPath := filepath.Join(*data, "provinces", "zhejiang.txt")
 	zhejiangRanges := readCIDRs(zhejiangPath, true)

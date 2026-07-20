@@ -1556,6 +1556,23 @@ func main() {
 		m.Lists = append(m.Lists, listMeta{Name: p.Name, Path: filepath.ToSlash(path), fileMeta: meta})
 	}
 
+	for _, policy := range []string{"any", "majority", "full"} {
+		for _, trial := range []struct {
+			name string
+			path string
+			rows []span
+		}{
+			{"BGP prefix admission trial (nationwide, " + policy + ")", filepath.Join("experiments", "bgp-prefix-admission", "nationwide-"+policy+".txt"), bgpAdmissionTrials[policy]},
+			{"BGP prefix admission trial (Zhejiang, " + policy + ")", filepath.Join("experiments", "bgp-prefix-admission", "zhejiang-"+policy+".txt"), zhejiangBGPAdmissionTrials[policy]},
+		} {
+			meta, e := write(filepath.Join(*out, trial.path), trial.rows)
+			if e != nil {
+				panic(e)
+			}
+			m.Lists = append(m.Lists, listMeta{Name: trial.name, Path: filepath.ToSlash(trial.path), fileMeta: meta})
+		}
+	}
+
 	zhejiangOperatorRanges := map[string][]apnicaudit.Range{}
 	zhejiangCandidatesByOperator := map[string][]span{}
 	var zhejiangCandidates []span
