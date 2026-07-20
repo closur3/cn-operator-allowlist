@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-20T12:37:05.67458135Z",
+  "generated_at": "2026-07-20T13:15:44.047401484Z",
   "scope": "Best-effort ACL list; IPv4; mainland China; candidates for IPv4 addresses presented on the public Internet by ordinary Internet access users of China Telecom, China Mobile, or China Unicom, only when also present in china-operator-ip's origin-only China list; does not classify or protect addresses by household, individual, enterprise, or institutional customer type; explicitly subtracts dedicated premium backbone ASNs, cloud-provider CIDRs, strong APNIC registrations outside ordinary user access scope, portable and non-portable registrations linked through APNIC aut-num to a currently active independent ASN, registrations supported by both an independent legal-entity name and an exact APNIC aut-num link, origin-validated APNIC route objects, strongly linked independent APNIC route origins, and conservative RIPE RIS multi-observer MOAS evidence; unclear mixed-use, historical and MOAS space remains included",
   "sources": [
     {
@@ -17,8 +17,8 @@
     {
       "name": "iptoasn_ipv4",
       "url": "https://iptoasn.com/data/ip2asn-v4.tsv.gz",
-      "bytes": 6885998,
-      "sha256": "d6a71613210adc0da752b3f3cb2ab33437e2fd117263b21dc1dfe89866a4962a"
+      "bytes": 6885303,
+      "sha256": "0899afc4515ae8e2218a92658578f9238c46a36829833c0223f576e8881d53e6"
     },
     {
       "name": "apnic_organisation",
@@ -107836,7 +107836,7 @@
       "matched_by": "description_patterns: china ?telecom",
       "exclusion_source": "description_rule",
       "reason": "ASN description explicitly identifies a dedicated IDC network",
-      "origin_address_count": 1886976
+      "origin_address_count": 1888000
     },
     {
       "asn": "38283",
@@ -109050,8 +109050,8 @@
       "address_count": 15981039,
       "registry_covered_address_count": 15981039,
       "strong_non_public_signal_address_count": 0,
-      "sha256": "e9d0015779f3372ce0679b410a3ff9f90278f5f7eebd684692ceca3b4b60e41e",
-      "human_sha256": "b0faf735cddd9cdcf4417c8ab9b4bf60e6570dbccf57b70f8447a7c1a27703de"
+      "sha256": "9b9f2ad0a4d60a5ca5449683a36e8d773f00054b29a287785e6296172f4d89b4",
+      "human_sha256": "9f7fcf7344ce881f12e3582782d512a96b896865ab9cabd6089014d354823300"
     }
   ]
 }
