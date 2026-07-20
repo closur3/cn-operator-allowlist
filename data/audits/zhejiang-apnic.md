@@ -6,10 +6,10 @@
 
 | 指标 | 数值 |
 |---|---:|
-| 最大聚合 ACL CIDR | 2,561 |
-| IPv4 地址 | 15,952,407 |
-| 最具体 APNIC 事实片段 | 116,707 |
-| APNIC 登记覆盖 | 15,952,407（100.0000%） |
+| 最大聚合 ACL CIDR | 2,565 |
+| IPv4 地址 | 15,952,151 |
+| 最具体 APNIC 事实片段 | 116,706 |
+| APNIC 登记覆盖 | 15,952,151（100.0000%） |
 | 构建规则仍识别出的强非公众信号 | 0 |
 
 ## 前缀清洗前后对照
@@ -19,14 +19,14 @@
 | 阶段 | 地址 |
 |---|---:|
 | 准入前候选 | 16,049,454 |
-| 未准入（并集） | 97,047 |
-| 最终保留 | 15,952,407 |
+| 未准入（并集） | 97,303 |
+| 最终保留 | 15,952,151 |
 
 | 排除类别 | 证据范围 | 地址（可重复） |
 |---|---:|---:|
 | `apnic_delegated_holder` | 1 | 4 |
 | `apnic_independent_legal_entity_holder` | 13 | 5,120 |
-| `apnic_inetnum` | 399 | 46,907 |
+| `apnic_inetnum` | 400 | 47,163 |
 | `apnic_operator_admission_independent_legal_entity` | 31 | 23,296 |
 | `apnic_operator_admission_operator_registration_conflict` | 20 | 216 |
 | `apnic_operator_admission_other_registration` | 4 | 5,120 |
@@ -214,6 +214,7 @@
 | `61.174.63.8/29` | 8 | `apnic_inetnum` | `chinanet / AS4134` | Xing Xi Gang | APNIC inetnum registration explicitly identifies an IDC network |
 | `61.174.63.128/28` | 16 | `apnic_inetnum` | `chinanet / AS4134` | Wang Shu | APNIC inetnum registration explicitly identifies an IDC network |
 | `61.174.63.192/26` | 64 | `apnic_inetnum` | `chinanet / AS4134` | Wang Shu | APNIC inetnum registration explicitly identifies an IDC network |
+| `61.174.214.0/24` | 256 | `apnic_inetnum` | `chinanet / AS4134` | Shaoxing Telecom Bureau Data  Center | APNIC inetnum registration explicitly identifies a data-center network |
 | `61.175.99.36/30` | 4 | `apnic_inetnum` | `chinanet / AS4134` | ZhouShan Telecom ErShuLouIDC | APNIC inetnum registration explicitly identifies an IDC network |
 | `61.175.209.128/26` | 64 | `apnic_inetnum` | `chinanet / AS4134` | WenZhou Telecommunication Co.,ltd Data Centre | APNIC inetnum registration explicitly identifies a data-center network |
 | `61.175.209.192/26` | 64 | `apnic_inetnum` | `chinanet / AS4134` | WenZhou Telecommunication Co.,Ltd Data Centre | APNIC inetnum registration explicitly identifies a data-center network |
@@ -236,17 +237,16 @@
 | `110.42.6.0/24` | 256 | `apnic_portable_holder` | `cmcc / AS56041` | Ningbo Zhuo Zhi Innovation Network Technology Co., Ltd | Most-specific APNIC portable registration is linked to a currently active independent ASN |
 | `110.42.8.0/22` | 1,024 | `apnic_portable_holder` | `cmcc / AS56041` | Ningbo Zhuo Zhi Innovation Network Technology Co., Ltd | Most-specific APNIC portable registration is linked to a currently active independent ASN |
 | `110.42.12.0/24` | 256 | `apnic_portable_holder` | `cmcc / AS56041` | Ningbo Zhuo Zhi Innovation Network Technology Co., Ltd | Most-specific APNIC portable registration is linked to a currently active independent ASN |
-| `110.42.14.0/24` | 256 | `apnic_portable_holder` | `cmcc / AS56041` | Ningbo Zhuo Zhi Innovation Network Technology Co., Ltd | Most-specific APNIC portable registration is linked to a currently active independent ASN |
 
-其余 290 条排除证据未在 Markdown 展开；完整内容保存在 gzip JSON 与 manifest。
+其余 291 条排除证据未在 Markdown 展开；完整内容保存在 gzip JSON 与 manifest。
 
 ## 登记分类
 
 | 分类 | 事实片段 | 地址 | 占全部地址 | 含义 |
 |---|---:|---:|---:|---|
-| `operator_registration` | 13,212 | 15,302,562 | 95.9264% | 登记文本可归属于三网运营商 |
+| `operator_registration` | 13,212 | 15,302,562 | 95.9279% | 登记文本可归属于三网运营商 |
 | `independent_legal_entity` | 42,148 | 255,544 | 1.6019% | 最具体登记为独立法定主体；仅在第二项强证据成立时排除 |
-| `other_registration` | 61,347 | 394,301 | 2.4717% | 最具体登记无法归属对应三网；在上层准入成立时保留审计 |
+| `other_registration` | 61,346 | 394,045 | 2.4702% | 最具体登记无法归属对应三网；在上层准入成立时保留审计 |
 
 ## 怎样阅读
 
@@ -374,7 +374,7 @@
 
 ## 其他登记：地址量前 100 项
 
-共 53,004 个登记主体标签；下表展示前 100 项。标签优先取 APNIC organisation name，其次取 description、netname 或 organisation handle。
+共 53,003 个登记主体标签；下表展示前 100 项。标签优先取 APNIC organisation name，其次取 description、netname 或 organisation handle。
 
 | # | APNIC 登记主体 | 地址 | 占全部地址 | 事实片段 | 保留范围样本 / 所属 ACL CIDR |
 |---:|---|---:|---:|---:|---|
@@ -457,26 +457,26 @@
 | 77 | SHANGHAISHUYUANPUTONG,HANGZHOU,ZHEJIANG | 256 | 0.0016% | 1 | `124.160.134.0–124.160.134.255` in `124.160.132.0/22` |
 | 78 | SHANGHAIYONGTIANXINXIJISHUYOUXIANGONGSI,HANGZHOU,ZHEJIANG | 256 | 0.0016% | 1 | `124.160.101.0–124.160.101.255` in `124.160.96.0/21` |
 | 79 | SHENGGONGSIFUWUQI,HANGZHOU,ZHEJIANG | 256 | 0.0016% | 1 | `221.12.14.0–221.12.14.255` in `221.12.14.0/24` |
-| 80 | Shaoxing Telecom Bureau Data  Center | 256 | 0.0016% | 1 | `61.174.214.0–61.174.214.255` in `61.174.192.0/19` |
-| 81 | Taxation Administration Of Zhoushan | 256 | 0.0016% | 1 | `61.153.39.0–61.153.39.255` in `61.153.38.0/23` |
-| 82 | Tonglu County Transport Bureau | 256 | 0.0016% | 1 | `183.129.225.0–183.129.225.255` in `183.129.224.0/22` |
-| 83 | WenZhou LuCheng Education Bureau | 256 | 0.0016% | 3 | `61.153.24.128–61.153.24.191` in `61.153.24.0/22`<br>`122.228.156.0–122.228.156.127` in `122.228.144.0/20`<br>`122.228.156.128–122.228.156.191` in `122.228.144.0/20` |
-| 84 | XINGZHENGZHIFAJU,HANGZHOU,ZHEJIANG | 256 | 0.0016% | 1 | `60.12.252.0–60.12.252.255` in `60.12.240.0/20` |
-| 85 | Xiaoshan Education Network | 256 | 0.0016% | 1 | `61.153.9.0–61.153.9.255` in `61.153.8.0/22` |
-| 86 | YH-JiaoYu-WeiYuanHui | 256 | 0.0016% | 1 | `61.153.194.0–61.153.194.255` in `61.153.192.0/21` |
-| 87 | ZHEJIANGCHENQIAOTONGXINJISHUYOUXIANGONGSI,HANGZHOU,ZHEJIANG | 256 | 0.0016% | 1 | `124.160.100.0–124.160.100.255` in `124.160.96.0/21` |
-| 88 | Zhejiang Telecom Hulianxinkong | 256 | 0.0016% | 1 | `218.75.79.0–218.75.79.255` in `218.75.64.0/20` |
-| 89 | da qingnaqi | 256 | 0.0016% | 1 | `122.226.167.0–122.226.167.255` in `122.226.167.0/24` |
-| 90 | hangzhou-juzheng,huzhou,zhejiang | 256 | 0.0016% | 1 | `60.12.108.0–60.12.108.255` in `60.12.96.0/19` |
-| 91 | SUOBEIZIXUN,HANGZHOU,ZHEJIANG | 255 | 0.0016% | 1 | `124.160.41.0–124.160.41.254` in `124.160.32.0/19` |
-| 92 | Huzhou Department of Education | 240 | 0.0015% | 6 | `122.225.119.0–122.225.119.3` in `122.225.118.0/23`<br>`122.225.119.4–122.225.119.7` in `122.225.118.0/23`<br>`122.225.119.8–122.225.119.15` in `122.225.118.0/23` |
-| 93 | JIANGSHANGUANGDIAN,QUZHOU,ZHEJIANG | 224 | 0.0014% | 3 | `123.157.97.192–123.157.97.223` in `123.157.64.0/18`<br>`123.157.100.0–123.157.100.127` in `123.157.64.0/18`<br>`221.12.138.128–221.12.138.191` in `221.12.136.0/21` |
-| 94 | Jiande Internet monitoring project | 224 | 0.0014% | 3 | `115.236.85.64–115.236.85.127` in `115.236.84.0/22`<br>`115.236.85.128–115.236.85.255` in `115.236.84.0/22`<br>`183.129.136.0–183.129.136.31` in `183.129.128.0/20` |
-| 95 | ete | 208 | 0.0013% | 27 | `61.130.68.192–61.130.68.199` in `61.130.64.0/21`<br>`61.130.70.8–61.130.70.11` in `61.130.64.0/21`<br>`61.130.70.120–61.130.70.123` in `61.130.64.0/21` |
-| 96 | Ningbo Wanli College | 196 | 0.0012% | 3 | `61.130.107.112–61.130.107.115` in `61.130.106.0/23`<br>`61.153.150.0–61.153.150.127` in `61.153.144.0/21`<br>`115.231.49.0–115.231.49.63` in `115.231.48.0/23` |
-| 97 | COMPUTE CENTER OF ZHEJIANG STATISTICS BUREAU | 192 | 0.0012% | 4 | `115.236.160.128–115.236.160.255` in `115.236.160.0/20`<br>`122.224.144.32–122.224.144.63` in `122.224.144.0/23`<br>`183.129.164.128–183.129.164.143` in `183.129.164.0/22` |
-| 98 | Huzhou Education Breau | 192 | 0.0012% | 2 | `220.189.232.0–220.189.232.127` in `220.189.224.0/20`<br>`220.189.232.128–220.189.232.191` in `220.189.224.0/20` |
-| 99 | The Daily Newspaper Co. | 192 | 0.0012% | 2 | `60.190.99.0–60.190.99.127` in `60.190.96.0/21`<br>`60.190.99.128–60.190.99.191` in `60.190.96.0/21` |
-| 100 | YUANLIANTONG,HANGZHOU,ZHEJIANG | 192 | 0.0012% | 6 | `124.160.86.0–124.160.86.31` in `124.160.80.0/21`<br>`124.160.86.32–124.160.86.63` in `124.160.80.0/21`<br>`124.160.86.64–124.160.86.95` in `124.160.80.0/21` |
+| 80 | Taxation Administration Of Zhoushan | 256 | 0.0016% | 1 | `61.153.39.0–61.153.39.255` in `61.153.38.0/23` |
+| 81 | Tonglu County Transport Bureau | 256 | 0.0016% | 1 | `183.129.225.0–183.129.225.255` in `183.129.224.0/22` |
+| 82 | WenZhou LuCheng Education Bureau | 256 | 0.0016% | 3 | `61.153.24.128–61.153.24.191` in `61.153.24.0/22`<br>`122.228.156.0–122.228.156.127` in `122.228.144.0/20`<br>`122.228.156.128–122.228.156.191` in `122.228.144.0/20` |
+| 83 | XINGZHENGZHIFAJU,HANGZHOU,ZHEJIANG | 256 | 0.0016% | 1 | `60.12.252.0–60.12.252.255` in `60.12.240.0/20` |
+| 84 | Xiaoshan Education Network | 256 | 0.0016% | 1 | `61.153.9.0–61.153.9.255` in `61.153.8.0/22` |
+| 85 | YH-JiaoYu-WeiYuanHui | 256 | 0.0016% | 1 | `61.153.194.0–61.153.194.255` in `61.153.192.0/21` |
+| 86 | ZHEJIANGCHENQIAOTONGXINJISHUYOUXIANGONGSI,HANGZHOU,ZHEJIANG | 256 | 0.0016% | 1 | `124.160.100.0–124.160.100.255` in `124.160.96.0/21` |
+| 87 | Zhejiang Telecom Hulianxinkong | 256 | 0.0016% | 1 | `218.75.79.0–218.75.79.255` in `218.75.64.0/20` |
+| 88 | da qingnaqi | 256 | 0.0016% | 1 | `122.226.167.0–122.226.167.255` in `122.226.167.0/24` |
+| 89 | hangzhou-juzheng,huzhou,zhejiang | 256 | 0.0016% | 1 | `60.12.108.0–60.12.108.255` in `60.12.96.0/19` |
+| 90 | SUOBEIZIXUN,HANGZHOU,ZHEJIANG | 255 | 0.0016% | 1 | `124.160.41.0–124.160.41.254` in `124.160.32.0/19` |
+| 91 | Huzhou Department of Education | 240 | 0.0015% | 6 | `122.225.119.0–122.225.119.3` in `122.225.118.0/23`<br>`122.225.119.4–122.225.119.7` in `122.225.118.0/23`<br>`122.225.119.8–122.225.119.15` in `122.225.118.0/23` |
+| 92 | JIANGSHANGUANGDIAN,QUZHOU,ZHEJIANG | 224 | 0.0014% | 3 | `123.157.97.192–123.157.97.223` in `123.157.64.0/18`<br>`123.157.100.0–123.157.100.127` in `123.157.64.0/18`<br>`221.12.138.128–221.12.138.191` in `221.12.136.0/21` |
+| 93 | Jiande Internet monitoring project | 224 | 0.0014% | 3 | `115.236.85.64–115.236.85.127` in `115.236.84.0/22`<br>`115.236.85.128–115.236.85.255` in `115.236.84.0/22`<br>`183.129.136.0–183.129.136.31` in `183.129.128.0/20` |
+| 94 | ete | 208 | 0.0013% | 27 | `61.130.68.192–61.130.68.199` in `61.130.64.0/21`<br>`61.130.70.8–61.130.70.11` in `61.130.64.0/21`<br>`61.130.70.120–61.130.70.123` in `61.130.64.0/21` |
+| 95 | Ningbo Wanli College | 196 | 0.0012% | 3 | `61.130.107.112–61.130.107.115` in `61.130.106.0/23`<br>`61.153.150.0–61.153.150.127` in `61.153.144.0/21`<br>`115.231.49.0–115.231.49.63` in `115.231.48.0/23` |
+| 96 | COMPUTE CENTER OF ZHEJIANG STATISTICS BUREAU | 192 | 0.0012% | 4 | `115.236.160.128–115.236.160.255` in `115.236.160.0/20`<br>`122.224.144.32–122.224.144.63` in `122.224.144.0/23`<br>`183.129.164.128–183.129.164.143` in `183.129.164.0/22` |
+| 97 | Huzhou Education Breau | 192 | 0.0012% | 2 | `220.189.232.0–220.189.232.127` in `220.189.224.0/20`<br>`220.189.232.128–220.189.232.191` in `220.189.224.0/20` |
+| 98 | The Daily Newspaper Co. | 192 | 0.0012% | 2 | `60.190.99.0–60.190.99.127` in `60.190.96.0/21`<br>`60.190.99.128–60.190.99.191` in `60.190.96.0/21` |
+| 99 | YUANLIANTONG,HANGZHOU,ZHEJIANG | 192 | 0.0012% | 6 | `124.160.86.0–124.160.86.31` in `124.160.80.0/21`<br>`124.160.86.32–124.160.86.63` in `124.160.80.0/21`<br>`124.160.86.64–124.160.86.95` in `124.160.80.0/21` |
+| 100 | YUYAO NETBAR ADSL ACCESS STATIC IP REBUILD | 192 | 0.0012% | 2 | `61.153.148.64–61.153.148.127` in `61.153.144.0/21`<br>`220.189.217.128–220.189.217.255` in `220.189.216.0/22` |
 
-其余 52,904 个较小登记主体标签未在 Markdown 展开，可在完整 gzip JSON 中查询。
+其余 52,903 个较小登记主体标签未在 Markdown 展开，可在完整 gzip JSON 中查询。
