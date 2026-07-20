@@ -954,8 +954,8 @@ func main() {
 	if e != nil {
 		panic(e)
 	}
-	if len(trialFiles) != 26 {
-		panic("expected exactly twenty-six BGP-prefix admission trial, delta, and diagnostic lists")
+	if len(trialFiles) != 30 {
+		panic("expected exactly thirty BGP-prefix admission trial, delta, and diagnostic lists")
 	}
 	files := append(append(append(append([]string{}, provinceFiles...), operatorFiles...), trialFiles...), filepath.Join(*data, "cn.txt"))
 
@@ -1209,8 +1209,12 @@ func main() {
 	}
 	bgpRelaxedAdded := subtract(bgpAdmissionTrials["relaxed"], cnRanges)
 	bgpRelaxedRemoved := subtract(cnRanges, bgpAdmissionTrials["relaxed"])
+	bgpCoveringRelaxedAdded := subtract(bgpAdmissionTrials["covering_relaxed"], cnRanges)
+	bgpCoveringRelaxedRemoved := subtract(cnRanges, bgpAdmissionTrials["covering_relaxed"])
 	zhejiangBGPRelaxedAdded := subtract(zhejiangBGPAdmissionTrials["relaxed"], expectedZhejiangRows)
 	zhejiangBGPRelaxedRemoved := subtract(expectedZhejiangRows, zhejiangBGPAdmissionTrials["relaxed"])
+	zhejiangBGPCoveringRelaxedAdded := subtract(zhejiangBGPAdmissionTrials["covering_relaxed"], expectedZhejiangRows)
+	zhejiangBGPCoveringRelaxedRemoved := subtract(expectedZhejiangRows, zhejiangBGPAdmissionTrials["covering_relaxed"])
 	for _, delta := range []struct {
 		path string
 		rows []span
@@ -1219,6 +1223,10 @@ func main() {
 		{filepath.Join("experiments", "bgp-prefix-admission", "nationwide-relaxed-removed.txt"), bgpRelaxedRemoved},
 		{filepath.Join("experiments", "bgp-prefix-admission", "zhejiang-relaxed-added.txt"), zhejiangBGPRelaxedAdded},
 		{filepath.Join("experiments", "bgp-prefix-admission", "zhejiang-relaxed-removed.txt"), zhejiangBGPRelaxedRemoved},
+		{filepath.Join("experiments", "bgp-prefix-admission", "nationwide-covering_relaxed-added.txt"), bgpCoveringRelaxedAdded},
+		{filepath.Join("experiments", "bgp-prefix-admission", "nationwide-covering_relaxed-removed.txt"), bgpCoveringRelaxedRemoved},
+		{filepath.Join("experiments", "bgp-prefix-admission", "zhejiang-covering_relaxed-added.txt"), zhejiangBGPCoveringRelaxedAdded},
+		{filepath.Join("experiments", "bgp-prefix-admission", "zhejiang-covering_relaxed-removed.txt"), zhejiangBGPCoveringRelaxedRemoved},
 	} {
 		assertEqual(readCIDRs(filepath.Join(*data, delta.path), true), delta.rows, "BGP relaxed-admission delta does not recompute: "+delta.path)
 	}
@@ -1294,6 +1302,8 @@ func main() {
 		{"trial_bgp_prefix_covering_parent_admission", bgpAdmissionTrials["covering"]},
 		{"trial_bgp_prefix_covering_parent_with_exact_conflict_carving", bgpAdmissionTrials["covering_carved"]},
 		{"trial_bgp_prefix_covering_parent_relaxed_conflicts", bgpAdmissionTrials["covering_relaxed"]},
+		{"trial_bgp_prefix_covering_parent_relaxed_added_vs_current", bgpCoveringRelaxedAdded},
+		{"trial_bgp_prefix_covering_parent_relaxed_removed_vs_current", bgpCoveringRelaxedRemoved},
 		{"trial_bgp_prefix_relaxed_admission", bgpAdmissionTrials["relaxed"]},
 		{"trial_bgp_prefix_relaxed_added_vs_current", bgpRelaxedAdded},
 		{"trial_bgp_prefix_relaxed_removed_vs_current", bgpRelaxedRemoved},
@@ -1307,6 +1317,8 @@ func main() {
 		{"trial_zhejiang_bgp_prefix_covering_parent_admission", zhejiangBGPAdmissionTrials["covering"]},
 		{"trial_zhejiang_bgp_prefix_covering_parent_with_exact_conflict_carving", zhejiangBGPAdmissionTrials["covering_carved"]},
 		{"trial_zhejiang_bgp_prefix_covering_parent_relaxed_conflicts", zhejiangBGPAdmissionTrials["covering_relaxed"]},
+		{"trial_zhejiang_bgp_prefix_covering_parent_relaxed_added_vs_current", zhejiangBGPCoveringRelaxedAdded},
+		{"trial_zhejiang_bgp_prefix_covering_parent_relaxed_removed_vs_current", zhejiangBGPCoveringRelaxedRemoved},
 		{"trial_zhejiang_bgp_prefix_relaxed_admission", zhejiangBGPAdmissionTrials["relaxed"]},
 		{"trial_zhejiang_bgp_prefix_relaxed_added_vs_current", zhejiangBGPRelaxedAdded},
 		{"trial_zhejiang_bgp_prefix_relaxed_removed_vs_current", zhejiangBGPRelaxedRemoved},

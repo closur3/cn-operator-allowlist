@@ -63,3 +63,19 @@ func TestRenderMarkdownIncludesSummaryAndReviewEvidence(t *testing.T) {
 		}
 	}
 }
+
+func TestRenderMarkdownExplainsRelaxedBGPAdditions(t *testing.T) {
+	report := Report{
+		Scope: "Nationwide relaxed-BGP additions versus current dev",
+		Summary: Summary{AddressCount: 256, Categories: []CategorySummary{{Classification: "independent_legal_entity", FactCount: 1, AddressCount: 256, AddressPercent: 100}}},
+	}
+	markdown := RenderMarkdown(report, "bgp-relaxed-added-apnic.json.gz")
+	for _, want := range []string{"# 宽松 BGP 新增地址 APNIC 登记事实审计", "取消 APNIC 正向准入", "宽松 BGP 方案会纳入", "尚未进入正式 ACL"} {
+		if !strings.Contains(markdown, want) {
+			t.Fatalf("relaxed-BGP Markdown report does not contain %q:\n%s", want, markdown)
+		}
+	}
+	if strings.Contains(markdown, "# 浙江 IPv4") {
+		t.Fatalf("relaxed-BGP Markdown report retained the Zhejiang title:\n%s", markdown)
+	}
+}

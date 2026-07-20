@@ -1499,8 +1499,12 @@ func main() {
 	}
 	bgpRelaxedAdded := subtract(bgpAdmissionTrials["relaxed"], finalRanges)
 	bgpRelaxedRemoved := subtract(finalRanges, bgpAdmissionTrials["relaxed"])
+	bgpCoveringRelaxedAdded := subtract(bgpAdmissionTrials["covering_relaxed"], finalRanges)
+	bgpCoveringRelaxedRemoved := subtract(finalRanges, bgpAdmissionTrials["covering_relaxed"])
 	zhejiangBGPRelaxedAdded := subtract(zhejiangBGPAdmissionTrials["relaxed"], zhejiangRows)
 	zhejiangBGPRelaxedRemoved := subtract(zhejiangRows, zhejiangBGPAdmissionTrials["relaxed"])
+	zhejiangBGPCoveringRelaxedAdded := subtract(zhejiangBGPAdmissionTrials["covering_relaxed"], zhejiangRows)
+	zhejiangBGPCoveringRelaxedRemoved := subtract(zhejiangRows, zhejiangBGPAdmissionTrials["covering_relaxed"])
 	zhejiangPreAdmissionAudit, e := apnicaudit.Build("浙江省 pre-admission IPv4 APNIC registration audit", spanCIDRs(zhejiangPreAdmissionRows), zhejiangPreAdmissionOperatorRanges, apnicAllSegments, classifier)
 	if e != nil {
 		panic(e)
@@ -1549,6 +1553,8 @@ func main() {
 			stage("trial_bgp_prefix_covering_parent_admission", bgpAdmissionTrials["covering"]),
 			stage("trial_bgp_prefix_covering_parent_with_exact_conflict_carving", bgpAdmissionTrials["covering_carved"]),
 			stage("trial_bgp_prefix_covering_parent_relaxed_conflicts", bgpAdmissionTrials["covering_relaxed"]),
+			stage("trial_bgp_prefix_covering_parent_relaxed_added_vs_current", bgpCoveringRelaxedAdded),
+			stage("trial_bgp_prefix_covering_parent_relaxed_removed_vs_current", bgpCoveringRelaxedRemoved),
 			stage("trial_bgp_prefix_relaxed_admission", bgpAdmissionTrials["relaxed"]),
 			stage("trial_bgp_prefix_relaxed_added_vs_current", bgpRelaxedAdded),
 			stage("trial_bgp_prefix_relaxed_removed_vs_current", bgpRelaxedRemoved),
@@ -1562,6 +1568,8 @@ func main() {
 			stage("trial_zhejiang_bgp_prefix_covering_parent_admission", zhejiangBGPAdmissionTrials["covering"]),
 			stage("trial_zhejiang_bgp_prefix_covering_parent_with_exact_conflict_carving", zhejiangBGPAdmissionTrials["covering_carved"]),
 			stage("trial_zhejiang_bgp_prefix_covering_parent_relaxed_conflicts", zhejiangBGPAdmissionTrials["covering_relaxed"]),
+			stage("trial_zhejiang_bgp_prefix_covering_parent_relaxed_added_vs_current", zhejiangBGPCoveringRelaxedAdded),
+			stage("trial_zhejiang_bgp_prefix_covering_parent_relaxed_removed_vs_current", zhejiangBGPCoveringRelaxedRemoved),
 			stage("trial_zhejiang_bgp_prefix_relaxed_admission", zhejiangBGPAdmissionTrials["relaxed"]),
 			stage("trial_zhejiang_bgp_prefix_relaxed_added_vs_current", zhejiangBGPRelaxedAdded),
 			stage("trial_zhejiang_bgp_prefix_relaxed_removed_vs_current", zhejiangBGPRelaxedRemoved),
@@ -1658,6 +1666,10 @@ func main() {
 		{"BGP relaxed admission delta (nationwide, removed versus current dev)", filepath.Join("experiments", "bgp-prefix-admission", "nationwide-relaxed-removed.txt"), bgpRelaxedRemoved},
 		{"BGP relaxed admission delta (Zhejiang, added versus current dev)", filepath.Join("experiments", "bgp-prefix-admission", "zhejiang-relaxed-added.txt"), zhejiangBGPRelaxedAdded},
 		{"BGP relaxed admission delta (Zhejiang, removed versus current dev)", filepath.Join("experiments", "bgp-prefix-admission", "zhejiang-relaxed-removed.txt"), zhejiangBGPRelaxedRemoved},
+		{"BGP covering-relaxed delta (nationwide, added versus current dev)", filepath.Join("experiments", "bgp-prefix-admission", "nationwide-covering_relaxed-added.txt"), bgpCoveringRelaxedAdded},
+		{"BGP covering-relaxed delta (nationwide, removed versus current dev)", filepath.Join("experiments", "bgp-prefix-admission", "nationwide-covering_relaxed-removed.txt"), bgpCoveringRelaxedRemoved},
+		{"BGP covering-relaxed delta (Zhejiang, added versus current dev)", filepath.Join("experiments", "bgp-prefix-admission", "zhejiang-covering_relaxed-added.txt"), zhejiangBGPCoveringRelaxedAdded},
+		{"BGP covering-relaxed delta (Zhejiang, removed versus current dev)", filepath.Join("experiments", "bgp-prefix-admission", "zhejiang-covering_relaxed-removed.txt"), zhejiangBGPCoveringRelaxedRemoved},
 	} {
 		meta, e := write(filepath.Join(*out, trial.path), trial.rows)
 		if e != nil {
