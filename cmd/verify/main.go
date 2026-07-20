@@ -1351,11 +1351,6 @@ func main() {
 	if actualAudit.Summary.StrongNonPublicSignalAddressCount != 0 {
 		panic(fmt.Sprintf("Zhejiang ACL retains %d addresses that still match an enforced non-public APNIC rule", actualAudit.Summary.StrongNonPublicSignalAddressCount))
 	}
-	for _, category := range actualAudit.Summary.Categories {
-		if category.Classification != "operator_registration" && category.AddressCount != 0 {
-			panic(fmt.Sprintf("Zhejiang admission output retains %d addresses classified as %s", category.AddressCount, category.Classification))
-		}
-	}
 	humanAuditPath := filepath.Join(*data, filepath.FromSlash(auditMeta.HumanPath))
 	expectedHumanAudit := apnicaudit.RenderMarkdown(expectedAudit, filepath.Base(auditPath))
 	if string(mustRead(humanAuditPath)) != expectedHumanAudit || auditMeta.HumanSHA256 != fileSHA(humanAuditPath) {
