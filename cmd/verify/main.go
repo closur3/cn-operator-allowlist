@@ -535,7 +535,8 @@ func overlapAddressCountSorted(rows []span, lo, hi uint32) uint64 {
 }
 
 func bgpPrefixAdmissionTrials(segments []riswhois.Segment, asnOperators map[string]string, originByOperator, retainedByOperator, parentAdmission, leafAdmission, operatorConflicts map[string][]span) map[string][]span {
-	out := map[string][]span{"covering": {}, "any": {}, "majority": {}, "full": {}}
+	out := map[string][]span{"observed": {}, "no_ris": {}, "conflict": {}, "no_parent": {}, "covering": {}, "any": {}, "majority": {}, "full": {}}
+	observedByOperator := map[string][]span{}
 	for _, segment := range segments {
 		seenOperators := map[string]bool{}
 		for _, origin := range segment.Record.Origins {
@@ -548,22 +549,6 @@ func bgpPrefixAdmissionTrials(segments []riswhois.Segment, asnOperators map[stri
 			if len(unit) == 0 {
 				continue
 			}
-			var positive, total uint64
-			conflict := false
-			for _, part := range unit {
-				if overlapsSorted(operatorConflicts[operator], part.lo, part.hi) {
-					conflict = true
-					break
-				}
-				positive += overlapAddressCountSorted(leafAdmission[operator], part.lo, part.hi)
-				total += uint64(part.hi) - uint64(part.lo) + 1
-			}
-			if conflict {
-				continue
-			}
-			if total == 0 {
-				continue
-			}
 			var retained []span
 			for _, part := range unit {
 				retained = append(retained, intersectSortedSpan(retainedByOperator[operator], part.lo, part.hi)...)
@@ -571,12 +556,32 @@ func bgpPrefixAdmissionTrials(segments []riswhois.Segment, asnOperators map[stri
 			if len(retained) == 0 {
 				continue
 			}
-			var parentPositive uint64
+			out["observed"] = append(out["observed"], retained...)
+			observedByOperator[operator] = append(observedByOperator[operator], retained...)
+			conflict := false
 			for _, part := range unit {
+				if overlapsSorted(operatorConflicts[operator], part.lo, part.hi) {
+					conflict = true
+					break
+				}
+			}
+			if conflict {
+				out["conflict"] = append(out["conflict"], retained...)
+				continue
+			}
+			var positive, parentPositive, total uint64
+			for _, part := range unit {
+				positive += overlapAddressCountSorted(leafAdmission[operator], part.lo, part.hi)
 				parentPositive += overlapAddressCountSorted(parentAdmission[operator], part.lo, part.hi)
+				total += uint64(part.hi) - uint64(part.lo) + 1
+			}
+			if total == 0 {
+				continue
 			}
 			if parentPositive == total {
 				out["covering"] = append(out["covering"], retained...)
+			} else {
+				out["no_parent"] = append(out["no_parent"], retained...)
 			}
 			if positive == 0 {
 				continue
@@ -589,6 +594,9 @@ func bgpPrefixAdmissionTrials(segments []riswhois.Segment, asnOperators map[stri
 				out["full"] = append(out["full"], retained...)
 			}
 		}
+	}
+	for _, operator := range operators {
+		out["no_ris"] = append(out["no_ris"], subtract(retainedByOperator[operator], merge(observedByOperator[operator]))...)
 	}
 	for policy := range out {
 		out[policy] = merge(out[policy])
@@ -919,8 +927,8 @@ func main() {
 	if e != nil {
 		panic(e)
 	}
-	if len(trialFiles) != 8 {
-		panic("expected exactly eight BGP-prefix admission trial lists")
+	if len(trialFiles) != 16 {
+		panic("expected exactly sixteen BGP-prefix admission trial and diagnostic lists")
 	}
 	files := append(append(append(append([]string{}, provinceFiles...), operatorFiles...), trialFiles...), filepath.Join(*data, "cn.txt"))
 
@@ -1159,7 +1167,7 @@ func main() {
 	zhejiangPreAdmissionRows = merge(zhejiangPreAdmissionRows)
 	expectedZhejiangRows = merge(expectedZhejiangRows)
 	zhejiangBGPAdmissionTrials := map[string][]span{}
-	for _, policy := range []string{"covering", "any", "majority", "full"} {
+	for _, policy := range []string{"observed", "no_ris", "conflict", "no_parent", "covering", "any", "majority", "full"} {
 		zhejiangBGPAdmissionTrials[policy] = intersect(bgpAdmissionTrials[policy], zhejiangProvince)
 		assertEqual(
 			readCIDRs(filepath.Join(*data, "experiments", "bgp-prefix-admission", "nationwide-"+policy+".txt"), true),
@@ -1237,10 +1245,18 @@ func main() {
 		{"pre_operator_parent_registration_admission", preAdmissionRanges},
 		{"operator_parent_registration_denials", admissionDeniedRanges},
 		{"operator_parent_registration_admissions", cnRanges},
+		{"trial_bgp_prefix_observed_operator_origin", bgpAdmissionTrials["observed"]},
+		{"trial_bgp_prefix_no_operator_origin", bgpAdmissionTrials["no_ris"]},
+		{"trial_bgp_prefix_operator_conflict_denial", bgpAdmissionTrials["conflict"]},
+		{"trial_bgp_prefix_no_covering_parent_denial", bgpAdmissionTrials["no_parent"]},
 		{"trial_bgp_prefix_covering_parent_admission", bgpAdmissionTrials["covering"]},
 		{"trial_bgp_prefix_any_leaf_admission", bgpAdmissionTrials["any"]},
 		{"trial_bgp_prefix_majority_leaf_admission", bgpAdmissionTrials["majority"]},
 		{"trial_bgp_prefix_full_leaf_admission", bgpAdmissionTrials["full"]},
+		{"trial_zhejiang_bgp_prefix_observed_operator_origin", zhejiangBGPAdmissionTrials["observed"]},
+		{"trial_zhejiang_bgp_prefix_no_operator_origin", zhejiangBGPAdmissionTrials["no_ris"]},
+		{"trial_zhejiang_bgp_prefix_operator_conflict_denial", zhejiangBGPAdmissionTrials["conflict"]},
+		{"trial_zhejiang_bgp_prefix_no_covering_parent_denial", zhejiangBGPAdmissionTrials["no_parent"]},
 		{"trial_zhejiang_bgp_prefix_covering_parent_admission", zhejiangBGPAdmissionTrials["covering"]},
 		{"trial_zhejiang_bgp_prefix_any_leaf_admission", zhejiangBGPAdmissionTrials["any"]},
 		{"trial_zhejiang_bgp_prefix_majority_leaf_admission", zhejiangBGPAdmissionTrials["majority"]},
