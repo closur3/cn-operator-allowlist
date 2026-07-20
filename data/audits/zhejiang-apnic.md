@@ -1,35 +1,35 @@
 # 浙江 IPv4 APNIC 登记事实审计
 
-本报告用于复核浙江正向准入 ACL：只有当前 BGP Origin 属于三网、且 APNIC 最具体登记可明确归属同一家运营商的地址才会保留。完整逐地址事实保存在 [`zhejiang-apnic.json.gz`](./zhejiang-apnic.json.gz)。
+本报告以浙江输出为样本，复核全国正向准入规则：只有当前 BGP Origin 属于三网、且 APNIC 最具体登记可明确归属同一家运营商的地址才会保留。完整逐地址事实保存在 [`zhejiang-apnic.json.gz`](./zhejiang-apnic.json.gz)。
 
 ## 总览
 
 | 指标 | 数值 |
 |---|---:|
-| 最大聚合 ACL CIDR | 14,577 |
-| IPv4 地址 | 15,325,043 |
-| 最具体 APNIC 事实片段 | 16,947 |
-| APNIC 登记覆盖 | 15,325,043（100.0000%） |
+| 最大聚合 ACL CIDR | 13,429 |
+| IPv4 地址 | 15,302,562 |
+| 最具体 APNIC 事实片段 | 15,538 |
+| APNIC 登记覆盖 | 15,302,562（100.0000%） |
 | 构建规则仍识别出的强非公众信号 | 0 |
 
 ## 前缀清洗前后对照
 
-这里的“准入前候选”指已满足三网 Origin 与中国边界、但尚未执行云 CIDR、APNIC、route、MOAS 排除及浙江同运营商 APNIC 登记准入的地址。分类地址数按证据行累加，多个上游命中同一地址时可能重复；总未准入地址数按地址并集计算。
+这里的“准入前候选”指已满足三网 Origin 与中国边界、但尚未执行云 CIDR、APNIC、route、MOAS 排除及全国同运营商 APNIC 登记准入的浙江地址。分类地址数按证据行累加，多个上游命中同一地址时可能重复；总未准入地址数按地址并集计算。
 
 | 阶段 | 地址 |
 |---|---:|
 | 准入前候选 | 16,049,454 |
-| 未准入（并集） | 724,411 |
-| 最终保留 | 15,325,043 |
+| 未准入（并集） | 746,892 |
+| 最终保留 | 15,302,562 |
 
 | 排除类别 | 证据范围 | 地址（可重复） |
 |---|---:|---:|
 | `apnic_delegated_holder` | 1 | 4 |
 | `apnic_independent_legal_entity_holder` | 13 | 5,120 |
 | `apnic_inetnum` | 399 | 46,907 |
-| `apnic_operator_admission_independent_legal_entity` | 41,693 | 267,807 |
-| `apnic_operator_admission_operator_registration_conflict` | 23 | 364 |
-| `apnic_operator_admission_other_registration` | 60,498 | 387,825 |
+| `apnic_operator_admission_independent_legal_entity` | 42,186 | 278,840 |
+| `apnic_operator_admission_operator_registration_conflict` | 20 | 216 |
+| `apnic_operator_admission_other_registration` | 61,429 | 399,421 |
 | `apnic_portable_holder` | 20 | 14,336 |
 | `cloud_provider_cidr` | 2 | 2,048 |
 
@@ -238,18 +238,18 @@
 | `110.42.12.0/24` | 256 | `apnic_portable_holder` | `cmcc / AS56041` | Ningbo Zhuo Zhi Innovation Network Technology Co., Ltd | Most-specific APNIC portable registration is linked to a currently active independent ASN |
 | `110.42.14.0/24` | 256 | `apnic_portable_holder` | `cmcc / AS56041` | Ningbo Zhuo Zhi Innovation Network Technology Co., Ltd | Most-specific APNIC portable registration is linked to a currently active independent ASN |
 
-其余 102,449 条排除证据未在 Markdown 展开；完整内容保存在 gzip JSON 与 manifest。
+其余 103,870 条排除证据未在 Markdown 展开；完整内容保存在 gzip JSON 与 manifest。
 
 ## 登记分类
 
 | 分类 | 事实片段 | 地址 | 占全部地址 | 含义 |
 |---|---:|---:|---:|---|
-| `operator_registration` | 16,947 | 15,325,043 | 100.0000% | 登记文本可归属于三网运营商 |
+| `operator_registration` | 15,538 | 15,302,562 | 100.0000% | 登记文本可归属于三网运营商 |
 
 ## 怎样阅读
 
 - ACL 文件采用最大 CIDR 聚合；表中的“保留范围”才是与 APNIC 登记边界对齐后的精确地址范围。
-- 浙江试验采用正向准入；独立主体、归属不明、无登记及运营商冲突范围均不进入浙江输出。
+- 全国输出统一采用正向准入；独立主体、归属不明、无登记及运营商冲突范围均不进入任何全国、运营商或省级列表。
 - 排名按覆盖地址量排列，用来优先投入人工审查，不代表风险评分。
 - 下方索引只负责让主要事实可读；完整证据、全部小片段和全部字段仍以 gzip JSON 为准。
 
