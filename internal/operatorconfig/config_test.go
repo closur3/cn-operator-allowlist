@@ -97,7 +97,7 @@ func TestIndependentLegalEntityPattern(t *testing.T) {
 	}
 }
 
-func TestZhejiangAPNICRegistrantAdmission(t *testing.T) {
+func TestNationwideAPNICRegistrantAdmission(t *testing.T) {
 	c, err := Load("../../config/operators.json", []string{"chinanet", "cmcc", "unicom"})
 	if err != nil {
 		t.Fatal(err)
@@ -106,12 +106,10 @@ func TestZhejiangAPNICRegistrantAdmission(t *testing.T) {
 		text     string
 		operator string
 	}{
-		{"Ningbo Telecom Co.ltd", "chinanet"},
-		{"Zhejiang Provice Telecom Limited Company Hangzhou Branch", "chinanet"},
-		{"ZHENGHAI TELECOM. CO.,LTD", "chinanet"},
-		{"Zhejiang Telecommunication Shaoxing Ltd", "chinanet"},
-		{"QuZhou Mobile Communications Co.,Ltd.(QZMCC)", "cmcc"},
-		{"ShaoXing mobile communication, Ltd.", "cmcc"},
+		{"CHINANET Zhejiang Province Network", "chinanet"},
+		{"China Telecom Zhejiang Province Network", "chinanet"},
+		{"China Mobile Group Zhejiang Co., Ltd.", "cmcc"},
+		{"CMNET-ZHEJIANG", "cmcc"},
 		{"China Unicom Zhejiang Province Network", "unicom"},
 	}
 	for _, tt := range tests {
@@ -120,6 +118,9 @@ func TestZhejiangAPNICRegistrantAdmission(t *testing.T) {
 		}
 	}
 	for _, text := range []string{
+		"Ningbo Telecom Co.ltd",
+		"Zhejiang Telecommunication Shaoxing Ltd",
+		"QuZhou Mobile Communications Co.,Ltd.(QZMCC)",
 		"HANGZHOU DIFO TELECOMMUNICATION CO.LTD",
 		"Shanghai Great Wall Broadband Network Service Co., Ltd.",
 		"Jiaxingshi Xinda Dianzi Keji Co.,Ltd",

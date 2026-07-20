@@ -535,10 +535,11 @@ func operatorRanges(path string, classifier *operatorconfig.Classifier) (map[str
 	return out, included, excludedList, descriptions, nil
 }
 
-func includedASNList(records map[string]*includedASNRecord, chinaRanges, excludedRanges []span) []includedASNMeta {
+func includedASNList(records map[string]*includedASNRecord, chinaRanges, excludedRanges []span, admittedByOperator map[string][]span) []includedASNMeta {
 	var out []includedASNMeta
 	for _, record := range records {
 		retained := subtract(intersect(record.ranges, chinaRanges), excludedRanges)
+		retained = intersect(retained, admittedByOperator[record.meta.Operator])
 		record.meta.RetainedAddressCount = addressCount(retained)
 		if record.meta.RetainedAddressCount != 0 {
 			out = append(out, record.meta)
@@ -1241,10 +1242,18 @@ func main() {
 		}
 		return a.MatchedBy < b.MatchedBy
 	})
-	includedASNs := includedASNList(includedASNRecords, chinaRanges, excludedRanges)
+	operatorAdmissionRanges := apnicOperatorAdmissionRanges(apnicAllSegments, classifier)
+	preAdmissionByOperator := map[string][]span{}
+	var preAdmissionRanges, admissionDeniedRanges []span
 	for _, o := range operators {
-		ranges[o] = subtract(preCloudByOperator[o], excludedRanges)
+		preAdmissionByOperator[o] = subtract(preCloudByOperator[o], excludedRanges)
+		ranges[o] = intersect(preAdmissionByOperator[o], operatorAdmissionRanges[o])
+		preAdmissionRanges = append(preAdmissionRanges, preAdmissionByOperator[o]...)
+		admissionDeniedRanges = append(admissionDeniedRanges, subtract(preAdmissionByOperator[o], ranges[o])...)
 	}
+	preAdmissionRanges = merge(preAdmissionRanges)
+	admissionDeniedRanges = merge(admissionDeniedRanges)
+	includedASNs := includedASNList(includedASNRecords, chinaRanges, excludedRanges, ranges)
 	var finalRanges []span
 	for _, operator := range operators {
 		finalRanges = append(finalRanges, ranges[operator]...)
@@ -1287,22 +1296,19 @@ func main() {
 		}
 	}
 	zhejiangProvinceRanges := merge(provinceSourceRanges["浙江省"])
-	zhejiangAdmissionRanges := apnicOperatorAdmissionRanges(apnicAllSegments, classifier)
 	zhejiangPreAdmissionByOperator := map[string][]span{}
 	zhejiangPreAdmissionOperatorRanges := map[string][]apnicaudit.Range{}
-	var zhejiangPreAdmissionRows, zhejiangRows, zhejiangAdmissionDenied []span
+	var zhejiangPreAdmissionRows, zhejiangRows []span
 	for _, operator := range operators {
-		zhejiangPreAdmissionByOperator[operator] = by[operator]["浙江省"]
+		zhejiangPreAdmissionByOperator[operator] = intersect(preAdmissionByOperator[operator], zhejiangProvinceRanges)
 		for _, row := range zhejiangPreAdmissionByOperator[operator] {
 			zhejiangPreAdmissionOperatorRanges[operator] = append(zhejiangPreAdmissionOperatorRanges[operator], apnicaudit.Range{Lo: row.lo, Hi: row.hi})
 		}
 		zhejiangPreAdmissionRows = append(zhejiangPreAdmissionRows, zhejiangPreAdmissionByOperator[operator]...)
-		by[operator]["浙江省"] = intersect(zhejiangPreAdmissionByOperator[operator], zhejiangAdmissionRanges[operator])
 		zhejiangRows = append(zhejiangRows, by[operator]["浙江省"]...)
 	}
 	zhejiangPreAdmissionRows = merge(zhejiangPreAdmissionRows)
 	zhejiangRows = merge(zhejiangRows)
-	zhejiangAdmissionDenied = subtract(zhejiangPreAdmissionRows, zhejiangRows)
 	zhejiangPreAdmissionAudit, e := apnicaudit.Build("浙江省 pre-admission IPv4 APNIC registration audit", spanCIDRs(zhejiangPreAdmissionRows), zhejiangPreAdmissionOperatorRanges, apnicAllSegments, classifier)
 	if e != nil {
 		panic(e)
@@ -1328,7 +1334,7 @@ func main() {
 
 	m := manifest{
 		GeneratedAt: time.Now().UTC().Format(time.RFC3339Nano),
-		Scope:       "Best-effort ACL list; IPv4; mainland China; candidates for IPv4 addresses presented on the public Internet by ordinary Internet access users of China Telecom, China Mobile, or China Unicom, only when also present in china-operator-ip's origin-only China list; does not classify or protect addresses by household, individual, enterprise, or institutional customer type; explicitly subtracts dedicated premium backbone ASNs, cloud-provider CIDRs, strong APNIC registrations outside ordinary user access scope, portable and non-portable registrations linked through APNIC aut-num to a currently active independent ASN, registrations supported by both an independent legal-entity name and an exact APNIC aut-num link, origin-validated APNIC route objects, strongly linked independent APNIC route origins, and conservative RIPE RIS multi-observer MOAS evidence; unclear mixed-use, historical and MOAS space remains included; Zhejiang province additionally experiments with positive admission requiring the most-specific APNIC registrant to match the current BGP origin operator",
+		Scope:       "Strict experimental ACL list; IPv4; mainland China; nationwide positive admission requires both a China Telecom, China Mobile, or China Unicom current BGP origin and a most-specific APNIC inetnum registrant attributable to the same operator; dedicated premium backbone ASNs, cloud-provider CIDRs, strong APNIC registrations outside ordinary user access scope, independent holders and route origins, and strong RIPE RIS MOAS evidence are also excluded; independent, ambiguous, unregistered, and operator-conflicting APNIC registrations are not admitted",
 		Stages: []stageMeta{
 			stage("operator_origin_candidates", originCandidates),
 			stage("china_origin_intersection", preCloudCandidates),
@@ -1340,10 +1346,10 @@ func main() {
 			stage("effective_apnic_route_exclusions", routeRanges),
 			stage("effective_apnic_independent_route_origin_exclusions", routeOriginCandidateRanges),
 			stage("effective_ris_moas_exclusions", risRanges),
+			stage("pre_operator_registration_admission", preAdmissionRanges),
+			stage("operator_registration_denials", admissionDeniedRanges),
+			stage("operator_registration_admissions", finalRanges),
 			stage("final_output", finalRanges),
-			stage("zhejiang_pre_operator_registration_admission", zhejiangPreAdmissionRows),
-			stage("zhejiang_operator_registration_denials", zhejiangAdmissionDenied),
-			stage("zhejiang_operator_registration_admissions", zhejiangRows),
 			stage("province_attributed_output", provinceAttributed),
 		},
 		CloudSources: cloudSourceSummaries,

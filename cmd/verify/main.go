@@ -966,7 +966,20 @@ func main() {
 	excludedRanges := merge(append(append([]span{}, preRISExcluded...), risRanges...))
 	logPhase("RIPE RISWhois")
 	assertNoOverlap(cnRanges, excludedRanges, "cn.txt overlaps an explicit cloud, APNIC, independent route-origin, or strong RIS MOAS exclusion")
-	expectedCN := subtract(preCloudCandidates, excludedRanges)
+	operatorAdmissionRanges := apnicOperatorAdmissionRanges(apnicAllSegments, classifier)
+	preAdmissionByOperator := map[string][]span{}
+	expectedByOperator := map[string][]span{}
+	var preAdmissionRanges, admissionDeniedRanges, expectedCN []span
+	for _, operator := range operators {
+		preAdmissionByOperator[operator] = subtract(intersect(allowedByOperator[operator], chinaRanges), excludedRanges)
+		expectedByOperator[operator] = intersect(preAdmissionByOperator[operator], operatorAdmissionRanges[operator])
+		preAdmissionRanges = append(preAdmissionRanges, preAdmissionByOperator[operator]...)
+		admissionDeniedRanges = append(admissionDeniedRanges, subtract(preAdmissionByOperator[operator], expectedByOperator[operator])...)
+		expectedCN = append(expectedCN, expectedByOperator[operator]...)
+	}
+	preAdmissionRanges = merge(preAdmissionRanges)
+	admissionDeniedRanges = merge(admissionDeniedRanges)
+	expectedCN = merge(expectedCN)
 	assertEqual(cnRanges, expectedCN, "cn.txt address set does not equal the recomputed final output")
 	var generatedOperators []span
 	generatedByOperator := map[string][]span{}
@@ -974,7 +987,7 @@ func main() {
 		path := filepath.Join(*data, "operators", operator+".txt")
 		ranges := readCIDRs(path, true)
 		generatedByOperator[operator] = ranges
-		expected := subtract(intersect(allowedByOperator[operator], chinaRanges), excludedRanges)
+		expected := expectedByOperator[operator]
 		assertEqual(ranges, expected, "operator address set does not recompute: "+operator)
 		assertContained(ranges, cnRanges)
 		assertContained(ranges, allowedByOperator[operator])
@@ -983,24 +996,22 @@ func main() {
 	}
 	assertEqual(generatedOperators, cnRanges, "the union of per-operator lists does not equal cn.txt")
 	zhejiangProvince := zhejiangProvinceRanges(filepath.Join(*sources, "ip2region_ipv4_source.txt"))
-	zhejiangAdmissionRanges := apnicOperatorAdmissionRanges(apnicAllSegments, classifier)
 	zhejiangPreAdmissionByOperator := map[string][]span{}
 	zhejiangPreAdmissionOperatorRanges := map[string][]apnicaudit.Range{}
 	var zhejiangPreAdmissionRows, expectedZhejiangRows []span
 	for _, operator := range operators {
-		zhejiangPreAdmissionByOperator[operator] = intersect(generatedByOperator[operator], zhejiangProvince)
+		zhejiangPreAdmissionByOperator[operator] = intersect(preAdmissionByOperator[operator], zhejiangProvince)
 		for _, row := range zhejiangPreAdmissionByOperator[operator] {
 			zhejiangPreAdmissionOperatorRanges[operator] = append(zhejiangPreAdmissionOperatorRanges[operator], apnicaudit.Range{Lo: row.lo, Hi: row.hi})
 		}
 		zhejiangPreAdmissionRows = append(zhejiangPreAdmissionRows, zhejiangPreAdmissionByOperator[operator]...)
-		expectedZhejiangRows = append(expectedZhejiangRows, intersect(zhejiangPreAdmissionByOperator[operator], zhejiangAdmissionRanges[operator])...)
+		expectedZhejiangRows = append(expectedZhejiangRows, intersect(generatedByOperator[operator], zhejiangProvince)...)
 	}
 	zhejiangPreAdmissionRows = merge(zhejiangPreAdmissionRows)
 	expectedZhejiangRows = merge(expectedZhejiangRows)
-	zhejiangAdmissionDenied := subtract(zhejiangPreAdmissionRows, expectedZhejiangRows)
 	zhejiangPath := filepath.Join(*data, "provinces", "zhejiang.txt")
 	zhejiangRanges := readCIDRs(zhejiangPath, true)
-	assertEqual(zhejiangRanges, expectedZhejiangRows, "Zhejiang list does not equal the same-operator APNIC registrant admission set")
+	assertEqual(zhejiangRanges, expectedZhejiangRows, "Zhejiang list does not equal the nationwide-admitted output intersected with Zhejiang")
 	var provincialRanges []span
 	for _, f := range provinceFiles {
 		ranges := readCIDRs(f, true)
@@ -1057,10 +1068,10 @@ func main() {
 		{"effective_apnic_route_exclusions", routeRanges},
 		{"effective_apnic_independent_route_origin_exclusions", routeOriginCandidateRanges},
 		{"effective_ris_moas_exclusions", risRanges},
+		{"pre_operator_registration_admission", preAdmissionRanges},
+		{"operator_registration_denials", admissionDeniedRanges},
+		{"operator_registration_admissions", cnRanges},
 		{"final_output", cnRanges},
-		{"zhejiang_pre_operator_registration_admission", zhejiangPreAdmissionRows},
-		{"zhejiang_operator_registration_denials", zhejiangAdmissionDenied},
-		{"zhejiang_operator_registration_admissions", expectedZhejiangRows},
 		{"province_attributed_output", provincialRanges},
 	}
 	if len(m.Stages) != len(expectedStages) {

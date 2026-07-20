@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - dev
-      - zhejiang
     paths-ignore:
       - 'data/**'
   schedule:
