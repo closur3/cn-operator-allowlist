@@ -1019,9 +1019,6 @@ func main() {
 		panic("operator parent-registration admission exceeds the 2.0x CIDR expansion limit")
 	}
 	admissionExpansionRatio := float64(finalCIDRCount) / float64(preAdmissionCIDRCount)
-	if m.OperatorAdmission.Mode != "covering_operator_registration_with_strong_leaf_exclusions" || m.OperatorAdmission.PreCIDRCount != preAdmissionCIDRCount || m.OperatorAdmission.DeniedCIDRCount != cidrCount(admissionDeniedRanges) || m.OperatorAdmission.FinalCIDRCount != finalCIDRCount || m.OperatorAdmission.CIDRExpansionRatio != admissionExpansionRatio || m.OperatorAdmission.MaximumCIDRExpansionRatio != maxAdmissionCIDRExpansionRatio {
-		panic("manifest operator parent-registration admission metadata mismatch")
-	}
 	assertEqual(cnRanges, expectedCN, "cn.txt address set does not equal the recomputed final output")
 	var generatedOperators []span
 	generatedByOperator := map[string][]span{}
@@ -1069,6 +1066,9 @@ func main() {
 	var m manifest
 	if e := json.Unmarshal(b, &m); e != nil {
 		panic(e)
+	}
+	if m.OperatorAdmission.Mode != "covering_operator_registration_with_strong_leaf_exclusions" || m.OperatorAdmission.PreCIDRCount != preAdmissionCIDRCount || m.OperatorAdmission.DeniedCIDRCount != cidrCount(admissionDeniedRanges) || m.OperatorAdmission.FinalCIDRCount != finalCIDRCount || m.OperatorAdmission.CIDRExpansionRatio != admissionExpansionRatio || m.OperatorAdmission.MaximumCIDRExpansionRatio != maxAdmissionCIDRExpansionRatio {
+		panic("manifest operator parent-registration admission metadata mismatch")
 	}
 	expectedSourceNames := append([]string{"china", "iptoasn_ipv4", "apnic_organisation", "apnic_inetnum", "apnic_autnum", "apnic_route", "riswhois_ipv4", "ip2region_ipv4_source"}, cloudSources...)
 	if len(m.Sources) != len(expectedSourceNames)+1 {
