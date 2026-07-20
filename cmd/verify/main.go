@@ -1144,7 +1144,7 @@ func main() {
 		originByOperator[operator] = intersect(allowedByOperator[operator], chinaRanges)
 	}
 	leafAdmissionRanges := apnicOperatorLeafAdmissionRanges(apnicAllSegments, classifier)
-	bgpAdmissionTrials := bgpPrefixAdmissionTrials(risSegments, asnOperators, originByOperator, preAdmissionByOperator, generatedByOperator, operatorAdmissionRanges, leafAdmissionRanges, operatorConflictRanges)
+	bgpAdmissionTrials := bgpPrefixAdmissionTrials(risSegments, asnOperators, originByOperator, preAdmissionByOperator, expectedByOperator, operatorAdmissionRanges, leafAdmissionRanges, operatorConflictRanges)
 	preAdmissionCIDRCount := cidrCount(preAdmissionRanges)
 	finalCIDRCount := cidrCount(expectedCN)
 	if finalCIDRCount > preAdmissionCIDRCount*2 {
