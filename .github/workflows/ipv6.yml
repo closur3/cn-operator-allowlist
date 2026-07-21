@@ -44,15 +44,14 @@ jobs:
           test $(stat -c '%s' "$SOURCE_DIR/apnic.db.inet6num.gz") -gt 1000000
       - name: Test
         run: go test ./...
-      - name: Generate fixed and mobile lists
+      - name: Generate China Telecom access prefixes
         shell: bash
         run: |
           go run ./cmd/build6 \
             --ris "$SOURCE_DIR/riswhois-ipv6.gz" \
             --iptoasn "$SOURCE_DIR/ip2asn-v6.tsv.gz" \
             --inet6num "$SOURCE_DIR/apnic.db.inet6num.gz"
-          test -s data/ipv6/operators/chinanet-fixed.txt
-          test -s data/ipv6/operators/chinanet-mobile.txt
+          test -s data/ipv6/operators/chinatelecom.txt
           test -s data/ipv6/manifest.json
       - uses: actions/upload-artifact@v4
         with:

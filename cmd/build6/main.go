@@ -38,9 +38,10 @@ type sourceMeta struct {
 }
 
 type outputMeta struct {
-	Path        string `json:"path"`
-	PrefixCount int    `json:"prefix_count"`
-	Description string `json:"description"`
+	Path                  string         `json:"path"`
+	PrefixCount           int            `json:"prefix_count"`
+	AdmissionDescriptions []string       `json:"admission_descriptions"`
+	AdmissionMatches      map[string]int `json:"admission_matches"`
 }
 
 type manifest struct {
@@ -56,8 +57,7 @@ func main() {
 	risPath := flag.String("ris", "", "RIPE RISWhois IPv6 gzip")
 	iptoasnPath := flag.String("iptoasn", "", "IPtoASN IPv6 TSV gzip")
 	inet6numPath := flag.String("inet6num", "", "APNIC inet6num gzip")
-	fixedPath := flag.String("fixed-output", "data/ipv6/operators/chinanet-fixed.txt", "China Telecom fixed broadband output")
-	mobilePath := flag.String("mobile-output", "data/ipv6/operators/chinanet-mobile.txt", "China Telecom mobile output")
+	outputPath := flag.String("output", "data/ipv6/operators/chinatelecom.txt", "China Telecom access prefix output")
 	manifestPath := flag.String("manifest", "data/ipv6/manifest.json", "manifest path")
 	flag.Parse()
 	if *risPath == "" || *iptoasnPath == "" || *inet6numPath == "" {
@@ -73,7 +73,8 @@ func main() {
 	must(err)
 	segments := apnic6.ResolveMostSpecific(registrations)
 
-	var fixed, mobile []netip.Prefix
+	var admitted []netip.Prefix
+	admissionMatches := map[string]int{"fixed_broadband": 0, "mobile": 0}
 	rejected := map[string]int{}
 	for _, record := range bgpRecords {
 		if !inside(record.Prefix, boundary) {
@@ -86,16 +87,23 @@ func main() {
 		purpose, reason := classifyPrefix(record.Prefix, segments)
 		switch purpose {
 		case "fixed":
-			fixed = append(fixed, record.Prefix)
+			admitted = append(admitted, record.Prefix)
+			admissionMatches["fixed_broadband"]++
 		case "mobile":
-			mobile = append(mobile, record.Prefix)
+			admitted = append(admitted, record.Prefix)
+			admissionMatches["mobile"]++
 		default:
 			rejected[reason]++
 		}
 	}
 
-	must(writePrefixes(*fixedPath, fixed))
-	must(writePrefixes(*mobilePath, mobile))
+	sort.Slice(admitted, func(i, j int) bool {
+		if c := admitted[i].Addr().Compare(admitted[j].Addr()); c != 0 {
+			return c < 0
+		}
+		return admitted[i].Bits() < admitted[j].Bits()
+	})
+	must(writePrefixes(*outputPath, admitted))
 	sources := map[string]sourceMeta{}
 	for name, item := range map[string]struct{ path, source string }{
 		"riswhois_ipv6": {*risPath, "https://www.ris.ripe.net/dumps/riswhoisdump.IPv6.gz"},
@@ -113,8 +121,12 @@ func main() {
 		Boundary: telecomBlock,
 		OutputUnit: "exact_current_bgp_prefix",
 		Outputs: map[string]outputMeta{
-			"fixed_broadband": {Path: filepath.ToSlash(*fixedPath), PrefixCount: len(fixed), Description: fixedDescription},
-			"mobile": {Path: filepath.ToSlash(*mobilePath), PrefixCount: len(mobile), Description: mobileDescription},
+			"chinatelecom": {
+				Path:                  filepath.ToSlash(*outputPath),
+				PrefixCount:           len(admitted),
+				AdmissionDescriptions: []string{fixedDescription, mobileDescription},
+				AdmissionMatches:      admissionMatches,
+			},
 		},
 		Rejected: rejected,
 	}
