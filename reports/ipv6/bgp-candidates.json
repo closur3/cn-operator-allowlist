@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-21T20:04:36.257132313Z",
+  "generated_at": "2026-07-21T20:05:56.249850876Z",
   "scope": "Current exact IPv6 BGP prefixes whose complete observed Origin set is attributed to one Chinese operator; BGP Origin alone does not prove terminal-user access purpose",
   "ris": {
     "rows": 308993,
@@ -13,8 +13,8 @@
   "rejected_prefixes_by_reason": {
     "cross_operator_moas": 6,
     "excluded_origin": 3588,
-    "missing_asn_metadata": 2457,
-    "non_cn_origin": 258083,
+    "missing_asn_metadata": 2442,
+    "non_cn_origin": 258098,
     "non_operator_origin": 6223
   },
   "chinanet_origin_asns": [

@@ -1,6 +1,6 @@
 # 三网 IPv6 原始 BGP 前缀审计
 
-生成时间：`2026-07-21T20:04:36.257132313Z`
+生成时间：`2026-07-21T20:05:56.249850876Z`
 
 本报告直接以 RIPE RISWhois 的当前原始 IPv6 宣告前缀为单位；不使用 `china6`，不读取 APNIC `inet6num`，不进行地址切除或 CIDR 再聚合。
 
@@ -213,6 +213,6 @@ RIS 行：**308993**；原始 IPv6 前缀：**296767**。
 
 - `cross_operator_moas`: 6
 - `excluded_origin`: 3588
-- `missing_asn_metadata`: 2457
-- `non_cn_origin`: 258083
+- `missing_asn_metadata`: 2442
+- `non_cn_origin`: 258098
 - `non_operator_origin`: 6223

@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-07-21T20:04:36.257132313Z",
+  "generated_at": "2026-07-21T20:05:56.249850876Z",
   "scope": "Current exact IPv6 BGP prefixes whose complete observed Origin set is attributed to one Chinese operator; BGP Origin alone does not prove terminal-user access purpose",
   "output_kind": "exact_bgp_prefix_candidates",
   "sources": {
     "iptoasn_v6_asn_metadata_only": {
       "path": "/home/runner/work/cn-eyeball-prefixes/cn-eyeball-prefixes/.tmp/cn-eyeball-ipv6-sources/ip2asn-v6.tsv.gz",
-      "bytes": 1974689,
-      "sha256": "816bd185c5a950b8dc8a5cf2d97606d28f7ed4c3e5f6e7fa698ca738d0af3269"
+      "bytes": 1975215,
+      "sha256": "95aafeb0d0a8862a4f03b3bfdbfc29a825e548afc70d1ca98a479733fe804de9"
     },
     "operator_config": {
       "path": "config/operators.json",
@@ -983,12 +983,12 @@
     "cmcc": {
       "status": "pending_additional_positive_evidence",
       "prefix_count": 0,
-      "unique_slash64_equivalent": ""
+      "unique_slash64_equivalent": "0.0000"
     },
     "unicom": {
       "status": "pending_additional_positive_evidence",
       "prefix_count": 0,
-      "unique_slash64_equivalent": ""
+      "unique_slash64_equivalent": "0.0000"
     }
   }
 }
