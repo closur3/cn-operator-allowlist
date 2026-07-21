@@ -288,6 +288,9 @@ func firstPassDecision(category string, record apnic6.InetRecord) (bool, string)
 		}
 		return false, "Retain: non-portable assignment under the current three-operator Origin"
 	default:
+		if strings.EqualFold(strings.TrimSpace(record.Status), "ALLOCATED PORTABLE") {
+			return false, "Retain: operator allocation parent; no more-specific APNIC purpose registration covers this candidate space"
+		}
 		return false, "Retain: most-specific APNIC registration is attributed to the current operator"
 	}
 }
@@ -456,7 +459,8 @@ func renderMarkdown(r report) string {
 	renderFactSamples(&b, "明确用户侧正证据样本", r.RegistrationFacts, 100, func(fact registrationFact) bool {
 		return fact.FirstPassDecision == "retain" && fact.ExplicitUserPurpose
 	})
-	renderFactSamples(&b, "保留但只有泛化运营商证据的样本", r.RegistrationFacts, 30, func(fact registrationFact) bool {
+	fmt.Fprintln(&b, "\n> `ALLOCATED PORTABLE` 的运营商总分配对象只证明地址资源归属，不提供终端用户或业务用途证据。候选地址回落到这类父级对象，表示 APNIC 没有覆盖它的更具体用途登记，不能把父级 Description 解读为该地址的实际用途。")
+	renderFactSamples(&b, "保留但没有更具体用途登记的样本", r.RegistrationFacts, 30, func(fact registrationFact) bool {
 		return fact.FirstPassDecision == "retain" && !fact.ExplicitUserPurpose
 	})
 	renderFactSamples(&b, "首轮排除样本", r.RegistrationFacts, 30, func(fact registrationFact) bool {
