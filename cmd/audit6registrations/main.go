@@ -57,8 +57,8 @@ type registrationFact struct {
 	Status            string   `json:"status,omitempty"`
 	MatchedBy         string   `json:"matched_by,omitempty"`
 	Reason            string   `json:"reason,omitempty"`
-	FirstPassDecision string   `json:"first_pass_decision"`
-	FirstPassReason   string   `json:"first_pass_reason"`
+	AdmissionDecision string   `json:"admission_decision"`
+	AdmissionReason   string   `json:"admission_reason"`
 	ExplicitUserPurpose bool   `json:"explicit_user_purpose,omitempty"`
 	Space             spaceStat `json:"space"`
 	count             *big.Int
@@ -71,8 +71,8 @@ type operatorSummary struct {
 	RegistryUncovered           spaceStat `json:"registry_uncovered"`
 	SameOriginRoute6Covered     spaceStat `json:"same_origin_route6_covered"`
 	StrongRoutePurposeSignal    spaceStat `json:"strong_route_purpose_signal"`
-	FirstPassRetained           spaceStat `json:"first_pass_retained"`
-	FirstPassExcluded           spaceStat `json:"first_pass_excluded"`
+	AllowlistAdmitted           spaceStat `json:"allowlist_admitted"`
+	NotAdmitted                 spaceStat `json:"not_admitted"`
 	ExplicitUserPurpose         spaceStat `json:"explicit_user_purpose"`
 }
 
@@ -88,6 +88,19 @@ type report struct {
 	PrefixLengthByCategory  map[string]map[int]int `json:"winning_prefix_length_by_category"`
 }
 
+type ipv6Manifest struct {
+	GeneratedAt string                    `json:"generated_at"`
+	Scope       string                    `json:"scope"`
+	Status      map[string]string         `json:"status"`
+	Operators   map[string]operatorOutput `json:"operators"`
+	Evidence    []registrationFact        `json:"admission_evidence"`
+}
+
+type operatorOutput struct {
+	Path  string    `json:"path,omitempty"`
+	Space spaceStat `json:"space"`
+}
+
 func main() {
 	china6Path := flag.String("china6", "", "gaoyifan china6.txt")
 	iptoasnPath := flag.String("iptoasn", "", "IPtoASN IPv6 TSV gzip")
@@ -97,6 +110,8 @@ func main() {
 	configPath := flag.String("operator-config", "config/operators.json", "operator config")
 	jsonPath := flag.String("json", "reports/ipv6/three-operator-registration.json", "JSON report path")
 	markdownPath := flag.String("markdown", "reports/ipv6/three-operator-registration.md", "Markdown report path")
+	chinanetOutputPath := flag.String("chinanet-output", "data/ipv6/operators/chinanet.txt", "formal China Telecom IPv6 allowlist path")
+	manifestPath := flag.String("manifest", "data/ipv6/manifest.json", "IPv6 manifest path")
 	flag.Parse()
 	for name, path := range map[string]string{"china6": *china6Path, "iptoasn": *iptoasnPath, "inet6num": *inet6numPath, "route6": *route6Path, "organisation": *organisationPath} {
 		if path == "" {
@@ -141,11 +156,16 @@ func main() {
 		for _, hit := range intersectSegments(segments, origin.Range) {
 			coveredByOperator[origin.Operator] = append(coveredByOperator[origin.Operator], hit.Range)
 			category, matchedBy, reason := classifyRegistration(hit.Record, origin.Operator, classifier)
-			excluded, firstPassReason := firstPassDecision(category, hit.Record)
+			excluded, exclusionReason := firstPassDecision(category, hit.Record)
 			explicitUser := isExplicitUserPurpose(hit.Record)
-			decision := "retain"
+			decision := "not_admitted"
+			admissionReason := "Not admitted: no explicit end-user access purpose evidence"
 			if excluded {
 				decision = "exclude"
+				admissionReason = exclusionReason
+			} else if explicitUser {
+				decision = "admit"
+				admissionReason = "Admit: most-specific APNIC registration explicitly identifies broadband, mobile, or user-address access"
 			}
 			if categoryRanges[origin.Operator] == nil {
 				categoryRanges[origin.Operator] = map[string][]ipset6.Range{}
@@ -170,8 +190,8 @@ func main() {
 					Netnames: hit.Record.Netnames, Descriptions: hit.Record.Descriptions, Organizations: hit.Record.Organizations,
 					OrganizationNames: hit.Record.OrganizationNames, Maintainers: hit.Record.Maintainers, Country: hit.Record.Country,
 					Status: hit.Record.Status, MatchedBy: matchedBy, Reason: reason,
-					FirstPassDecision: decision,
-					FirstPassReason: firstPassReason, ExplicitUserPurpose: explicitUser, count: new(big.Int),
+					AdmissionDecision: decision,
+					AdmissionReason: admissionReason, ExplicitUserPurpose: explicitUser, count: new(big.Int),
 				}
 				facts[key] = fact
 			}
@@ -198,27 +218,31 @@ func main() {
 		}
 	}
 
+	generatedAt := time.Now().UTC().Format(time.RFC3339Nano)
 	result := report{
-		GeneratedAt:            time.Now().UTC().Format(time.RFC3339Nano),
-		Scope:                  "Read-only audit and first-pass policy preview of the most-specific APNIC inet6num and same-origin route6 evidence covering current mainland China Telecom, China Mobile, and China Unicom IPv6 origins inside gaoyifan china6.txt; no formal prefix list is emitted",
+		GeneratedAt:            generatedAt,
+		Scope:                  "Whitelist admission audit of the most-specific APNIC inet6num evidence covering current mainland China Telecom, China Mobile, and China Unicom IPv6 origins inside gaoyifan china6.txt; only China Telecom currently has sufficient explicit end-user purpose evidence for a formal output",
 		Inet6numRecordCount:    len(inetRecords),
 		Inet6numSegmentCount:   len(segments),
 		Route6RecordCount:      len(routeRecords),
 		PrefixLengthByCategory: prefixLengths,
 	}
+	admittedByOperator := map[string][]ipset6.Range{}
 	for _, operator := range operators {
 		candidate := candidateByOperator[operator]
 		total := ipset6.AddressCount(candidate)
 		covered := ipset6.Intersect(candidate, coveredByOperator[operator])
 		uncovered := ipset6.Subtract(candidate, covered)
-		excluded := ipset6.Intersect(candidate, append(firstPassExcluded[operator], uncovered...))
+		hardExcluded := ipset6.Intersect(candidate, append(firstPassExcluded[operator], uncovered...))
+		admitted := ipset6.Subtract(ipset6.Intersect(candidate, explicitUserPurpose[operator]), hardExcluded)
+		admittedByOperator[operator] = admitted
 		result.Operators = append(result.Operators, operatorSummary{
 			Operator: operator, Candidate: makeStat(candidate, total), MostSpecificRegistryCovered: makeStat(covered, total),
 			RegistryUncovered: makeStat(uncovered, total),
 			SameOriginRoute6Covered: makeStat(ipset6.Intersect(candidate, routeCovered[operator]), total),
 			StrongRoutePurposeSignal: makeStat(ipset6.Intersect(candidate, routeStrong[operator]), total),
-			FirstPassRetained: makeStat(ipset6.Subtract(candidate, excluded), total),
-			FirstPassExcluded: makeStat(excluded, total),
+			AllowlistAdmitted: makeStat(admitted, total),
+			NotAdmitted: makeStat(ipset6.Subtract(candidate, admitted), total),
 			ExplicitUserPurpose: makeStat(ipset6.Intersect(candidate, explicitUserPurpose[operator]), total),
 		})
 		for _, category := range []string{"same_operator", "strong_non_public", "other_operator", "independent_legal_entity", "other_or_unclassified"} {
@@ -236,9 +260,34 @@ func main() {
 		}
 		return result.RegistrationFacts[i].RegistryPrefix < result.RegistrationFacts[j].RegistryPrefix
 	})
+	formalChinanet := admittedByOperator["chinanet"]
+	must(writePrefixFile(*chinanetOutputPath, formalChinanet))
+	manifest := ipv6Manifest{
+		GeneratedAt: generatedAt,
+		Scope:       "IPv6 end-user access prefix allowlist; only prefixes with explicit positive purpose evidence are admitted",
+		Status: map[string]string{
+			"chinanet": "ready",
+			"cmcc":     "pending_additional_positive_evidence",
+			"unicom":   "pending_additional_positive_evidence",
+		},
+		Operators: map[string]operatorOutput{},
+	}
+	for _, operator := range operators {
+		output := operatorOutput{Space: makeStat(admittedByOperator[operator], ipset6.AddressCount(candidateByOperator[operator]))}
+		if operator == "chinanet" {
+			output.Path = filepath.ToSlash(*chinanetOutputPath)
+		}
+		manifest.Operators[operator] = output
+	}
+	for _, fact := range result.RegistrationFacts {
+		if fact.Operator == "chinanet" && fact.AdmissionDecision == "admit" {
+			manifest.Evidence = append(manifest.Evidence, fact)
+		}
+	}
 
 	must(writeJSON(*jsonPath, result))
 	must(writeFile(*markdownPath, []byte(renderMarkdown(result))))
+	must(writeJSON(*manifestPath, manifest))
 }
 
 func classifyRegistration(record apnic6.InetRecord, operator string, classifier *operatorconfig.Classifier) (string, string, string) {
@@ -429,12 +478,20 @@ func writeFile(path string, bytes []byte) error {
 	return os.WriteFile(path, bytes, 0644)
 }
 
+func writePrefixFile(path string, rows []ipset6.Range) error {
+	var b strings.Builder
+	for _, prefix := range ipset6.Prefixes(rows) {
+		fmt.Fprintln(&b, prefix)
+	}
+	return writeFile(path, []byte(b.String()))
+}
+
 func renderMarkdown(r report) string {
 	var b strings.Builder
 	fmt.Fprintln(&b, "# 三网 IPv6 APNIC 登记颗粒度审计")
 	fmt.Fprintln(&b)
 	fmt.Fprintf(&b, "生成时间：`%s`\n\n", r.GeneratedAt)
-	fmt.Fprintln(&b, "审计对象是 `当前三网 IPv6 Origin ∩ china6`。`inet6num` 按最具体记录解析；`route6` 只统计与当前 BGP Origin 相同的登记。报告包含首轮规则预演，但不生成正式地址列表。")
+	fmt.Fprintln(&b, "审计对象是 `当前三网 IPv6 Origin ∩ china6`。三网统一采用白名单准入：只有明确终端用户接入正证据才可进入正式结果。当前只生成证据充分的中国电信名单；移动、联通保持待补充状态。")
 	fmt.Fprintln(&b)
 	fmt.Fprintf(&b, "APNIC `inet6num` 记录：**%d**；解析后最具体区间：**%d**；`route6` 前缀：**%d**。\n", r.Inet6numRecordCount, r.Inet6numSegmentCount, r.Route6RecordCount)
 
@@ -446,25 +503,29 @@ func renderMarkdown(r report) string {
 		fmt.Fprintf(&b, "| %s | %d | %s | %s | %s | %s |\n", row.Operator, row.Candidate.CIDRCount, row.MostSpecificRegistryCovered.PercentOfOperator, row.RegistryUncovered.PercentOfOperator, row.SameOriginRoute6Covered.PercentOfOperator, row.StrongRoutePurposeSignal.PercentOfOperator)
 	}
 
-	fmt.Fprintln(&b, "\n## 首轮准入规则预演")
+	fmt.Fprintln(&b, "\n## 白名单准入结果")
 	fmt.Fprintln(&b)
-	fmt.Fprintln(&b, "预演排除明确非目标用途、其他运营商登记、独立法定主体登记、无法归属三网的 portable 资源、非 CN 登记及无 APNIC 登记；其余保留。`明确用户侧正证据`只是保留结果中的事实标记，不是唯一准入条件。")
+	fmt.Fprintln(&b, "准入要求最具体 APNIC 登记明确写明 `fixed broadband`、`mobile` 或 `UserAddress`，并同时位于当前同运营商 Origin 与 `china6`。运营商总分配、`for customer`、普通 ISP 描述和历史使用案例均不构成准入证据。")
 	fmt.Fprintln(&b)
-	fmt.Fprintln(&b, "| 运营商 | 保留 CIDR | 保留空间 | 排除 CIDR | 排除空间 | 明确用户侧正证据 |")
-	fmt.Fprintln(&b, "| --- | ---: | ---: | ---: | ---: | ---: |")
+	fmt.Fprintln(&b, "| 运营商 | 准入 CIDR | 准入空间 | 未准入 CIDR | 未准入空间 | 状态 |")
+	fmt.Fprintln(&b, "| --- | ---: | ---: | ---: | ---: | --- |")
 	for _, row := range r.Operators {
-		fmt.Fprintf(&b, "| %s | %d | %s | %d | %s | %s |\n", row.Operator, row.FirstPassRetained.CIDRCount, row.FirstPassRetained.PercentOfOperator, row.FirstPassExcluded.CIDRCount, row.FirstPassExcluded.PercentOfOperator, row.ExplicitUserPurpose.PercentOfOperator)
+		status := "待补充正向证据"
+		if row.Operator == "chinanet" {
+			status = "已生成正式名单"
+		}
+		fmt.Fprintf(&b, "| %s | %d | %s | %d | %s | %s |\n", row.Operator, row.AllowlistAdmitted.CIDRCount, row.AllowlistAdmitted.PercentOfOperator, row.NotAdmitted.CIDRCount, row.NotAdmitted.PercentOfOperator, status)
 	}
 
-	renderFactSamples(&b, "明确用户侧正证据样本", r.RegistrationFacts, 100, func(fact registrationFact) bool {
-		return fact.FirstPassDecision == "retain" && fact.ExplicitUserPurpose
+	renderFactSamples(&b, "白名单准入证据", r.RegistrationFacts, 100, func(fact registrationFact) bool {
+		return fact.AdmissionDecision == "admit"
 	})
 	fmt.Fprintln(&b, "\n> `ALLOCATED PORTABLE` 的运营商总分配对象只证明地址资源归属，不提供终端用户或业务用途证据。候选地址回落到这类父级对象，表示 APNIC 没有覆盖它的更具体用途登记，不能把父级 Description 解读为该地址的实际用途。")
-	renderFactSamples(&b, "保留但没有更具体用途登记的样本", r.RegistrationFacts, 30, func(fact registrationFact) bool {
-		return fact.FirstPassDecision == "retain" && !fact.ExplicitUserPurpose
+	renderFactSamples(&b, "缺少正向证据而未准入的样本", r.RegistrationFacts, 30, func(fact registrationFact) bool {
+		return fact.AdmissionDecision == "not_admitted"
 	})
-	renderFactSamples(&b, "首轮排除样本", r.RegistrationFacts, 30, func(fact registrationFact) bool {
-		return fact.FirstPassDecision == "exclude"
+	renderFactSamples(&b, "明确排除样本", r.RegistrationFacts, 30, func(fact registrationFact) bool {
+		return fact.AdmissionDecision == "exclude"
 	})
 
 	fmt.Fprintln(&b, "\n## 最具体 inet6num 分类")
@@ -504,7 +565,7 @@ func renderMarkdown(r report) string {
 
 func renderFactSamples(b *strings.Builder, title string, facts []registrationFact, limit int, include func(registrationFact) bool) {
 	fmt.Fprintf(b, "\n## %s\n\n", title)
-	fmt.Fprintln(b, "| 运营商 | APNIC 前缀 | 占运营商候选 | netname / description / org | status | 首轮处理依据 |")
+	fmt.Fprintln(b, "| 运营商 | APNIC 前缀 | 占运营商候选 | netname / description / org | status | 白名单处理依据 |")
 	fmt.Fprintln(b, "| --- | --- | ---: | --- | --- | --- |")
 	shown := 0
 	for _, fact := range facts {
@@ -515,7 +576,7 @@ func renderFactSamples(b *strings.Builder, title string, facts []registrationFac
 		labelParts = append(labelParts, fact.Descriptions...)
 		labelParts = append(labelParts, fact.OrganizationNames...)
 		label := strings.ReplaceAll(strings.Join(labelParts, "; "), "|", "\\|")
-		fmt.Fprintf(b, "| %s | `%s` | %s | %s | %s | %s |\n", fact.Operator, fact.RegistryPrefix, fact.Space.PercentOfOperator, label, fact.Status, fact.FirstPassReason)
+		fmt.Fprintf(b, "| %s | `%s` | %s | %s | %s | %s |\n", fact.Operator, fact.RegistryPrefix, fact.Space.PercentOfOperator, label, fact.Status, fact.AdmissionReason)
 		shown++
 	}
 	if shown == 0 {

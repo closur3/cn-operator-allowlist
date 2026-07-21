@@ -1,4 +1,4 @@
-name: Audit gaoyifan china6
+name: Build and audit IPv6 allowlist
 
 on:
   push:
@@ -6,13 +6,14 @@ on:
       - ipv6
     paths-ignore:
       - 'reports/ipv6/**'
+      - 'data/ipv6/**'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: audit-gaoyifan-china6-${{ github.ref }}
+  group: build-ipv6-allowlist-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -59,7 +60,7 @@ jobs:
           test $(stat -c '%s' "$SOURCE_DIR/apnic-organisation.gz") -gt 100000
       - name: Test IPv6 audit code
         run: go test ./...
-      - name: Generate china6 validation report
+      - name: Generate IPv6 audit and China Telecom allowlist
         shell: bash
         run: |
           go run ./cmd/audit6 \
@@ -78,16 +79,20 @@ jobs:
             --route6 "$SOURCE_DIR/apnic-route6.gz" \
             --organisation "$SOURCE_DIR/apnic-organisation.gz" \
             --operator-config config/operators.json
+          test -s data/ipv6/operators/chinanet.txt
+          test -s data/ipv6/manifest.json
       - uses: actions/upload-artifact@v4
         with:
-          name: china6-validation
-          path: reports/ipv6/
-      - name: Commit validation report
+          name: ipv6-allowlist-audit
+          path: |
+            reports/ipv6/
+            data/ipv6/
+      - name: Commit IPv6 output and audit
         shell: bash
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A reports/ipv6
+          git add -A reports/ipv6 data/ipv6
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'chore: update china6 validation report'
+          git commit -m 'chore: update IPv6 allowlist and audit'
           git push
