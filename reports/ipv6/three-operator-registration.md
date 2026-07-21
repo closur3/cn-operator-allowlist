@@ -1,6 +1,6 @@
 # 三网 IPv6 APNIC 登记颗粒度审计
 
-生成时间：`2026-07-21T18:38:50.120445381Z`
+生成时间：`2026-07-21T18:44:58.671193336Z`
 
 审计对象是 `当前三网 IPv6 Origin ∩ china6`。`inet6num` 按最具体记录解析；`route6` 只统计与当前 BGP Origin 相同的登记。报告不执行正式准入或排除。
 
@@ -76,8 +76,8 @@ APNIC `inet6num` 记录：**148952**；解析后最具体区间：**194099**；`
 | unicom | `2403:e7c0::/32` | 0.000003% | TaiJi-ZY; Taiji Computer Corporation Limited | ALLOCATED PORTABLE | Most-specific APNIC registration names an independent legal entity without operator attribution (`independent_legal_entity_patterns`) |
 | unicom | `2404:6500::/32` | 0.000003% | IFLYTEK; ANHUI USTC iFLYTEK Co., Ltd.; No. 666 West Wangjiang Road, Hefei, Anhui | ALLOCATED PORTABLE | Most-specific APNIC registration names an independent legal entity without operator attribution (`independent_legal_entity_patterns`) |
 | unicom | `2404:7600::/32` | 0.000003% | DSNET; Shanghai Data Solution Co., Ltd.; 2F,NO.4Buliding 498 Guoshoujing Rd.Shanghai ZJ.Hi-Tech Park | ALLOCATED PORTABLE | Most-specific APNIC registration names an independent legal entity without operator attribution (`independent_legal_entity_patterns`) |
-| chinanet | `2405:1480::/32` | 0.000000% | SKBJNET; Beijing Sankuai Technology Co.,Ltd.; Wangjing International R&D Park Phase 3,No.6 Wangjing East Road,; Chaoyang District,Beijing 100102,PRC | ALLOCATED PORTABLE | Most-specific APNIC registration names an independent legal entity without operator attribution (`independent_legal_entity_patterns`) |
 | unicom | `2405:1480::/32` | 0.000003% | SKBJNET; Beijing Sankuai Technology Co.,Ltd.; Wangjing International R&D Park Phase 3,No.6 Wangjing East Road,; Chaoyang District,Beijing 100102,PRC | ALLOCATED PORTABLE | Most-specific APNIC registration names an independent legal entity without operator attribution (`independent_legal_entity_patterns`) |
+| chinanet | `2405:1480::/32` | 0.000000% | SKBJNET; Beijing Sankuai Technology Co.,Ltd.; Wangjing International R&D Park Phase 3,No.6 Wangjing East Road,; Chaoyang District,Beijing 100102,PRC | ALLOCATED PORTABLE | Most-specific APNIC registration names an independent legal entity without operator attribution (`independent_legal_entity_patterns`) |
 | chinanet | `2405:7040::/32` | 0.000000% | COSCOSHIPPING; CHINA COSCO SHIPPING CORPORATION LIMITED | ALLOCATED PORTABLE | Most-specific APNIC registration names an independent legal entity without operator attribution (`independent_legal_entity_patterns`) |
 | unicom | `2405:7040::/32` | 0.000003% | COSCOSHIPPING; CHINA COSCO SHIPPING CORPORATION LIMITED | ALLOCATED PORTABLE | Most-specific APNIC registration names an independent legal entity without operator attribution (`independent_legal_entity_patterns`) |
 | unicom | `2405:a900::/32` | 0.000003% | QIHOO; Beijing Qihu Technology Company Limited; 112 Room, D buliding , Deshengyuan square,; No.28 xinjiekouwaiwai,Xicheng District; Beijing,China | ALLOCATED PORTABLE | Most-specific APNIC registration names an independent legal entity without operator attribution (`independent_legal_entity_patterns`) |

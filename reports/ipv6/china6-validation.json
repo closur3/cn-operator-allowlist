@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-21T18:38:40.293067318Z",
+  "generated_at": "2026-07-21T18:44:49.107176038Z",
   "scope": "Factual validation of gaoyifan/china-operator-ip china6.txt against current IPtoASN IPv6 origins, RIPE RISWhois IPv6 visibility, APNIC delegated country registration, and the repository's three-operator ASN policy; no address is admitted or excluded by this audit",
   "sources": {
     "apnic_delegated": {
@@ -11,6 +11,16 @@
       "path": "/home/runner/work/cn-eyeball-prefixes/cn-eyeball-prefixes/.tmp/cn-eyeball-ipv6-sources/china6.txt",
       "bytes": 28797,
       "sha256": "2270e2b2423e353031b407f225638e98f082dc0c6b9f6cd62b13bcacc2aa810d"
+    },
+    "chinanet6": {
+      "path": "/home/runner/work/cn-eyeball-prefixes/cn-eyeball-prefixes/.tmp/cn-eyeball-ipv6-sources/chinanet6.txt",
+      "bytes": 15706,
+      "sha256": "5eacaa78e58fe5dac58ca3a88b73ba507b79166bb0494ae2536d8e497f5ad1ce"
+    },
+    "cmcc6": {
+      "path": "/home/runner/work/cn-eyeball-prefixes/cn-eyeball-prefixes/.tmp/cn-eyeball-ipv6-sources/cmcc6.txt",
+      "bytes": 2302,
+      "sha256": "21e74ed3a42f181a59ce1d68c78faad0442708439568999d0a569f1b154b067e"
     },
     "iptoasn_v6": {
       "path": "/home/runner/work/cn-eyeball-prefixes/cn-eyeball-prefixes/.tmp/cn-eyeball-ipv6-sources/ip2asn-v6.tsv.gz",
@@ -26,6 +36,11 @@
       "path": "/home/runner/work/cn-eyeball-prefixes/cn-eyeball-prefixes/.tmp/cn-eyeball-ipv6-sources/riswhois-ipv6.gz",
       "bytes": 1264413,
       "sha256": "79a5c1ea01ba36196c2513bf349a05c52796365ed7168aac795be24f519a39c9"
+    },
+    "unicom6": {
+      "path": "/home/runner/work/cn-eyeball-prefixes/cn-eyeball-prefixes/.tmp/cn-eyeball-ipv6-sources/unicom6.txt",
+      "bytes": 23925,
+      "sha256": "542a5dfcfed8111743a3192b9dca71fc31e246360427fcd679ffc6d8a8544232"
     }
   },
   "input_cidr_count": 1594,
@@ -419,6 +434,323 @@
         "slash64_equivalent": "0.0000",
         "percent_of_china6": "0.000000%"
       }
+    }
+  ],
+  "operator_list_audit": [
+    {
+      "operator": "chinanet",
+      "upstream": {
+        "cidr_count": 854,
+        "address_count": "413709057981653275973017468403712",
+        "slash64_equivalent": "22427212972032.0000",
+        "percent_of_china6": "20.560936%",
+        "samples": [
+          "2001:250:2::/48",
+          "2001:250:205::/48",
+          "2001:250:206::/47",
+          "2001:250:208::/46",
+          "2001:250:20c::/48",
+          "2001:250:20f::/48",
+          "2001:250:210::/48",
+          "2001:250:214::/47",
+          "2001:250:217::/48",
+          "2001:250:218::/46"
+        ]
+      },
+      "matching_current_origin": {
+        "cidr_count": 3067,
+        "address_count": "323172759302144427366435484860416",
+        "slash64_equivalent": "17519230386176.0000",
+        "percent_of_china6": "16.061370%",
+        "samples": [
+          "2001:c68::/32",
+          "2400:6e60:1301::/48",
+          "2400:75aa::/32",
+          "2400:9600:8800::/48",
+          "2400:be00::/48",
+          "2401:1d40:2000::/48",
+          "2401:1d40:2100::/48",
+          "2401:1d40:2f00::/48",
+          "2401:3480:2000::/48",
+          "2401:a140:1::/48"
+        ]
+      },
+      "other_operator_origin": {
+        "cidr_count": 1,
+        "address_count": "1208925819614629174706176",
+        "slash64_equivalent": "65536.0000",
+        "percent_of_china6": "0.000000%",
+        "samples": [
+          "2407:8f40:2::/48"
+        ]
+      },
+      "no_three_operator_origin": {
+        "cidr_count": 1620,
+        "address_count": "90536297470583028991952808837120",
+        "slash64_equivalent": "4907982520320.0000",
+        "percent_of_china6": "4.499566%",
+        "samples": [
+          "2001:250:2::/48",
+          "2001:250:205::/48",
+          "2001:250:206::/47",
+          "2001:250:208::/46",
+          "2001:250:20c::/48",
+          "2001:250:20f::/48",
+          "2001:250:210::/48",
+          "2001:250:214::/47",
+          "2001:250:217::/48",
+          "2001:250:218::/46",
+          "2001:250:21e::/47",
+          "2001:250:223::/48",
+          "2001:250:228::/48",
+          "2001:250:22b::/48",
+          "2001:250:22d::/48",
+          "2001:250:22e::/48",
+          "2001:250:230::/47",
+          "2001:250:234::/48",
+          "2001:250:236::/47",
+          "2001:250:238::/48"
+        ]
+      },
+      "outside_china6": {
+        "cidr_count": 22,
+        "address_count": "334872452033252281393610752",
+        "slash64_equivalent": "18153472.0000",
+        "percent_of_china6": "0.000017%",
+        "samples": [
+          "2400:9380:90c0::/44",
+          "2400:9380:91c0::/44",
+          "2400:9380:92c0::/44",
+          "2400:9380:93c0::/44",
+          "2400:9380:94c0::/44",
+          "2400:9380:95c0::/44",
+          "2400:9380:96c0::/44",
+          "2400:9380:97c0::/44",
+          "2400:9380:98c0::/44",
+          "2400:9380:99c0::/44",
+          "2400:9380:9ac0::/44",
+          "2400:9380:9bc0::/44",
+          "2400:9380:9cc0::/44",
+          "2400:9380:9dc0::/44",
+          "2400:9380:9ec0::/44",
+          "2400:9380:9fc0::/44",
+          "240e:983:2010::/48",
+          "240e:983:2013::/48",
+          "240e:983:2020::/48",
+          "240e:983:2022::/48"
+        ]
+      },
+      "current_origin_missing_from_upstream": {
+        "cidr_count": 0,
+        "address_count": "0",
+        "slash64_equivalent": "0.0000",
+        "percent_of_china6": "0.000000%"
+      },
+      "origin_agreement": "78.115950%",
+      "current_origin_coverage": "100.000000%"
+    },
+    {
+      "operator": "cmcc",
+      "upstream": {
+        "cidr_count": 128,
+        "address_count": "659732708574593083112997473222656",
+        "slash64_equivalent": "35764181794816.0000",
+        "percent_of_china6": "32.788071%",
+        "samples": [
+          "2400:9020:f012::/47",
+          "2400:95e0::/48",
+          "2400:a860:1::/48",
+          "2400:a860:2::/47",
+          "2400:a860:4::/47",
+          "2400:a860:6::/48",
+          "2400:ae00:1981::/48",
+          "2400:ee00:ffec::/46",
+          "2400:ee00:fff0::/44",
+          "2401:1320::/32"
+        ]
+      },
+      "matching_current_origin": {
+        "cidr_count": 352,
+        "address_count": "334584315444479511061482107305984",
+        "slash64_equivalent": "18137852084224.0000",
+        "percent_of_china6": "16.628514%",
+        "samples": [
+          "2401:1320::/32",
+          "2401:8be0::/48",
+          "2402:9a80::/32",
+          "2407:37c0::/32",
+          "2407:6c40:1210::/48",
+          "2407:8f40:2::/48",
+          "2409:8000::/29",
+          "2409:8008::/30",
+          "2409:800c::/35",
+          "2409:800c:2000::/36"
+        ]
+      },
+      "other_operator_origin": {
+        "cidr_count": 2,
+        "address_count": "2417851639229258349412352",
+        "slash64_equivalent": "131072.0000",
+        "percent_of_china6": "0.000000%",
+        "samples": [
+          "2405:6f00:c101::/48",
+          "2405:6f00:c170::/48"
+        ]
+      },
+      "no_three_operator_origin": {
+        "cidr_count": 91,
+        "address_count": "325148390712261932822257016504320",
+        "slash64_equivalent": "17626329579520.0000",
+        "percent_of_china6": "16.159557%",
+        "samples": [
+          "2400:9020:f012::/47",
+          "2400:95e0::/48",
+          "2400:a860:1::/48",
+          "2400:a860:2::/47",
+          "2400:a860:4::/47",
+          "2400:a860:6::/48",
+          "2400:ae00:1981::/48",
+          "2400:ee00:ffec::/46",
+          "2400:ee00:fff0::/44",
+          "2401:2a00:f000::/43",
+          "2401:9a00::/44",
+          "2401:9a00:10::/46",
+          "2401:c020:6::/48",
+          "2401:c020:8::/47",
+          "2401:c020:14::/48",
+          "2402:1440:30::/48",
+          "2402:1440:200::/39",
+          "2402:1440:400::/38",
+          "2402:1440:800::/37",
+          "2402:1440:1000::/36"
+        ]
+      },
+      "outside_china6": {
+        "cidr_count": 1,
+        "address_count": "1208925819614629174706176",
+        "slash64_equivalent": "65536.0000",
+        "percent_of_china6": "0.000000%",
+        "samples": [
+          "2409:8c85:5432::/48"
+        ]
+      },
+      "current_origin_missing_from_upstream": {
+        "cidr_count": 0,
+        "address_count": "0",
+        "slash64_equivalent": "0.0000",
+        "percent_of_china6": "0.000000%"
+      },
+      "origin_agreement": "50.715132%",
+      "current_origin_coverage": "100.000000%"
+    },
+    {
+      "operator": "unicom",
+      "upstream": {
+        "cidr_count": 1326,
+        "address_count": "372778057561440303177362814533632",
+        "slash64_equivalent": "20208338993152.0000",
+        "percent_of_china6": "18.526705%",
+        "samples": [
+          "2001:250:2::/48",
+          "2001:250:205::/48",
+          "2001:250:206::/47",
+          "2001:250:208::/46",
+          "2001:250:20c::/48",
+          "2001:250:20f::/48",
+          "2001:250:210::/48",
+          "2001:250:214::/47",
+          "2001:250:218::/47",
+          "2001:250:21b::/48"
+        ]
+      },
+      "matching_current_origin": {
+        "cidr_count": 4161,
+        "address_count": "39179495394571282286419424313344",
+        "slash64_equivalent": "2123924701184.0000",
+        "percent_of_china6": "1.947183%",
+        "samples": [
+          "2400:89c0:1010::/44",
+          "2400:cb80:e2e::/47",
+          "2400:cb80:e30::/44",
+          "2400:cb80:e40::/44",
+          "2402:18a0::/32",
+          "2402:dfc0::/44",
+          "2402:dfc0:50::/44",
+          "2402:ef40::/32",
+          "2402:f140:ff10::/48",
+          "2402:f140:ff13::/48"
+        ]
+      },
+      "other_operator_origin": {
+        "cidr_count": 35,
+        "address_count": "85433578746346229147310751744",
+        "slash64_equivalent": "4631363584.0000",
+        "percent_of_china6": "0.004246%",
+        "samples": [
+          "2401:a140:1::/48",
+          "2402:92c0::/48",
+          "2403:1ec0:1610::/48",
+          "2403:a200:a1ff::/48",
+          "2405:1480:1000::/48",
+          "2407:8f40:2::/48",
+          "2409:27fb::/48",
+          "240e:b:e000::/40",
+          "240e:b:f800::/37",
+          "240e:c:800::/37",
+          "240e:c:1800::/37",
+          "240e:4b:c000::/37",
+          "240e:4c::/36",
+          "240e:b1:8800::/37",
+          "240e:b1:9800::/37",
+          "240e:108:10f3::/48",
+          "240e:108:10f4::/48",
+          "240e:23d::/34",
+          "240e:93c:1000::/36",
+          "240e:93d::/36"
+        ]
+      },
+      "no_three_operator_origin": {
+        "cidr_count": 2084,
+        "address_count": "333513128588122674661796079468544",
+        "slash64_equivalent": "18079782928384.0000",
+        "percent_of_china6": "16.575277%",
+        "samples": [
+          "2001:250:2::/48",
+          "2001:250:205::/48",
+          "2001:250:206::/47",
+          "2001:250:208::/46",
+          "2001:250:20c::/48",
+          "2001:250:20f::/48",
+          "2001:250:210::/48",
+          "2001:250:214::/47",
+          "2001:250:218::/47",
+          "2001:250:21b::/48",
+          "2001:250:21e::/47",
+          "2001:250:223::/48",
+          "2001:250:228::/48",
+          "2001:250:22b::/48",
+          "2001:250:22d::/48",
+          "2001:250:22e::/48",
+          "2001:250:230::/47",
+          "2001:250:234::/48",
+          "2001:250:236::/47",
+          "2001:250:238::/48"
+        ]
+      },
+      "outside_china6": {
+        "cidr_count": 0,
+        "address_count": "0",
+        "slash64_equivalent": "0.0000",
+        "percent_of_china6": "0.000000%"
+      },
+      "current_origin_missing_from_upstream": {
+        "cidr_count": 0,
+        "address_count": "0",
+        "slash64_equivalent": "0.0000",
+        "percent_of_china6": "0.000000%"
+      },
+      "origin_agreement": "10.510140%",
+      "current_origin_coverage": "100.000000%"
     }
   ],
   "top_origins": [

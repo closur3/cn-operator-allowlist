@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-21T18:38:50.120445381Z",
+  "generated_at": "2026-07-21T18:44:58.671193336Z",
   "scope": "Read-only audit of the most-specific APNIC inet6num and same-origin route6 evidence covering current mainland China Telecom, China Mobile, and China Unicom IPv6 origins inside gaoyifan china6.txt; no prefix is admitted or excluded",
   "inet6num_record_count": 148952,
   "inet6num_segment_count": 194099,
@@ -1800,33 +1800,6 @@
       }
     },
     {
-      "operator": "chinanet",
-      "category": "independent_legal_entity",
-      "registry_prefix": "2405:1480::/32",
-      "registry_prefix_length": 32,
-      "netnames": [
-        "SKBJNET"
-      ],
-      "descriptions": [
-        "Beijing Sankuai Technology Co.,Ltd.",
-        "Wangjing International R\u0026D Park Phase 3,No.6 Wangjing East Road,",
-        "Chaoyang District,Beijing 100102,PRC"
-      ],
-      "maintainers": [
-        "MAINT-CNNIC-AP"
-      ],
-      "country": "CN",
-      "status": "ALLOCATED PORTABLE",
-      "matched_by": "independent_legal_entity_patterns",
-      "reason": "Most-specific APNIC registration names an independent legal entity without operator attribution",
-      "space": {
-        "cidr_count": 0,
-        "address_count": "1208925819614629174706176",
-        "slash64_equivalent": "65536.0000",
-        "percent_of_operator": "0.000000%"
-      }
-    },
-    {
       "operator": "unicom",
       "category": "independent_legal_entity",
       "registry_prefix": "2405:1480::/32",
@@ -1851,6 +1824,33 @@
         "address_count": "1208925819614629174706176",
         "slash64_equivalent": "65536.0000",
         "percent_of_operator": "0.000003%"
+      }
+    },
+    {
+      "operator": "chinanet",
+      "category": "independent_legal_entity",
+      "registry_prefix": "2405:1480::/32",
+      "registry_prefix_length": 32,
+      "netnames": [
+        "SKBJNET"
+      ],
+      "descriptions": [
+        "Beijing Sankuai Technology Co.,Ltd.",
+        "Wangjing International R\u0026D Park Phase 3,No.6 Wangjing East Road,",
+        "Chaoyang District,Beijing 100102,PRC"
+      ],
+      "maintainers": [
+        "MAINT-CNNIC-AP"
+      ],
+      "country": "CN",
+      "status": "ALLOCATED PORTABLE",
+      "matched_by": "independent_legal_entity_patterns",
+      "reason": "Most-specific APNIC registration names an independent legal entity without operator attribution",
+      "space": {
+        "cidr_count": 0,
+        "address_count": "1208925819614629174706176",
+        "slash64_equivalent": "65536.0000",
+        "percent_of_operator": "0.000000%"
       }
     },
     {
