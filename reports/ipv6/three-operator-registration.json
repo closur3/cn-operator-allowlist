@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-21T19:01:05.858023574Z",
+  "generated_at": "2026-07-21T19:04:03.278668062Z",
   "scope": "Read-only audit and first-pass policy preview of the most-specific APNIC inet6num and same-origin route6 evidence covering current mainland China Telecom, China Mobile, and China Unicom IPv6 origins inside gaoyifan china6.txt; no formal prefix list is emitted",
   "inet6num_record_count": 148952,
   "inet6num_segment_count": 194099,
@@ -50,10 +50,10 @@
         "percent_of_operator": "49.904976%"
       },
       "explicit_user_purpose": {
-        "cidr_count": 320,
-        "address_count": "60881530872160756760044866895872",
-        "slash64_equivalent": "3300394401792.0000",
-        "percent_of_operator": "18.838693%"
+        "cidr_count": 343,
+        "address_count": "61035033019180504684874008887296",
+        "slash64_equivalent": "3308715769856.0000",
+        "percent_of_operator": "18.886192%"
       }
     },
     {
@@ -766,6 +766,7 @@
       "reason": "Most-specific APNIC registration is attributed to the current BGP operator",
       "first_pass_decision": "retain",
       "first_pass_reason": "Retain: most-specific APNIC registration is attributed to the current operator",
+      "explicit_user_purpose": true,
       "space": {
         "cidr_count": 0,
         "address_count": "153502147019747924829141991424",
@@ -1978,35 +1979,6 @@
       }
     },
     {
-      "operator": "chinanet",
-      "category": "independent_legal_entity",
-      "registry_prefix": "2405:1480::/32",
-      "registry_prefix_length": 32,
-      "netnames": [
-        "SKBJNET"
-      ],
-      "descriptions": [
-        "Beijing Sankuai Technology Co.,Ltd.",
-        "Wangjing International R\u0026D Park Phase 3,No.6 Wangjing East Road,",
-        "Chaoyang District,Beijing 100102,PRC"
-      ],
-      "maintainers": [
-        "MAINT-CNNIC-AP"
-      ],
-      "country": "CN",
-      "status": "ALLOCATED PORTABLE",
-      "matched_by": "independent_legal_entity_patterns",
-      "reason": "Most-specific APNIC registration names an independent legal entity without operator attribution",
-      "first_pass_decision": "exclude",
-      "first_pass_reason": "Exclude: most-specific APNIC registration names an independent legal entity",
-      "space": {
-        "cidr_count": 0,
-        "address_count": "1208925819614629174706176",
-        "slash64_equivalent": "65536.0000",
-        "percent_of_operator": "0.000000%"
-      }
-    },
-    {
       "operator": "unicom",
       "category": "independent_legal_entity",
       "registry_prefix": "2405:1480::/32",
@@ -2036,15 +2008,17 @@
       }
     },
     {
-      "operator": "unicom",
+      "operator": "chinanet",
       "category": "independent_legal_entity",
-      "registry_prefix": "2405:7040::/32",
+      "registry_prefix": "2405:1480::/32",
       "registry_prefix_length": 32,
       "netnames": [
-        "COSCOSHIPPING"
+        "SKBJNET"
       ],
       "descriptions": [
-        "CHINA COSCO SHIPPING CORPORATION LIMITED"
+        "Beijing Sankuai Technology Co.,Ltd.",
+        "Wangjing International R\u0026D Park Phase 3,No.6 Wangjing East Road,",
+        "Chaoyang District,Beijing 100102,PRC"
       ],
       "maintainers": [
         "MAINT-CNNIC-AP"
@@ -2059,7 +2033,7 @@
         "cidr_count": 0,
         "address_count": "1208925819614629174706176",
         "slash64_equivalent": "65536.0000",
-        "percent_of_operator": "0.000003%"
+        "percent_of_operator": "0.000000%"
       }
     },
     {
@@ -2087,6 +2061,33 @@
         "address_count": "1208925819614629174706176",
         "slash64_equivalent": "65536.0000",
         "percent_of_operator": "0.000000%"
+      }
+    },
+    {
+      "operator": "unicom",
+      "category": "independent_legal_entity",
+      "registry_prefix": "2405:7040::/32",
+      "registry_prefix_length": 32,
+      "netnames": [
+        "COSCOSHIPPING"
+      ],
+      "descriptions": [
+        "CHINA COSCO SHIPPING CORPORATION LIMITED"
+      ],
+      "maintainers": [
+        "MAINT-CNNIC-AP"
+      ],
+      "country": "CN",
+      "status": "ALLOCATED PORTABLE",
+      "matched_by": "independent_legal_entity_patterns",
+      "reason": "Most-specific APNIC registration names an independent legal entity without operator attribution",
+      "first_pass_decision": "exclude",
+      "first_pass_reason": "Exclude: most-specific APNIC registration names an independent legal entity",
+      "space": {
+        "cidr_count": 0,
+        "address_count": "1208925819614629174706176",
+        "slash64_equivalent": "65536.0000",
+        "percent_of_operator": "0.000003%"
       }
     },
     {
