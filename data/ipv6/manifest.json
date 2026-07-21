@@ -1,23 +1,8 @@
 {
-  "generated_at": "2026-07-21T21:03:46.092835502Z",
+  "generated_at": "2026-07-21T21:11:42.425461227Z",
   "scope": "Current exact IPv6 BGP prefixes fully contained by each operator's official APNIC 240x allocation and whose complete observed Origin set is attributed to that operator",
   "output_kind": "exact_bgp_prefix_candidates",
   "sources": {
-    "apnic_rdap_chinanet_1": {
-      "source": "https://rdap.apnic.net/ip/240e::/18",
-      "bytes": 4225,
-      "sha256": "dc2ad5e8e53649b9aff368490d44e093aed918320acda1cc745ee29e3fc5f9d5"
-    },
-    "apnic_rdap_cmcc_1": {
-      "source": "https://rdap.apnic.net/ip/2409:8000::/20",
-      "bytes": 5025,
-      "sha256": "62363b564971ae374f30a90d54ef4b634bf4511edca6ab8ffaed448630198cdd"
-    },
-    "apnic_rdap_unicom_1": {
-      "source": "https://rdap.apnic.net/ip/2408:8000::/20",
-      "bytes": 3373,
-      "sha256": "4d7dce28e2e198693fe9ab988486b9e85dade9a9de789051eb74ddacf2bdbf40"
-    },
     "iptoasn_v6_asn_metadata_only": {
       "source": "https://iptoasn.com/data/ip2asn-v6.tsv.gz",
       "bytes": 1975215,
@@ -30,23 +15,23 @@
     },
     "operator_ipv6_allocations": {
       "source": "config/ipv6_allocations.json",
-      "bytes": 1200,
-      "sha256": "b6b72b32b5fd63d436672711126c9c869823bffac87d9c334ae5d0e32974c9a4"
+      "bytes": 857,
+      "sha256": "b901e9b61ff97ed1591b38e0e2f70ea3fa61027777a012a304df8b2a2f73382d"
     },
     "ripe_atlas_probes_chinanet": {
       "source": "https://atlas.ripe.net/api/v2/probes/?country_code=CN\u0026prefix_v6=240e%3A%3A%2F18\u0026page_size=500",
       "bytes": 23442,
-      "sha256": "eb76b7491fffba50aa80d489d7059fcda227b6d806bbe27700b95abd062b2ac5"
+      "sha256": "8122d254c3a2cdd15fc99cd75682ccf68f3530429dc269bf2205726239dc8bc9"
     },
     "ripe_atlas_probes_cmcc": {
       "source": "https://atlas.ripe.net/api/v2/probes/?country_code=CN\u0026prefix_v6=2409%3A8000%3A%3A%2F20\u0026page_size=500",
       "bytes": 24060,
-      "sha256": "67d73461f64ca54b11190ded69caecb7aa42d373910216fac5b395efbbe1c796"
+      "sha256": "fbd6d9d53c8e3c9228bd4184918ba4be9b8fdabd5e7f9c334d06bce009a9fc4c"
     },
     "ripe_atlas_probes_unicom": {
       "source": "https://atlas.ripe.net/api/v2/probes/?country_code=CN\u0026prefix_v6=2408%3A8000%3A%3A%2F20\u0026page_size=500",
       "bytes": 20013,
-      "sha256": "404dc68fb5cb69e9dcd224fbd5b0290291e6bb4e73c132a395c190cedfbfadf9"
+      "sha256": "fbbe6b6ff91c354f6515957c435c81cbe1adda1fa67b6042622cdc77158b0b21"
     },
     "riswhois_ipv6": {
       "source": "https://www.ris.ripe.net/dumps/riswhoisdump.IPv6.gz",
@@ -57,7 +42,7 @@
   "policy": {
     "address_family": "IPv6",
     "allocation_authority": "APNIC",
-    "allocation_check": "live_rdap_exact_range",
+    "allocation_check": "versioned_static_config",
     "routing_snapshot": "RIPE_RISWhois",
     "output_unit": "exact_observed_bgp_prefix",
     "origin_policy": "complete_origin_set_same_operator",
@@ -1017,11 +1002,7 @@
           "netname": "CT-IPv6-Networks",
           "organization": "China Telecom",
           "status": "ALLOCATED PORTABLE",
-          "source": "https://rdap.apnic.net/ip/240e::/18",
-          "rdap_file": "chinanet.json",
-          "required_entity_handles": [
-            "ORG-CT1-AP"
-          ]
+          "source": "https://rdap.apnic.net/ip/240e::/18"
         }
       ]
     },
@@ -1036,11 +1017,7 @@
           "netname": "CMNET-V6-20110823",
           "organization": "China Mobile",
           "status": "ALLOCATED PORTABLE",
-          "source": "https://rdap.apnic.net/ip/2409:8000::/20",
-          "rdap_file": "cmcc.json",
-          "required_entity_handles": [
-            "ORG-CM1-AP"
-          ]
+          "source": "https://rdap.apnic.net/ip/2409:8000::/20"
         }
       ]
     },
@@ -1055,12 +1032,7 @@
           "netname": "CU-CN",
           "organization": "China Unicom",
           "status": "ALLOCATED PORTABLE",
-          "source": "https://rdap.apnic.net/ip/2408:8000::/20",
-          "rdap_file": "unicom.json",
-          "required_entity_handles": [
-            "CH1302-AP",
-            "IRT-CU-CN"
-          ]
+          "source": "https://rdap.apnic.net/ip/2408:8000::/20"
         }
       ]
     }
