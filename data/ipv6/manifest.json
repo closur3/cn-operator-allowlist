@@ -1,17 +1,22 @@
 {
-  "generated_at": "2026-07-21T20:05:56.249850876Z",
-  "scope": "Current exact IPv6 BGP prefixes whose complete observed Origin set is attributed to one Chinese operator; BGP Origin alone does not prove terminal-user access purpose",
+  "generated_at": "2026-07-21T20:19:30.059447868Z",
+  "scope": "Current exact IPv6 BGP prefixes fully contained by each operator's official APNIC 240x allocation and whose complete observed Origin set is attributed to that operator",
   "output_kind": "exact_bgp_prefix_candidates",
   "sources": {
     "iptoasn_v6_asn_metadata_only": {
       "path": "/home/runner/work/cn-eyeball-prefixes/cn-eyeball-prefixes/.tmp/cn-eyeball-ipv6-sources/ip2asn-v6.tsv.gz",
-      "bytes": 1975215,
-      "sha256": "95aafeb0d0a8862a4f03b3bfdbfc29a825e548afc70d1ca98a479733fe804de9"
+      "bytes": 1974689,
+      "sha256": "816bd185c5a950b8dc8a5cf2d97606d28f7ed4c3e5f6e7fa698ca738d0af3269"
     },
     "operator_config": {
       "path": "config/operators.json",
       "bytes": 9754,
       "sha256": "f7c8028a3ab9a3f4d0b6a372eae1b182ab53d0432d410bab30fe272f2b82d049"
+    },
+    "operator_ipv6_allocations": {
+      "path": "config/ipv6_allocations.json",
+      "bytes": 1017,
+      "sha256": "827387ed52b25f2a5eeaae91425822998cde0552f3b1876f93531373a3a2bd93"
     },
     "riswhois_ipv6": {
       "path": "/home/runner/work/cn-eyeball-prefixes/cn-eyeball-prefixes/.tmp/cn-eyeball-ipv6-sources/riswhois-ipv6.gz",
@@ -22,6 +27,8 @@
   "constraints": [
     "No gaoyifan china6 intersection",
     "No APNIC inet6num input",
+    "Admission boundaries are the official allocations 240e::/18, 2409:8000::/20, and 2408:8000::/20 recorded in versioned configuration",
+    "Legacy 2001:: and 2400:: operator prefixes are outside the admission boundary",
     "Every emitted CIDR is an exact prefix present in the RIPE RISWhois IPv6 dump",
     "No address subtraction, sibling merging, or synthetic CIDR aggregation",
     "Prefixes with unknown, excluded, or cross-operator Origins are not emitted",
@@ -35,8 +42,8 @@
     "chinanet": {
       "status": "bgp_candidates_require_access_purpose_evidence",
       "path": "data/ipv6/operators/chinanet.txt",
-      "prefix_count": 4041,
-      "unique_slash64_equivalent": "17605345935360.0000",
+      "prefix_count": 3998,
+      "unique_slash64_equivalent": "17592186044416.0000",
       "origin_asns": [
         {
           "asn": "134774",
@@ -46,7 +53,7 @@
         {
           "asn": "4134",
           "description": "CHINANET-BACKBONE No.31,Jin-rong Street",
-          "prefix_count": 663
+          "prefix_count": 638
         },
         {
           "asn": "140292",
@@ -76,12 +83,12 @@
         {
           "asn": "4812",
           "description": "CHINANET-SH-AP China Telecom Group",
-          "prefix_count": 103
+          "prefix_count": 100
         },
         {
           "asn": "4811",
           "description": "CHINANET-SHANGHAI-MAN China Telecom Group",
-          "prefix_count": 102
+          "prefix_count": 98
         },
         {
           "asn": "140329",
@@ -139,11 +146,6 @@
           "prefix_count": 19
         },
         {
-          "asn": "4847",
-          "description": "CNIX-AP China Networks Inter-Exchange",
-          "prefix_count": 16
-        },
-        {
           "asn": "137695",
           "description": "CHINATELECOM-XINJIANG-WULUMUQI-MAN CHINATELECOM Xinjiang Wulumuqi MAN network",
           "prefix_count": 11
@@ -169,13 +171,13 @@
           "prefix_count": 10
         },
         {
-          "asn": "134773",
-          "description": "CHINANET-GUANGDONG-GUANGZHOU-MAN CHINANET Guangdong province Guangzhou MAN network",
+          "asn": "17897",
+          "description": "CHINATELECOM-HLJ-AS-AP asn for Heilongjiang Provincial Net of CT",
           "prefix_count": 9
         },
         {
-          "asn": "17897",
-          "description": "CHINATELECOM-HLJ-AS-AP asn for Heilongjiang Provincial Net of CT",
+          "asn": "4847",
+          "description": "CNIX-AP China Networks Inter-Exchange",
           "prefix_count": 9
         },
         {
@@ -184,14 +186,19 @@
           "prefix_count": 8
         },
         {
-          "asn": "136197",
-          "description": "CHINATELECOM-HEBEI-XIONGAN Xiongan, Hebei Province, P.R.China.",
+          "asn": "134773",
+          "description": "CHINANET-GUANGDONG-GUANGZHOU-MAN CHINANET Guangdong province Guangzhou MAN network",
           "prefix_count": 7
         },
         {
           "asn": "140553",
           "description": "CHINATELECOM-XINJIANG-SHENGJI-5G-NETWORK CHINATELECOM XINJIANG province Shengji 5G network",
           "prefix_count": 7
+        },
+        {
+          "asn": "136197",
+          "description": "CHINATELECOM-HEBEI-XIONGAN Xiongan, Hebei Province, P.R.China.",
+          "prefix_count": 6
         },
         {
           "asn": "140053",
@@ -972,23 +979,48 @@
           "asn": "58571",
           "description": "CHINATELECOM-GUIZHOU CHINANET Guizhou province network",
           "prefix_count": 1
-        },
+        }
+      ],
+      "admission_blocks": [
         {
-          "asn": "59265",
-          "description": "CT-CNGI China telecom ACAEURA China Next Generation Internet",
-          "prefix_count": 1
+          "prefix": "240e::/18",
+          "registry": "APNIC",
+          "netname": "CT-IPv6-Networks",
+          "organization": "China Telecom",
+          "status": "ALLOCATED PORTABLE",
+          "source": "https://wq.apnic.net/apnic-bin/whois.pl?object_type=inet6num\u0026searchtext=240e%3A%3A%2F18"
         }
       ]
     },
     "cmcc": {
       "status": "pending_additional_positive_evidence",
       "prefix_count": 0,
-      "unique_slash64_equivalent": "0.0000"
+      "unique_slash64_equivalent": "0.0000",
+      "admission_blocks": [
+        {
+          "prefix": "2409:8000::/20",
+          "registry": "APNIC",
+          "netname": "CMNET-V6-20110823",
+          "organization": "China Mobile",
+          "status": "ALLOCATED PORTABLE",
+          "source": "https://wq.apnic.net/apnic-bin/whois.pl?object_type=inet6num\u0026searchtext=2409%3A8000%3A%3A%2F20"
+        }
+      ]
     },
     "unicom": {
       "status": "pending_additional_positive_evidence",
       "prefix_count": 0,
-      "unique_slash64_equivalent": "0.0000"
+      "unique_slash64_equivalent": "0.0000",
+      "admission_blocks": [
+        {
+          "prefix": "2408:8000::/20",
+          "registry": "APNIC",
+          "netname": "CU-CN",
+          "organization": "China Unicom",
+          "status": "ALLOCATED PORTABLE",
+          "source": "https://wq.apnic.net/apnic-bin/whois.pl?object_type=inet6num\u0026searchtext=2408%3A8000%3A%3A%2F20"
+        }
+      ]
     }
   }
 }

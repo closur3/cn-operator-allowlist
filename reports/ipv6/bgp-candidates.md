@@ -1,8 +1,8 @@
 # 三网 IPv6 原始 BGP 前缀审计
 
-生成时间：`2026-07-21T20:05:56.249850876Z`
+生成时间：`2026-07-21T20:19:30.059447868Z`
 
-本报告直接以 RIPE RISWhois 的当前原始 IPv6 宣告前缀为单位；不使用 `china6`，不读取 APNIC `inet6num`，不进行地址切除或 CIDR 再聚合。
+本报告直接以 RIPE RISWhois 的当前原始 IPv6 宣告前缀为单位；只准入完整位于电信 `240e::/18`、移动 `2409:8000::/20`、联通 `2408:8000::/20` 相应母段内的前缀。不使用 `china6`，不读取 APNIC `inet6num`，不进行地址切除或 CIDR 再聚合。
 
 BGP 只能证明前缀和 Origin，不能证明终端用户接入用途。因此电信输出是待继续验证的 BGP 候选，不是已经完成用途证明的正式白名单。
 
@@ -12,23 +12,23 @@ RIS 行：**308993**；原始 IPv6 前缀：**296767**。
 
 | 运营商 | 原始 BGP 前缀 | 状态 |
 | --- | ---: | --- |
-| chinanet | 4041 | 已输出候选，仍需终端用途正证据 |
-| cmcc | 17881 | 不输出，等待额外正证据 |
-| unicom | 4488 | 不输出，等待额外正证据 |
+| chinanet | 3998 | 已输出候选，仍需终端用途正证据 |
+| cmcc | 17723 | 不输出，等待额外正证据 |
+| unicom | 4460 | 不输出，等待额外正证据 |
 
 ## 电信候选 Origin ASN
 
 | ASN | 原始 BGP 前缀 | 描述 |
 | --- | ---: | --- |
 | AS134774 | 768 | CHINANET-GUANGDONG-SHENZHEN-MAN CHINANET Guangdong province Shenzhen MAN network |
-| AS4134 | 663 | CHINANET-BACKBONE No.31,Jin-rong Street |
+| AS4134 | 638 | CHINANET-BACKBONE No.31,Jin-rong Street |
 | AS140292 | 614 | CHINATELECOM-JIANGSU-SUZHOU-5G-NETWORK CHINATELECOM Jiangsu province Suzhou 5G network |
 | AS140345 | 209 | CHINATELECOM-YUNNAN-SHENGJI-5G-NETWORK CHINATELECOM Yunnan province Shengji 5G network |
 | AS140647 | 188 | CHINATELECOM-GUIZHOU-SHENGJI-5G-NETWORK CHINATELECOM Guizhou province Shengji 5G network |
 | AS132225 | 180 | CHINATELECOM-QINGHAI-5G-NETWORK China Telecom |
 | AS140330 | 105 | CHINATELECOM-FUJIAN-XIAMEN-5G-NETWORK CHINATELECOM Fujian province Xiamen 5G network |
-| AS4812 | 103 | CHINANET-SH-AP China Telecom Group |
-| AS4811 | 102 | CHINANET-SHANGHAI-MAN China Telecom Group |
+| AS4812 | 100 | CHINANET-SH-AP China Telecom Group |
+| AS4811 | 98 | CHINANET-SHANGHAI-MAN China Telecom Group |
 | AS140329 | 87 | CHINATELECOM-FUJIAN-FUZHOU-5G-NETWORK CHINATELECOM Fujian province Fuzhou 5G network |
 | AS134767 | 80 | CHINANET-SICHUAN-CHENGDU-MAN CHINANET Sichuan province Chengdu MAN network |
 | AS151058 | 73 | CT-HAINAN China Telecom |
@@ -40,17 +40,17 @@ RIS 行：**308993**；原始 IPv6 前缀：**296767**。
 | AS131285 | 25 | CHINATELECOM-HUBEI-SHENGJI-5G-NETWORK CHINATELECOM Hubei province Shengji 5G network |
 | AS140494 | 23 | CHINATELECOM-ZHEJIANG-HUZHOU-5G-NETWORK CHINATELECOM ZHEJIANG province HUZHOU 5G network |
 | AS17638 | 19 | CHINATELECOM-TJ-AS-AP ASN for TIANJIN Provincial Net of CT |
-| AS4847 | 16 | CNIX-AP China Networks Inter-Exchange |
 | AS137695 | 11 | CHINATELECOM-XINJIANG-WULUMUQI-MAN CHINATELECOM Xinjiang Wulumuqi MAN network |
 | AS140485 | 11 | CHINATELECOM-ZHEJIANG-HANGZHOU-5GC-NETWORK CHINATELECOM ZHEJIANG province HANGZHOU 5GC network |
 | AS131325 | 10 | CHINATELECOM-JIANGSU-NANTONG-MAN CHINATELECOM JIANGSU province NANTONG MAN network |
 | AS140293 | 10 | CHINATELECOM-JIANGSU-CHANGZHOU-5G-NETWORK CHINATELECOM Jiangsu province Changzhou 5G network |
 | AS58542 | 10 | CHINATELECOM-TIANJIN Tianjij,300000 |
-| AS134773 | 9 | CHINANET-GUANGDONG-GUANGZHOU-MAN CHINANET Guangdong province Guangzhou MAN network |
 | AS17897 | 9 | CHINATELECOM-HLJ-AS-AP asn for Heilongjiang Provincial Net of CT |
+| AS4847 | 9 | CNIX-AP China Networks Inter-Exchange |
 | AS140486 | 8 | CHINATELECOM-ZHEJIANG-JINHUA-5GC-NETWORK CHINATELECOM ZHEJIANG province JINHUA 5GC network |
-| AS136197 | 7 | CHINATELECOM-HEBEI-XIONGAN Xiongan, Hebei Province, P.R.China. |
+| AS134773 | 7 | CHINANET-GUANGDONG-GUANGZHOU-MAN CHINANET Guangdong province Guangzhou MAN network |
 | AS140553 | 7 | CHINATELECOM-XINJIANG-SHENGJI-5G-NETWORK CHINATELECOM XINJIANG province Shengji 5G network |
+| AS136197 | 6 | CHINATELECOM-HEBEI-XIONGAN Xiongan, Hebei Province, P.R.China. |
 | AS140053 | 6 | CHINANET-HUIZHOU-AS-AP China Telecom |
 | AS140309 | 6 | CHINATELECOM-GUANGDONG-ZHONGSHAN-5G-NETWORK CHINATELECOM Guangdong province Zhongshan 5G network |
 | AS140311 | 6 | CHINATELECOM-GUANGDONG-JIANGMEN-5G-NETWORK CHINATELECOM Guangdong province Jiangmen 5G network |
@@ -207,12 +207,12 @@ RIS 行：**308993**；原始 IPv6 前缀：**296767**。
 | AS141006 | 1 | CT-NEIMENGGU-WULANCHABU-MAN China Telecom |
 | AS4813 | 1 | BACKBONE-GUANGDONG-AP China TelecomGroup |
 | AS58571 | 1 | CHINATELECOM-GUIZHOU CHINANET Guizhou province network |
-| AS59265 | 1 | CT-CNGI China telecom ACAEURA China Next Generation Internet |
 
 ## 未进入三网候选的原因
 
 - `cross_operator_moas`: 6
 - `excluded_origin`: 3588
-- `missing_asn_metadata`: 2442
-- `non_cn_origin`: 258098
+- `missing_asn_metadata`: 2457
+- `non_cn_origin`: 258083
 - `non_operator_origin`: 6223
+- `outside_operator_240x_allocation`: 229
