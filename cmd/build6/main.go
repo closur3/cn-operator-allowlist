@@ -125,8 +125,8 @@ func main() {
 				Slash64Equivalent: uniqueSlash64(chinanet),
 				OriginASNs: chinanetASNs,
 			},
-			"cmcc": {Status: "pending_additional_positive_evidence"},
-			"unicom": {Status: "pending_additional_positive_evidence"},
+			"cmcc": {Status: "pending_additional_positive_evidence", Slash64Equivalent: "0.0000"},
+			"unicom": {Status: "pending_additional_positive_evidence", Slash64Equivalent: "0.0000"},
 		},
 	}
 	auditValue := audit{
