@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-22T08:59:25.367534046Z",
+  "generated_at": "2026-07-22T09:00:50.701724664Z",
   "sources": {
     "apnic_inet6num": {
       "source": "https://ftp.apnic.net/apnic/whois/apnic.db.inet6num.gz",
@@ -27,6 +27,15 @@
     "matched_inet6num_records": {
       "fixed_broadband": 2,
       "mobile": 1
+    },
+    "matched_inet6num_prefixes": {
+      "fixed_broadband": [
+        "240e:300::/24",
+        "240e:b00::/24"
+      ],
+      "mobile": [
+        "240e:400::/24"
+      ]
     },
     "effective_ranges": {
       "fixed_broadband": 2,
