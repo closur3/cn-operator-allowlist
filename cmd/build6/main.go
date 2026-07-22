@@ -336,7 +336,17 @@ func allOriginsMatch(origins []string, metadata map[string]asMeta, classifier *o
 	}
 	for _, asn := range origins {
 		meta, ok := metadata[asn]
-		if !ok || !strings.EqualFold(meta.Country, "CN") || classifier.Match(asn, meta.Description) != operator {
+		if !ok || !strings.EqualFold(meta.Country, "CN") {
+			return false
+		}
+		result := classifier.Classify(asn, meta.Description)
+		if result.Operator != operator {
+			return false
+		}
+		// In IPv6, the admitted business range proves that the address space is
+		// terminal access space. CN2/CUII may still originate such a route as
+		// transport, so their IPv4 address-origin exclusions do not apply here.
+		if result.Excluded && asn != "4809" && asn != "9929" {
 			return false
 		}
 	}

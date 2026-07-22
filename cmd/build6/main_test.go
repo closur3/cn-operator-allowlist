@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/closur3/cn-eyeball-prefixes/internal/apnic6"
+	"github.com/closur3/cn-eyeball-prefixes/internal/operatorconfig"
 )
 
 func TestRegistrationPurposeAcceptsOnlyTwoDescriptions(t *testing.T) {
@@ -58,11 +59,15 @@ func TestNonAdmittedMoreSpecificRegistrationCreatesAdmissionGap(t *testing.T) {
 }
 
 func TestTelecomOriginRecognitionDoesNotApplyIPv4Exclusions(t *testing.T) {
+	classifier, err := operatorconfig.Load("../../config/operators.json", []string{"chinatelecom", "chinamobile", "chinaunicom"})
+	if err != nil {
+		t.Fatal(err)
+	}
 	metadata := map[string]asMeta{
 		"4134": {Country: "CN", Description: "China Telecom Backbone"},
 		"4809": {Country: "CN", Description: "China Telecom Next Generation Carrier Network"},
 	}
-	if !allTelecomOrigins([]string{"4134", "4809"}, metadata) {
+	if !allOriginsMatch([]string{"4134", "4809"}, metadata, classifier, "chinatelecom") {
 		t.Fatal("China Telecom transport origin rejected an explicitly labelled access prefix")
 	}
 }
