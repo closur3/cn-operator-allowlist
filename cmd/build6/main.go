@@ -21,6 +21,9 @@ import (
 )
 
 const (
+	// telecomBlock and the two descriptions are policy. The matching inet6num
+	// prefixes are discovered from the current APNIC database on every build;
+	// they must not be copied into the generator as static admission prefixes.
 	telecomBlock      = "240e::/18"
 	fixedDescription  = "Chinatelecom IPv6 address for fixed broadband"
 	mobileDescription = "Chinatelecom IPv6 address for mobile"
@@ -84,6 +87,9 @@ func main() {
 	must(err)
 	registrations, err := apnic6.Parse(*inet6numPath, boundary)
 	must(err)
+	// Resolve the current registry hierarchy first. A more-specific APNIC
+	// object overrides a broader one and can therefore create a denied hole in
+	// an otherwise admitted registration.
 	resolvedRegistrations := apnic6.ResolveMostSpecific(registrations)
 	admissionRanges := buildAdmissionRanges(resolvedRegistrations)
 	matchedInet6numRecords := map[string]int{"fixed_broadband": 0, "mobile": 0}
@@ -120,6 +126,8 @@ func main() {
 			rejected["non_telecom_origin"]++
 			continue
 		}
+		// A BGP prefix is admitted only when its complete address range is
+		// covered by the dynamically discovered fixed/mobile registrations.
 		purpose, reason := classifyPrefix(record.Prefix, admissionRanges)
 		switch purpose {
 		case "fixed":
