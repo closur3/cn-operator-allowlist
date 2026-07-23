@@ -5,7 +5,7 @@ on:
     branches:
       - dev
     paths-ignore:
-      - 'data/**'
+      - 'lists/**'
   schedule:
     - cron: '8 8 * * *'
   workflow_dispatch:
@@ -20,104 +20,232 @@ concurrency:
 jobs:
   generate:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     env:
-      SOURCE_DIR: ${{ github.workspace }}/.tmp/cn-operator-sources
+      SOURCE_DIR: ${{ runner.temp }}/cn-operator-sources
+      STAGE_DIR: ${{ runner.temp }}/cn-operator-stage
+      AUDIT_DIR: ${{ runner.temp }}/cn-operator-audit
     steps:
       - uses: actions/checkout@v6
+
       - uses: actions/setup-go@v6
         with:
           go-version: '1.26'
-          cache: true
+          cache: false
+
+      - name: Prepare isolated directories
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf -- "$SOURCE_DIR" "$STAGE_DIR" "$AUDIT_DIR"
+          mkdir -p "$SOURCE_DIR" "$STAGE_DIR/ipv4" "$STAGE_DIR/ipv6" "$AUDIT_DIR"
+
       - name: Download sources
         shell: bash
         run: |
           set -euo pipefail
           source_dir="$SOURCE_DIR"
-          rm -rf "$source_dir"
-          mkdir -p "$source_dir"
           curl_opts=(--fail --silent --show-error --location --retry 3)
+
           base='https://raw.githubusercontent.com/gaoyifan/china-operator-ip/ip-lists'
           curl "${curl_opts[@]}" "$base/china.txt" -o "$source_dir/china.txt"
-          curl "${curl_opts[@]}" 'https://iptoasn.com/data/ip2asn-v4.tsv.gz' -o "$source_dir/iptoasn_ipv4.tsv.gz"
-          curl "${curl_opts[@]}" 'https://ftp.apnic.net/apnic/whois/apnic.db.inetnum.gz' -o "$source_dir/apnic_inetnum.gz"
-          curl "${curl_opts[@]}" 'https://ftp.apnic.net/apnic/whois/apnic.db.aut-num.gz' -o "$source_dir/apnic_autnum.gz"
-          curl "${curl_opts[@]}" 'https://ftp.apnic.net/apnic/whois/apnic.db.organisation.gz' -o "$source_dir/apnic_organisation.gz"
-          curl "${curl_opts[@]}" 'https://ftp.apnic.net/apnic/whois/apnic.db.route.gz' -o "$source_dir/apnic_route.gz"
-          curl "${curl_opts[@]}" 'https://www.ris.ripe.net/dumps/riswhoisdump.IPv4.gz' -o "$source_dir/riswhois_ipv4.gz"
-          curl "${curl_opts[@]}" 'https://raw.githubusercontent.com/lionsoul2014/ip2region/master/data/ipv4_source.txt' -o "$source_dir/ip2region_ipv4_source.txt"
+
+          curl "${curl_opts[@]}" \
+            'https://iptoasn.com/data/ip2asn-v4.tsv.gz' \
+            -o "$source_dir/iptoasn_ipv4.tsv.gz"
+          curl "${curl_opts[@]}" \
+            'https://iptoasn.com/data/ip2asn-v6.tsv.gz' \
+            -o "$source_dir/iptoasn_ipv6.tsv.gz"
+
+          curl "${curl_opts[@]}" \
+            'https://ftp.apnic.net/apnic/whois/apnic.db.inetnum.gz' \
+            -o "$source_dir/apnic_inetnum.gz"
+          curl "${curl_opts[@]}" \
+            'https://ftp.apnic.net/apnic/whois/apnic.db.inet6num.gz' \
+            -o "$source_dir/apnic_inet6num.gz"
+          curl "${curl_opts[@]}" \
+            'https://ftp.apnic.net/apnic/whois/apnic.db.aut-num.gz' \
+            -o "$source_dir/apnic_autnum.gz"
+          curl "${curl_opts[@]}" \
+            'https://ftp.apnic.net/apnic/whois/apnic.db.organisation.gz' \
+            -o "$source_dir/apnic_organisation.gz"
+          curl "${curl_opts[@]}" \
+            'https://ftp.apnic.net/apnic/whois/apnic.db.route.gz' \
+            -o "$source_dir/apnic_route.gz"
+
+          curl "${curl_opts[@]}" \
+            'https://www.ris.ripe.net/dumps/riswhoisdump.IPv4.gz' \
+            -o "$source_dir/riswhois_ipv4.gz"
+          curl "${curl_opts[@]}" \
+            'https://www.ris.ripe.net/dumps/riswhoisdump.IPv6.gz' \
+            -o "$source_dir/riswhois_ipv6.gz"
+
+          curl "${curl_opts[@]}" \
+            'https://raw.githubusercontent.com/lionsoul2014/ip2region/master/data/ipv4_source.txt' \
+            -o "$source_dir/ip2region_ipv4_source.txt"
+
           ipdata_base='https://raw.githubusercontent.com/axpwx/IP-Data/master/provider'
-          curl "${curl_opts[@]}" "$ipdata_base/aliyun-cidr-ipv4.txt" -o "$source_dir/ipdata_aliyun.txt"
-          curl "${curl_opts[@]}" "$ipdata_base/tencent-cidr-ipv4.txt" -o "$source_dir/ipdata_tencent.txt"
-          curl "${curl_opts[@]}" "$ipdata_base/huawei-cidr-ipv4.txt" -o "$source_dir/ipdata_huawei.txt"
-          curl "${curl_opts[@]}" "$ipdata_base/ucloud-cidr-ipv4.txt" -o "$source_dir/ipdata_ucloud.txt"
-          curl "${curl_opts[@]}" "$ipdata_base/ksyun-cidr-ipv4.txt" -o "$source_dir/ipdata_ksyun.txt"
-          curl "${curl_opts[@]}" "$ipdata_base/baidu-cidr-ipv4.txt" -o "$source_dir/ipdata_baidu.txt"
-          curl "${curl_opts[@]}" "$ipdata_base/jdcloud-cidr-ipv4.txt" -o "$source_dir/ipdata_jdcloud.txt"
+          curl "${curl_opts[@]}" "$ipdata_base/aliyun-cidr-ipv4.txt" \
+            -o "$source_dir/ipdata_aliyun.txt"
+          curl "${curl_opts[@]}" "$ipdata_base/tencent-cidr-ipv4.txt" \
+            -o "$source_dir/ipdata_tencent.txt"
+          curl "${curl_opts[@]}" "$ipdata_base/huawei-cidr-ipv4.txt" \
+            -o "$source_dir/ipdata_huawei.txt"
+          curl "${curl_opts[@]}" "$ipdata_base/ucloud-cidr-ipv4.txt" \
+            -o "$source_dir/ipdata_ucloud.txt"
+          curl "${curl_opts[@]}" "$ipdata_base/ksyun-cidr-ipv4.txt" \
+            -o "$source_dir/ipdata_ksyun.txt"
+          curl "${curl_opts[@]}" "$ipdata_base/baidu-cidr-ipv4.txt" \
+            -o "$source_dir/ipdata_baidu.txt"
+          curl "${curl_opts[@]}" "$ipdata_base/jdcloud-cidr-ipv4.txt" \
+            -o "$source_dir/ipdata_jdcloud.txt"
+
           du -h "$source_dir"/*
+
       - name: Validate downloaded sources
         shell: bash
         run: |
           set -euo pipefail
           source_dir="$SOURCE_DIR"
+
           while IFS= read -r file; do
-            if [[ ! -s "$file" ]]; then echo "empty source: $file" >&2; exit 1; fi
+            if [[ ! -s "$file" ]]; then
+              echo "empty source: $file" >&2
+              exit 1
+            fi
           done < <(find "$source_dir" -type f)
-          if (( $(stat -c '%s' "$source_dir/apnic_inetnum.gz") < 10000000 )); then
-            echo 'APNIC inetnum source is unexpectedly small' >&2
-            exit 1
-          fi
-          if (( $(stat -c '%s' "$source_dir/apnic_organisation.gz") < 100000 )); then
-            echo 'APNIC organisation source is unexpectedly small' >&2
-            exit 1
-          fi
-          if (( $(stat -c '%s' "$source_dir/apnic_autnum.gz") < 1000000 )); then
-            echo 'APNIC aut-num source is unexpectedly small' >&2
-            exit 1
-          fi
-          if (( $(stat -c '%s' "$source_dir/apnic_route.gz") < 1000000 )); then
-            echo 'APNIC route source is unexpectedly small' >&2
-            exit 1
-          fi
-          if (( $(stat -c '%s' "$source_dir/riswhois_ipv4.gz") < 1000000 )); then
-            echo 'RIPE RISWhois source is unexpectedly small' >&2
-            exit 1
-          fi
+
+          check_minimum_size() {
+            local file="$1"
+            local minimum="$2"
+            if (( $(stat -c '%s' "$file") < minimum )); then
+              echo "source is unexpectedly small: $file" >&2
+              exit 1
+            fi
+          }
+
+          check_minimum_size "$source_dir/apnic_inetnum.gz" 10000000
+          check_minimum_size "$source_dir/apnic_inet6num.gz" 1000000
+          check_minimum_size "$source_dir/apnic_organisation.gz" 100000
+          check_minimum_size "$source_dir/apnic_autnum.gz" 1000000
+          check_minimum_size "$source_dir/apnic_route.gz" 1000000
+          check_minimum_size "$source_dir/riswhois_ipv4.gz" 1000000
+          check_minimum_size "$source_dir/riswhois_ipv6.gz" 500000
+          check_minimum_size "$source_dir/iptoasn_ipv6.tsv.gz" 500000
+
+          sha256sum "$source_dir"/* > "$AUDIT_DIR/source-sha256.txt"
+
       - name: Run Go tests
-        run: go test ./...
+        shell: bash
+        run: |
+          set -o pipefail
+          go -C generator test ./... 2>&1 | tee "$AUDIT_DIR/go-test.log"
+
       - name: Run Go vet
-        run: go vet ./...
-      - name: Generate lists
         shell: bash
         run: |
           set -o pipefail
-          build_log="$RUNNER_TEMP/cn-operator-build.log"
-          if ! go run ./cmd/build --sources "$SOURCE_DIR" --operator-config config/operators.json 2>&1 | tee "$build_log"; then
-            while IFS= read -r line; do
-              line="${line//'%'/'%25'}"
-              line="${line//$'\r'/'%0D'}"
-              echo "::error title=Generator failed::$line"
-            done < <(tail -n 20 "$build_log")
-            exit 1
-          fi
-      - name: Verify generated lists
+          go -C generator vet ./... 2>&1 | tee "$AUDIT_DIR/go-vet.log"
+
+      - name: Generate staged lists
         shell: bash
         run: |
+          set -euo pipefail
           set -o pipefail
-          verify_log="$RUNNER_TEMP/cn-operator-verify.log"
-          if ! go run ./cmd/verify --sources "$SOURCE_DIR" --operator-config config/operators.json 2>&1 | tee "$verify_log"; then
-            while IFS= read -r line; do
-              line="${line//'%'/'%25'}"
-              line="${line//$'\r'/'%0D'}"
-              echo "::error title=Verifier failed::$line"
-            done < <(tail -n 20 "$verify_log")
-            exit 1
+
+          go -C generator run ./cmd/generate ipv4 \
+            --sources "$SOURCE_DIR" \
+            --output "$STAGE_DIR/ipv4" \
+            --operator-config config/operators.json \
+            2>&1 | tee "$AUDIT_DIR/generate-ipv4.log"
+
+          go -C generator run ./cmd/generate ipv6 \
+            --ris "$SOURCE_DIR/riswhois_ipv6.gz" \
+            --iptoasn "$SOURCE_DIR/iptoasn_ipv6.tsv.gz" \
+            --inet6num "$SOURCE_DIR/apnic_inet6num.gz" \
+            --operator-config config/operators.json \
+            --allocation-config config/ipv6-province-prefixes.json \
+            --output-dir "$STAGE_DIR/ipv6" \
+            --audit-report "$AUDIT_DIR/ipv6-manifest.json" \
+            2>&1 | tee "$AUDIT_DIR/generate-ipv6.log"
+
+      - name: Verify staged lists
+        shell: bash
+        run: |
+          set -euo pipefail
+          set -o pipefail
+
+          go -C generator run ./cmd/verify ipv4 \
+            --data "$STAGE_DIR/ipv4" \
+            --sources "$SOURCE_DIR" \
+            --operator-config config/operators.json \
+            2>&1 | tee "$AUDIT_DIR/verify-ipv4.log"
+
+          go -C generator run ./cmd/verify ipv6 \
+            --data "$STAGE_DIR/ipv6" \
+            --allocation-config config/ipv6-province-prefixes.json \
+            2>&1 | tee "$AUDIT_DIR/verify-ipv6.log"
+
+      - name: Publish verified lists and manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          set -o pipefail
+
+          sync_txt_tree() {
+            local source="$1"
+            local destination="$2"
+            mkdir -p "$destination"
+            find "$destination" -type f -name '*.txt' -delete
+            while IFS= read -r -d '' file; do
+              local relative="${file#"$source"/}"
+              install -D -m 0644 "$file" "$destination/$relative"
+            done < <(find "$source" -type f -name '*.txt' -print0)
+          }
+
+          sync_txt_tree "$STAGE_DIR/ipv4" lists/ipv4
+          sync_txt_tree "$STAGE_DIR/ipv6" lists/ipv6
+          rm -f -- lists/ipv4/manifest.json lists/ipv6/manifest.json
+
+          go -C generator run ./cmd/generate manifest --root ../lists \
+            2>&1 | tee "$AUDIT_DIR/generate-public-manifest.log"
+
+          cp "$STAGE_DIR/ipv4/manifest.json" "$AUDIT_DIR/ipv4-manifest.json"
+          cp lists/manifest.json "$AUDIT_DIR/public-manifest.json"
+          git status --short -- lists > "$AUDIT_DIR/git-status.txt"
+          git diff --no-ext-diff -- lists/ipv4 lists/ipv6 \
+            > "$AUDIT_DIR/list-content.diff"
+
+      - name: Upload audit artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cn-operator-audit-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/cn-operator-audit
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Detect list content changes
+        id: list_changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -n "$(git status --porcelain=v1 --untracked-files=all -- \
+            lists/ipv4 lists/ipv6 lists/manifest.json)" ]]; then
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
           fi
+
       - name: Commit generated lists
+        if: steps.list_changes.outputs.changed == 'true'
         shell: bash
         run: |
+          set -euo pipefail
           git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A data
-          if git diff --cached --quiet; then exit 0; fi
+          git config user.email \
+            '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A -- lists/ipv4 lists/ipv6
+          git add -- lists/manifest.json
           git commit -m 'chore: update cn eyeball prefixes'
           git push
